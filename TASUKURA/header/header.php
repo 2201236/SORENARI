@@ -67,7 +67,7 @@
     </header>
 
     <nav class="menu" id="menu">
-        <a href="#" class="menu-item">🏠 ホーム</a>
+        <a href="../home/home.php" class="menu-item">🏠 ホーム</a>
         <a href="#" class="menu-item">✓ Todo</a>
         <a href="#" class="menu-item">🕓 スケジュール</a>
         <a href="#" class="menu-item">📅 カレンダー</a>
@@ -76,6 +76,7 @@
         <a href="#" class="menu-item">📒 共有ボード</a>
         <a href="#" class="menu-item">🗝 パスワード</a>
         <a href="#" class="menu-item">⚙ 設定</a>
+        <a href="../logout/input.php" class="menu-item">👋ログアウト</a>
     </nav>
 
     <script>
