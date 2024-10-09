@@ -19,6 +19,10 @@
             align-items: center;
             padding: 10px;
             background-color: #f0f0f0;
+            position: fixed; /* ヘッダーを固定する */
+            width: 98%; /* ヘッダーが画面全体に広がるように */
+            top: 0; /* ヘッダーをページの最上部に配置 */
+            z-index: 1000; /* ヘッダーを他のコンテンツの上に表示 */
         }
         .back-button {
             font-size: 24px;
@@ -70,7 +74,7 @@
         <a href="../home/home.php" class="menu-item">🏠 ホーム</a>
         <a href="#" class="menu-item">✓ Todo</a>
         <a href="#" class="menu-item">🕓 スケジュール</a>
-        <a href="#" class="menu-item">📅 カレンダー</a>
+        <a href="../calendar/calender.php" class="menu-item">📅 カレンダー</a>
         <a href="#" class="menu-item">📕 読書</a>
         <a href="#" class="menu-item">🏦 家計簿</a>
         <a href="#" class="menu-item">📒 共有ボード</a>
