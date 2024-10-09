@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="js">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>パスワード</title>
+        <link rel="stylesheet" href="css/pstyle.css">
+    </head>
+    <body>
+        <header>
+        </header>
+        <main>
+            <div class="container">
+                <div class="left_side">
+                    <div class="search_window">
+                        <form action="" method="post" class="search_form">
+                            <div class="search_bar">
+                                <input type="text" autocomplete="off" aria-autocomplete="list" aria-controls="react-autowhatever-1" class="search_input" .
+                                placeholder="パスワードを検索" name="search_input" value="" spellcheck="false" data-ms-editor="true">
+                            </div>
+                            <div class="search_button">
+                                <button type="submit" class="search_button">
+                                    <img src="" alt="検索">
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="search_preset"></div>
+                </div>
+                <div class="right_side">
+                    <div class="open_add_modal_button_wrapper">
+                        <!-- 押したら追加フォームのモーダルが開く -->
+                        <button class="open_add_modal" id="open_add_modal">
+                            パスワードを追加
+                        </button>
+                    </div>
+                    <div class="table_wrapper">
+                        <table class="pass_table"> 
+                            <thead>
+                                <tr>
+                                    <th>URL</th>
+                                    <th>ユーザーID</th>
+                                    <th>パスワード</th>
+                                    <th>安全性</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="table_container">
+                                    <tr>
+                                        <td>
+                                            <!-- 当該サイトに飛べる？ -->
+                                        </td>
+                                        <td>
+                                            <!-- ユーザーID表示 -->
+                                        </td>
+                                        <td>
+                                            <!-- 基本的にマスクしておく -->
+                                            <!-- 表示する際は再認証させる -->
+                                            <!-- 表示用ボタンを後で作る -->
+                                            <!-- コピー用button -->
+                                            <!-- 再認証しないと機能しない -->
+                                            <div class="copy_button"></div>
+                                        </td>
+                                        <td>
+                                            <!-- 安全性パラム表示 -->
+                                        </td>
+                                        <td>
+                                            <!-- 編集用ボタン -->
+                                        </td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- モーダルウィンドウ -->
+            <div id="add_modal" class="add_modal">
+                <div class="modal_content">
+                    <span class="close">&times;</span>
+                    <form action="" method="post" class="add_form">
+                        <div class="form_group">
+                            <label for="url">URL:</label>
+                            <input type="text" id="url" name="url" required>
+                        </div>
+                        <div class="form_group">
+                            <label for="user_id">ユーザーID:</label>
+                            <input type="text" id="user_id" name="user_id" required>
+                        </div>
+                        <div class="form_group">
+                            <label for="password">パスワード:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="add_button">追加</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <footer></footer>
+        <script src="js/passlist.js"></script>
+    </body>
