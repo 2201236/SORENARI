@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
     session_start();
 
      const SERVER = 'mysql310.phy.lolipop.lan';
@@ -18,15 +18,16 @@
     $sql= "SELECT URL, passName, passtxt FROM PassList WHERE user_id = ? ";
             
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$_SESSION['user_id']]);
+    $stmt->execute(/*[$_SESSION['user_id']]*/ [1]);
     $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-?> -->
+?>
 <!DOCTYPE html>
 <html lang="js">
     <head>
         <meta charset="UTF-8" />
-        <title></title>
+        <title>パスワード</title>
+        <link rel="stylesheet" href="css/pstyle.css">
     </head>
     <body>
         <header>
@@ -50,7 +51,7 @@
                                 </tr>
                             </thead>
                             <tbody class="table_container">
-                                <!-- <?php foreach($list as $item):?> -->
+                                <?php foreach($list as $item):?>
                                     <tr>
                                         <td>
                                             <!-- 当該サイトに飛べる？ -->
@@ -63,17 +64,17 @@
                                             <!-- 基本的にマスクしておく -->
                                             <!-- 表示する際は再認証させる -->
                                             <!-- 表示用ボタンを後で作る -->
-                                            <?php htmlspecialchars($item['passtxt'], ENT_QUOTES, 'UTF-8');?>
+                                            <?php echo htmlspecialchars($item['passtxt'], ENT_QUOTES, 'UTF-8');?>
                                             <!-- コピー用button -->
                                             <!-- 再認証しないと機能しない -->
                                             <div class="copy_button"></div>
                                         </td>
                                         <td>
-                                            {{safe_param}}
+                                            <!-- 安全性パラム表示 -->
                                         </td>
                                     </tr>
                                     <!-- 何処かに編集用ボタンを置く -->
-                                <!-- <?php endforeach;?> -->
+                                <?php endforeach;?>
                             </tbody>
                         </table>
                     </div>
@@ -81,5 +82,5 @@
             </div>
         </main>
         <footer></footer>
-        <script src="passlist.js"></script>
+        <script src="js/passlist.js"></script>
     </body>
