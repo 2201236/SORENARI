@@ -5,14 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家計簿管理アプリ ダッシュボード</title>
-    <link rel="stylesheet" href="css/home.css"> <!-- スタイルシートのパス -->
+    <link rel="stylesheet" href="css/home.css"> <!-- スタイルシートのリンク -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQueryの読み込み -->
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>家計簿管理アプリ</h1>
-        </header>
+    <header>
+    <div class="header-content">
+        <h1>家計簿管理アプリ</h1>
+        <div class="btn">
+            <a href="save.php" target="_self">
+                <img src="../images/bank.png" alt="貯金" style="width:75px;">
+            </a>
+            <a href="total.php" target="_self">
+                <img src="../images/total.png" alt="集計" style="width:90px;">
+            </a>
+        </div>
+    </div>
+    </header>
+
 
         <div class="bar-chart">
             <div class="bar">
@@ -64,7 +75,9 @@
         </div>
 
         <footer>
-            <p>&copy; 2024 家計簿管理アプリ</p>
+            <p>
+                2024 家計簿管理アプリ 
+            </p>
         </footer>
     </div>
 
