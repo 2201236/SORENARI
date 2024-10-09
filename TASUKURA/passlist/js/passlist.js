@@ -28,3 +28,17 @@ openEditModalBtn.onclick = function() {
 closeEditModalBtn.onclick = function() {
     editModal.style.display = "none";
 }
+
+function safe_param(passtxt) {
+    let credit = 10;
+    if (passtxt.length >= 4) {
+        for (let i = 0; i < passtxt.length; i++) {
+            if (passtxt.charCodeAt(i) >= 48 && passtxt.charCodeAt(i) <= 57) {
+                credit--;
+            }
+            
+        }
+        
+    }
+    
+}
