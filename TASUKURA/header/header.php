@@ -73,12 +73,12 @@
     <nav class="menu" id="menu">
         <a href="../home/home.php" class="menu-item">🏠 ホーム</a>
         <a href="#" class="menu-item">✓ Todo</a>
-        <a href="#" class="menu-item">🕓 スケジュール</a>
+        <a href="../schedule_management/schedule.php" class="menu-item">🕓 スケジュール</a>
         <a href="../calendar/calender.php" class="menu-item">📅 カレンダー</a>
-        <a href="#" class="menu-item">📕 読書</a>
-        <a href="#" class="menu-item">🏦 家計簿</a>
-        <a href="#" class="menu-item">📒 共有ボード</a>
-        <a href="#" class="menu-item">🗝 パスワード</a>
+        <a href="../study/study_management.php" class="menu-item">📖 学習管理</a>
+        <a href="../budget_tracker/home.php" class="menu-item">🏦 家計簿</a>
+        <a href="#" class="menu-item">🗂️ 共有ボード</a>
+        <a href="../passlist/passlist.php" class="menu-item">🗝 パスワード</a>
         <a href="#" class="menu-item">⚙ 設定</a>
         <a href="../logout/input.php" class="menu-item">👋ログアウト</a>
     </nav>
