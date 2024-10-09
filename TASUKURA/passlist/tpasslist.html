@@ -49,23 +49,35 @@
                                     <tr>
                                         <td>
                                             <!-- 当該サイトに飛べる？ -->
+                                             仮URL
                                         </td>
                                         <td>
                                             <!-- ユーザーID表示 -->
+                                             仮ユーザーID
                                         </td>
                                         <td>
                                             <!-- 基本的にマスクしておく -->
                                             <!-- 表示する際は再認証させる -->
+                                            仮パスワード
                                             <!-- 表示用ボタンを後で作る -->
+                                            <!-- 再認証しないと機能しない -->
+                                            <div class="show_button">
+                                                表示用ボタンスペース
+                                            </div>
                                             <!-- コピー用button -->
                                             <!-- 再認証しないと機能しない -->
-                                            <div class="copy_button"></div>
+                                            <div class="copy_button">
+                                                コピー用ボタンスペース
+                                            </div>
                                         </td>
                                         <td>
                                             <!-- 安全性パラム表示 -->
                                         </td>
                                         <td>
                                             <!-- 編集用ボタン -->
+                                            <button class="open_edit_modal" id="open_edit_modal">
+                                                編集
+                                            </button>
                                         </td>
                                     </tr>
                             </tbody>
@@ -73,24 +85,61 @@
                     </div>
                 </div>
             </div>
-            <!-- モーダルウィンドウ -->
+
+            <!-- 追加用モーダル -->
             <div id="add_modal" class="add_modal">
                 <div class="modal_content">
-                    <span class="close">&times;</span>
+                    <span class="add_modal_close">&times;</span>
                     <form action="" method="post" class="add_form">
-                        <div class="form_group">
+                        <div class="add_form_group">
                             <label for="url">URL:</label>
                             <input type="text" id="url" name="url" required>
                         </div>
-                        <div class="form_group">
+                        <div class="add_form_group">
                             <label for="user_id">ユーザーID:</label>
                             <input type="text" id="user_id" name="user_id" required>
                         </div>
-                        <div class="form_group">
+                        <div class="add_form_group">
                             <label for="password">パスワード:</label>
                             <input type="password" id="password" name="password" required>
                         </div>
-                        <button type="submit" class="add_button">追加</button>
+                        <button type="submit" class="add_submit_button">追加</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 編集用モーダル -->
+            <div id="edit_modal" class="edit_modal">
+                <div class="modal_content">
+                    <span class="edit_modal_close">&times;</span>
+                    <form action="" method="post" class="add_form">
+                        <div class="edit_form_group">
+                            <label for="url">URL:</label>
+                            <input type="text" id="url" name="url" required>
+                        </div>
+                        <div class="edit_form_group">
+                            <label for="user_id">ユーザーID:</label>
+                            <input type="text" id="user_id" name="user_id" required>
+                        </div>
+                        <div class="edit_form_group">
+                            <label for="password">パスワード:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="edit_submit_button">追加</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 再認証用モーダル -->
+            <div id="re_auth_modal" class="re_auth_modal">
+                <div class="modal_content">
+                    <span class="re_auth_modal_close">&times;</span>
+                    <form action="" method="post" class="add_form">
+                        <div class="re_auth_form_group">
+                            <label for="password">パスワード:</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <button type="submit" class="show_submit_button">再認証</button>
                     </form>
                 </div>
             </div>
