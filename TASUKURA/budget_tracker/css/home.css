@@ -15,12 +15,29 @@ body {
 }
 
 header {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
 h1 {
+    margin: 0;
     color: #333;
+    flex: 1; /* タイトルが左側に寄るように伸縮可能にする */
+}
+
+.btn {
+    display: flex;
+    gap: 10px; /* ボタン同士の間隔を空ける */
+    justify-content: flex-end;
 }
 
 nav ul {
