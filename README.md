@@ -7,7 +7,7 @@ figma<br>
 https://www.figma.com/design/Rut8zxguZTnFOEvExlgRSB/Untitled?node-id=0-1&node-type=canvas&t=qinnFjTUarNQvqCh-0<br>
 <br>
 ログイン<br>
-https://aso2201143.zombie.jp/TASUKURA/login/input.php<br>
+https://aso2201143.zombie.jp/TASUKURA/login/logininput.php
 <br>
 新規登録画面<br>
 https://aso2201143.zombie.jp/TASUKURA/new_registration/input.php<br>
