@@ -5,33 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>全画面カレンダー</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .arrow {
+            cursor: pointer;
+            font-size: 24px;
+            margin: 0 10px;
+        }
+        .controls {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        .controls label {
+            margin: 0 5px;
+        }
+        .controls select, .controls button {
+            margin-left: 5px;
+        }
+    </style>
 </head>
 <body>
-<div class="controls">
-    <label for="year-select">年: </label>
-    <select id="year-select"></select>
-
-    <label for="month-select">月: </label>
-    <select id="month-select">
-        <option value="0">1月</option>
-        <option value="1">2月</option>
-        <option value="2">3月</option>
-        <option value="3">4月</option>
-        <option value="4">5月</option>
-        <option value="5">6月</option>
-        <option value="6">7月</option>
-        <option value="7">8月</option>
-        <option value="8">9月</option>
-        <option value="9">10月</option>
-        <option value="10">11月</option>
-        <option value="11">12月</option>
-    </select>
-
-    <button id="generate-button">更新</button>
-</div>
-
 <div id="calendar">
-    <h2>カレンダー</h2>
+    <h2 style="display: inline;">カレンダー</h2>
+    <div class="controls">
+        <span class="arrow" id="prev-month">&#10094;</span> <!-- 左矢印 -->
+        <label for="year-select">年: </label>
+        <select id="year-select"></select>
+        <label for="month-select">月: </label>
+        <select id="month-select">
+            <option value="0">1月</option>
+            <option value="1">2月</option>
+            <option value="2">3月</option>
+            <option value="3">4月</option>
+            <option value="4">5月</option>
+            <option value="5">6月</option>
+            <option value="6">7月</option>
+            <option value="7">8月</option>
+            <option value="8">9月</option>
+            <option value="9">10月</option>
+            <option value="10">11月</option>
+            <option value="11">12月</option>
+        </select>
+        <span class="arrow" id="next-month">&#10095;</span> <!-- 右矢印 -->
+        <button id="generate-button">更新</button>
+    </div>
     <table id="calendar-table">
         <thead>
             <tr>
@@ -50,6 +67,7 @@
 </div>
 
 <script>
+    // スクリプトはそのまま
     async function fetchHolidays(year) {
         try {
             const response = await fetch(`https://holidays-jp.github.io/api/v1/${year}/date.json`);
@@ -96,9 +114,17 @@
                 const dateDiv = document.createElement('div');
                 dateDiv.textContent = date;
 
-                const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                // クリックイベントで正しい日付をURLに渡す
+                cell.addEventListener('click', ((currentDate) => {
+                    return () => {
+                        window.location.href = `view-schedule.html?date=${currentDate}&year=${year}&month=${month + 1}`;
+                    };
+                })(date)); // ここでcurrentDateにdateの現在の値を閉じ込める
 
+                cell.appendChild(dateDiv);
+                
                 // 祝日かどうかを確認
+                const formattedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
                 if (holidays[formattedDate]) {
                     const holidayDiv = document.createElement('div');
                     holidayDiv.textContent = holidays[formattedDate];
@@ -107,28 +133,11 @@
                     cell.appendChild(holidayDiv);
                 }
 
-                cell.appendChild(dateDiv);
-
                 // 今日の日付を強調表示
                 if (year === new Date().getFullYear() && month === new Date().getMonth() && date === new Date().getDate()) {
                     cell.classList.add('today');
                 }
 
-                // 日付をクリックしたときのイベント
-                cell.addEventListener('click', () => {
-                    window.location.href = `view-schedule.html?date=${date}&year=${year}&month=${month + 1}`;
-                });
-
-                // TODOボタンを追加
-                const todoButton = document.createElement('button');
-                todoButton.textContent = 'TODO';
-                todoButton.className = 'todo-button';
-                todoButton.addEventListener('click', (event) => {
-                    event.stopPropagation(); // セルのクリックイベントを停止
-                    window.location.href = `todo.html?date=${date}&year=${year}&month=${month + 1}`;
-                });
-
-                cell.appendChild(todoButton); // ボタンをセルに追加
                 row.appendChild(cell);
                 date++; // 日付を増やす
             }
@@ -157,6 +166,35 @@
         const selectedYear = parseInt(yearSelect.value);
         const selectedMonth = parseInt(monthSelect.value);
         await generateCalendar(selectedYear, selectedMonth);  // 祝日も含めてカレンダーを生成
+    });
+
+    // 矢印ボタンのイベントリスナーを追加
+    document.getElementById('prev-month').addEventListener('click', async () => {
+        let month = parseInt(monthSelect.value);
+        let year = parseInt(yearSelect.value);
+        if (month === 0) { // 1月の場合
+            month = 11; // 12月
+            year--; // 年を減らす
+        } else {
+            month--; // 前の月
+        }
+        monthSelect.value = month; // 月を更新
+        yearSelect.value = year; // 年を更新
+        await generateCalendar(year, month);
+    });
+
+    document.getElementById('next-month').addEventListener('click', async () => {
+        let month = parseInt(monthSelect.value);
+        let year = parseInt(yearSelect.value);
+        if (month === 11) { // 12月の場合
+            month = 0; // 1月
+            year++; // 年を増やす
+        } else {
+            month++; // 次の月
+        }
+        monthSelect.value = month; // 月を更新
+        yearSelect.value = year; // 年を更新
+        await generateCalendar(year, month);
     });
 
     // 初期表示のカレンダー生成

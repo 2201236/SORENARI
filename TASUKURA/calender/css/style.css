@@ -1,151 +1,99 @@
-/* 全体のスタイル */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f6f8; /* 落ち着いた背景色 */
+body { 
   margin: 0;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f8ff; /* 水色の背景 */
 }
 
-/* タイトルのスタイル */
-h2 {
-  text-align: center;
-  color: #34495e; /* 深いグレーの色合い */
-  margin-bottom: 20px;
-  font-size: 2.5rem; /* タイトルサイズの調整 */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* 立体感のあるテキスト */
-}
-
-/* コントロール部分のスタイル */
 .controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-left: 20px;
   margin-bottom: 20px;
-  gap: 15px; /* コントロール間のスペース */
+  padding: 10px;
+  background-color: #e6f7ff; /* コントロール部分の背景を水色に */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* セレクトボックスのスタイル */
-select {
-  padding: 8px; /* パディングを少し小さく */
-  border: 1px solid #bdc3c7;
-  border-radius: 5px;
-  margin: 0 10px;
-  font-size: 1rem; /* フォントサイズを調整 */
-  transition: border 0.3s;
-}
-
-select:hover {
-  border-color: #3498db; /* ホバー時にボーダー色を変更 */
-}
-
-/* 更新ボタンのスタイル */
-#generate-button {
-  padding: 8px 16px; /* ボタンのサイズを控えめに */
-  background-color: #3498db; /* 薄い水色 */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem; /* ボタンフォントサイズを調整 */
+label {
   font-weight: bold;
-  transition: background 0.3s, transform 0.2s, box-shadow 0.2s; 
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* ボックスシャドウを控えめに */
+  color: #005b96; /* 濃い水色で文字色 */
 }
 
-#generate-button:hover {
-  background-color: #2980b9; /* ホバー時に濃い色 */
-  transform: translateY(-1px); /* 小さな動き */
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* シャドウを少し強調 */
+select, button {
+  padding: 5px;
+  border: 1px solid #005b96;
+  border-radius: 5px;
+  background-color: #ffffff; /* 白色の背景 */
+  color: #005b96;
+  cursor: pointer; /* カーソルをポインタに */
 }
 
-#generate-button:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25); /* アクティブ時の影を控えめに */
+button {
+  font-weight: bold;
 }
 
-/* カレンダーのテーブルスタイル */
-#calendar-table {
-  width: 100%;
+#calendar {
+  margin-left: 20px;
+  padding: 10px;
+  background-color: #ffffff; /* 白色の背景 */
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
   border-collapse: collapse;
-  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
 }
 
 th, td {
-  padding: 15px;
+  border: 2px solid #005b96; /* 境界線の幅を太く、色を濃い水色に */
   text-align: center;
-  border: 1px solid #dfe6e9;
+  padding: 20px; /* セルのパディングを少し広めに */
+  transition: background-color 0.3s ease; /* 背景色の変更にアニメーション */
 }
 
-/* ヘッダーのスタイル */
 th {
-  background-color: #2980b9; /* ヘッダーの色 */
-  color: white;
-  font-weight: 600;
+  background-color: #b3e5fc; /* 水色の背景 */
+  color: #005b96; /* 濃い水色の文字色 */
 }
 
-/* 祝日のスタイル */
+td {
+  background-color: #e6f7ff; /* カレンダーの日付セルは薄い水色 */
+  color: #005b96;
+  transition: transform 0.1s ease; /* クリック時のアニメーション */
+}
+
+td:hover {
+  background-color: #a7d8e7; /* ホバー時の背景色を変更（明るい水色） */
+}
+
 .holiday {
-  color: #e74c3c; /* 祝日の文字色 */
-  font-weight: bold;
+  color: red;
 }
 
 .holiday-background {
-  background-color: #f8d7da; /* 祝日の背景色 */
+  background-color: #ffebee; /* 祝日の背景色を薄いピンク */
 }
 
-/* 今日の日付のスタイル */
 .today {
-  background-color: #f39c12; /* 今日の強調色 */
-  font-weight: bold;
-  border: 2px solid #e67e22;
+  background-color: #007bbf; /* 今日の日付の強調色を濃い青 */
+  border: 2px solid #005b96; /* 境界線の色を濃い水色 */
+  color: white; /* 文字色を白にして強調 */
 }
 
-/* 行の交互の色 */
-tr:nth-child(even) {
-  background-color: #ecf0f1; /* 交互の行の背景色 */
+/* クリック時のアニメーション */
+td:active {
+  transform: scale(0.95); /* 押したときに少し縮む */
+  transition: transform 0.1s ease; /* アニメーションのスピードを調整 */
 }
 
-/* TODOボタンのスタイル */
-.todo-button {
-  padding: 5px 10px; /* ボタンのサイズをさらに小さく */
-  background-color: #85c1e9; /* 水色 */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem; /* ボタンフォントサイズを控えめに */
-  font-weight: bold;
-  transition: background 0.3s, transform 0.2s, box-shadow 0.2s; 
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* ボックスシャドウを控えめに */
+button:hover {
+  background-color: #b3e5fc; /* ボタンのホバー時に水色に */
 }
 
-.todo-button:hover {
-  background-color: #76c3e4; /* ホバー時に少し濃い水色 */
-  transform: translateY(-1px); /* 小さな動き */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* シャドウを少し強調 */
-}
-
-.todo-button:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* アクティブ時の影を控えめに */
-}
-
-/* マウスオーバー時のリスト強調 */
-#calendar-table tr:hover {
-  background-color: rgba(52, 152, 219, 0.2); /* 行にマウスオーバーしたときの背景色 */
-}
-
-/* レスポンシブデザイン */
-@media (max-width: 768px) {
-  .controls {
-      flex-direction: column; /* モバイル表示では縦に配置 */
-      align-items: stretch;
-  }
-  select, #generate-button, .todo-button {
-      width: 100%; /* 幅を100%に */
-      margin: 5px 0;
-  }
+/* ボタンのホバー時に背景色を変更 */
+button:active {
+  transform: scale(0.95); /* 押したときに少し縮む */
+  transition: transform 0.1s ease; /* アニメーションのスピードを調整 */
 }
