@@ -1,0 +1,175 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+h1 {
+    margin: 0;
+    color: #333;
+    flex: 1; /* タイトルが左側に寄るように伸縮可能にする */
+}
+
+.btn {
+    display: flex;
+    gap: 10px; /* ボタン同士の間隔を空ける */
+    justify-content: flex-end;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.budget-section,
+.expense-input {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.budget-section input,
+.expense-input input {
+    margin: 5px 0;
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.bar-chart {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.bar {
+    width: 100%;
+    height: 30px;
+    background: #e2e6ea;
+    border-radius: 5px;
+    position: relative;
+}
+
+.bar-inner {
+    height: 100%;
+    background: #007BFF;
+    border-radius: 5px;
+    transition: width 0.5s;
+}
+
+.bar-labels {
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.button {
+    margin: 10px;
+    padding: 10px 20px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background: #0056b3;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+/* home.css */
+
+/* 電卓のスタイル */
+.calculator {
+    display: none; /* 初期状態では非表示 */
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+.calculator button {
+    padding: 10px;
+    margin: 5px;
+    width: 40px;
+    cursor: pointer;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+.calculator button:hover {
+    background: #0056b3;
+}
+.calculator .row {
+    display: flex;
+}
+.bar-chart {
+    margin: 20px 0; /* 棒グラフのマージンを調整 */
+}
+.bar {
+    background: #e0e0e0;
+    height: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.bar-inner {
+    background: #007BFF;
+    height: 100%;
+}
+/* フォームのスタイル */
+.form-container {
+    display: flex; /* フレックスボックスを使用 */
+    justify-content: space-between; /* フォームの間隔を均等に */
+    margin: 20px 0;
+}
+.form-container section {
+    flex: 1; /* 各フォームを均等に幅を占める */
+    margin-right: 10px; /* 右側のフォームにマージンを追加 */
+}
+.form-container section:last-child {
+    margin-right: 0; /* 最後のフォームのマージンをリセット */
+}
