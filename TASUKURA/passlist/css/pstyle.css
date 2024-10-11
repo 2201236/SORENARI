@@ -1,5 +1,75 @@
+body {
+    height: 100%;
+    width: 100%;
+}
+
+main {
+    width: 100%;
+    display: flex;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+}
+
+.left_side {
+    flex: 1;
+    justify-items: center;
+    align-items: center;
+}
+
+.search_window {
+
+}
+
+.search_form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search_word_input {
+    flex: 3;
+}
+
+.search_button {
+    flex: 1;
+}
+
+.search_word_submit_button { 
+}
+
+.search_preset {
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.search_preset_item {
+}
+
+.right_side {
+    flex: 3;
+    justify-items: center;
+    align-items: center;
+}
+
+/* パスワード強度の表示バー */
+.safe_param_bar {
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+.bar {
+    height: 100%;
+    background-color: red; /* 初期値 */
+    border-radius: 5px;
+}
+
 /* モーダル全体のスタイル */
-.add_modal, .edit_modal {
+.add_modal, .edit_modal, .re_auth_modal {
     display: none; /* 初期は非表示 */
     position: fixed; 
     z-index: 1; 
@@ -23,7 +93,8 @@
 }
 
 /* 閉じるボタン */
-.add_modal_close, .edit_modal_close {
+.add_modal_close, .edit_modal_close,
+.re_auth_modal_close {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -31,7 +102,8 @@
 }
 
 .add_modal_close:hover, .edit_modal_close:hover,
-.add_modal_close:focus, .edit_modal_close:focus {
+.add_modal_close:focus, .edit_modal_close:focus,
+.re_auth_modal_close:hover, .re_auth_modal_close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
