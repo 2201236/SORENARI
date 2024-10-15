@@ -15,17 +15,21 @@
                     <div class="search_window">
                         <form action="" method="post" class="search_form">
                             <div class="search_bar">
-                                <input type="text" autocomplete="off" aria-autocomplete="list" aria-controls="react-autowhatever-1" class="search_input" .
-                                placeholder="パスワードを検索" name="search_input" value="" spellcheck="false" data-ms-editor="true">
+                                <input type="text" autocomplete="off" aria-autocomplete="list" aria-controls="react-autowhatever-1" class="search_word_input" .
+                                placeholder="パスワードを検索" name="search_word_input" value="" spellcheck="false" data-ms-editor="true">
                             </div>
                             <div class="search_button">
-                                <button type="submit" class="search_button">
-                                    <img src="" alt="検索">
+                                <button type="submit" class="search_word_submit_button">
+                                    検索
                                 </button>
                             </div>
                         </form>
                     </div>
-                    <div class="search_preset"></div>
+                    <div class="search_preset">
+                        <!-- ここに検索ワードのプリセットを表示 -->
+                        <div class="search_preset_item">Google</div>
+                        <div class="search_preset_item">Microsoft</div>
+                    </div>
                 </div>
                 <div class="right_side">
                     <div class="open_add_modal_button_wrapper">
@@ -61,7 +65,7 @@
                                             仮パスワード
                                             <!-- 表示用ボタンを後で作る -->
                                             <!-- 再認証しないと機能しない -->
-                                            <div class="show_button">
+                                            <div class="show_passtxt_button">
                                                 表示用ボタンスペース
                                             </div>
                                             <!-- コピー用button -->
@@ -71,7 +75,10 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <!-- 安全性パラム表示 -->
+                                            <!-- パスワード強度表示バー -->
+                                            <div class="safe_param_bar">
+                                                <div class="bar" :style="{ width: safe_param_bar_width + '%' }"></div>
+                                            </div>
                                         </td>
                                         <td>
                                             <!-- 編集用ボタン -->
@@ -139,11 +146,15 @@
                             <label for="password">パスワード:</label>
                             <input type="password" id="password" name="password" required>
                         </div>
-                        <button type="submit" class="show_submit_button">再認証</button>
+                        <button type="submit" class="show_submit_button">認証</button>
                     </form>
                 </div>
             </div>
+
         </main>
         <footer></footer>
-        <script src="js/passlist.js"></script>
+
+        <!-- スクリプト導入 -->
+        <script src="js/modal.js"></script>
+        <script src="js/safe_param.js" async></script>
     </body>
