@@ -1,33 +1,34 @@
 <?php
-require '/home/users/1/noor.jp-aso2201184/web/SORENARI/db-connect.php';
+session_start();
+require '../db-connect/db-connect.php'; // Include the database connection file
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
-        $stmt->bindParam(':email', $email);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try {
+        $sql = "SELECT * FROM Users WHERE mailaddress = :email";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':email', $_POST['email']);
         $stmt->execute();
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($stmt->rowCount() > 0) {
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            echo "ログイン成功！ようこそ、" . htmlspecialchars($user['email']) . "さん。";
+            // パスワードの直接比較
+            if ($_POST['password'] === $user['password']) { // 暗号化されていない場合の比較
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['name'] = htmlspecialchars($user['name']); // 名前もセッションに保存
 
-            session_start();
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['email'] = $user['email'];
-            header("Location: dashboard.php");
-            exit;
+                // home.phpにリダイレクト
+                header("Location: ../home/home.php");
+                exit();
+            } else {
+                echo "<h2>パスワードが間違っています。</h2>";
+                echo "<a href='logininput.php'>戻る</a>";
+            }
         } else {
-            echo "メールアドレスまたはパスワードが間違っています。";
+            echo "<h2>このメールアドレスは登録されていません。</h2>";
+            echo "<a href='logininput.php'>戻る</a>";
         }
+    } catch (PDOException $e) {
+        echo "エラー: " . $e->getMessage();
     }
-} catch (PDOException $e) {
-    echo "データベース接続エラー: " . $e->getMessage();
 }
-?>

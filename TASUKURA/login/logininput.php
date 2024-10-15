@@ -64,6 +64,5 @@
     </form>
     <a href="newinput.php">新規登録はこちら</a>
 </div>
-
 </body>
 </html>
