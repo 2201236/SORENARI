@@ -1,4 +1,3 @@
-<?php require '../header/header.php'; ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家計簿管理アプリ ダッシュボード</title>
     <link rel="stylesheet" href="css/home.css"> <!-- スタイルシートのリンク -->
+    <link rel="stylesheet" href="../header/css/header.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQueryの読み込み -->
 </head>
 <body>
+<?php require '../header/header.php'; ?>
     <div class="container">
     <header>
     <div class="header-content">
