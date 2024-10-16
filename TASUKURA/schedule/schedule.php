@@ -71,7 +71,7 @@ try {
 <h2>Managements 登録フォーム</h2>
 <form action="" method="post">
     <label for="title">タイトル</label>
-    <input type="text" name="title" id="title" placeholder="タイトルを入力" required>
+    <input type="text" name="title" id="title" placeholder="タイトルを入力" required> <!-- 必須入力 -->
 
     <label for="starttime">開始時刻</label>
     <input type="datetime-local" name="starttime" id="starttime" required>
