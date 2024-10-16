@@ -15,9 +15,7 @@
     <div class="header-content">
         <h1>家計簿管理アプリ</h1>
         <div class="btn">
-            <a href="save.php" target="_self">
-                <img src="../images/bank.png" alt="貯金" style="width:75px;">
-            </a>
+           
             <a href="total.php" target="_self">
                 <img src="../images/total.png" alt="集計" style="width:90px;">
             </a>
