@@ -4,6 +4,9 @@
 スネークケースでお願いします。(例: name_kurihara)<br>
 <br>
 figma<br>
+ヘッダーCSS<br>
+<link rel="stylesheet" href="../header/css/header.css"><br>
+
 https://www.figma.com/design/Rut8zxguZTnFOEvExlgRSB/Untitled?node-id=0-1&node-type=canvas&t=qinnFjTUarNQvqCh-0<br>
 <br>
 ログイン<br>
