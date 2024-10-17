@@ -1,10 +1,12 @@
 <?php
-include 'db-connect.php';
+require '../db-connect/db-connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = $_POST['subject'];
     $user_id = 1;  // 仮のユーザーID
-    $elapsed_time = $_POST['elapsed_time'];
+
+    // 'elapsed_time' がセットされているか確認し、なければデフォルトで0を設定
+    $elapsed_time = isset($_POST['elapsed_time']) ? $_POST['elapsed_time'] : 0;
 
     // 経過時間をhh:mm:ss形式に変換
     $hours = floor($elapsed_time / 3600);
@@ -27,6 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'study_time' => $formatted_time
     ]);
 
-    header('Location: study_management.php');
+    // 出力が行われる前にリダイレクトを実行
+    if (!headers_sent()) {
+        header('Location: study_management.php');
+        exit();  // header()後にスクリプトの実行を停止
+    } else {
+        // デバッグ: Headersが送信されている場合の処理
+        echo "Headers already sent. Cannot redirect.";
+    }
 }
 ?>
