@@ -18,16 +18,6 @@ try {
     }
     $user_id = $_SESSION['user_id'];
 
-    // 削除処理
-    if (isset($_POST['delete'])) {
-        $schedule_id = $_POST['schedule_id'];
-        $deleteSql = "DELETE FROM Managements WHERE id = :id AND user_id = :user_id";
-        $deleteStmt = $pdo->prepare($deleteSql);
-        $deleteStmt->bindParam(':id', $schedule_id, PDO::PARAM_INT);
-        $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $deleteStmt->execute();
-    }
-
     // スケジュール情報を取得
     $sql = "SELECT * FROM Managements WHERE user_id = :user_id ORDER BY starttime ASC";
     $stmt = $pdo->prepare($sql);
@@ -37,10 +27,8 @@ try {
 
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
-    exit; // エラー発生時にスクリプトを終了
 } catch (Exception $e) {
     echo "エラー: " . $e->getMessage();
-    exit; // エラー発生時にスクリプトを終了
 }
 ?>
 
@@ -62,7 +50,6 @@ try {
             <th>開始時刻</th>
             <th>終了時刻</th>
             <th>登録日</th>
-            <th>操作</th>
         </tr>
     </thead>
     <tbody>
@@ -73,17 +60,11 @@ try {
                     <td><?php echo htmlspecialchars($schedule['starttime'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?php echo htmlspecialchars($schedule['endtime'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
                     <td><?php echo htmlspecialchars($schedule['inputdate'] ?? '', ENT_QUOTES, 'UTF-8'); ?></td>
-                    <td>
-                        <form method="post" action="">
-                            <input type="hidden" name="schedule_id" value="<?php echo htmlspecialchars($schedule['id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="submit" name="delete" value="削除" onclick="return confirm('本当に削除しますか？');">
-                        </form>
-                    </td>
                 </tr>
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="5">スケジュールはありません。</td>
+                <td colspan="4">スケジュールはありません。</td>
             </tr>
         <?php endif; ?>
     </tbody>
