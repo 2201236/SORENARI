@@ -1,10 +1,18 @@
+<!-- 認証フラグ管理セッションを置く -->
+<!-- 認証は1分で切れる（表示中のパスワードなどは継続するが、閉じた場合は切れる） -->
+<!-- フラグが経っていない場合は各処理の前に割り込んで認証モーダルの表示と認証を行う -->
+<!-- 認証が成功しなかった場合は、その後の処理を中止する -->
+<!-- Goto,let us go down, and there confound their language, that they may not understand one another's speech. -->
+
 <!DOCTYPE html>
 <html lang="js">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>パスワード</title>
+        <!-- CSS導入 -->
         <link rel="stylesheet" href="css/pstyle.css">
+        <link rel="stylesheet" href="css/modal.css">
     </head>
     <body>
         <header>
