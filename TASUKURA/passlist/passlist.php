@@ -15,7 +15,7 @@
         exit;
     }
 
-    $sql= "SELECT URL, passName, passtxt FROM PassList WHERE user_id = ? ";
+    $sql= "SELECT pass_id, URL, passName, passtxt FROM PassList WHERE user_id = ? ";
             
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$_SESSION['user_id']]);
@@ -79,6 +79,7 @@
                                 <?php foreach($list as $item):?>
                                     <tr>
                                         <td>
+                                            <hidden id="pass_id" value="<?php echo $item['pass_id']; ?>" />
                                             <!-- 当該サイトに飛べる？ -->
                                             <?php echo htmlspecialchars($item['URL'], ENT_QUOTES, 'UTF-8'); ?>
                                         </td>
@@ -121,22 +122,22 @@
                 </div>
             </div>
 
-        <!-- 追加用モーダル -->
-        <div id="add_modal" class="add_modal">
+            <!-- 追加用モーダル -->
+            <div id="add_modal" class="add_modal">
                 <div class="modal_content">
                     <span class="add_modal_close">&times;</span>
                     <form action="" method="post" class="add_form">
                         <div class="add_form_group">
-                            <label for="url">URL:</label>
-                            <input type="text" id="url" name="url" required>
+                            <label for="add_url">URL:</label>
+                            <input type="text" id="add_url" name="url" required>
                         </div>
                         <div class="add_form_group">
-                            <label for="user_id">ユーザーID:</label>
-                            <input type="text" id="user_id" name="user_id" required>
+                            <label for="add_user_id">ユーザーID:</label>
+                            <input type="text" id="add_user_id" name="user_id" required>
                         </div>
                         <div class="add_form_group">
-                            <label for="password">パスワード:</label>
-                            <input type="password" id="password" name="password" minlength="4" required>
+                            <label for="add_password">パスワード:</label>
+                            <input type="password" id="add_password" name="password" minlength="4" required>
                         </div>
                         <button type="submit" class="add_submit_button">追加</button>
                     </form>
@@ -147,20 +148,21 @@
             <div id="edit_modal" class="edit_modal">
                 <div class="modal_content">
                     <span class="edit_modal_close">&times;</span>
-                    <form action="" method="post" class="add_form">
+                    <form method="post" class="edit_form">
+                        <input type="hidden" id="pass_id" name="pass_id" />
                         <div class="edit_form_group">
-                            <label for="url">URL:</label>
-                            <input type="text" id="url" name="url" required>
+                            <label for="edit_url">URL:</label>
+                            <input type="text" id="edit_url" name="url" required>
                         </div>
                         <div class="edit_form_group">
-                            <label for="user_id">ユーザーID:</label>
-                            <input type="text" id="user_id" name="user_id" required>
+                            <label for="edit_user_id">ユーザーID:</label>
+                            <input type="text" id="edit_user_id" name="user_id" required>
                         </div>
                         <div class="edit_form_group">
-                            <label for="password">パスワード:</label>
-                            <input type="password" id="password" name="password" minlength="4" required>
+                            <label for="edit_password">パスワード:</label>
+                            <input type="password" id="edit_password" name="password" minlength="4" required>
                         </div>
-                        <button type="submit" class="edit_submit_button">追加</button>
+                        <button type="submit" class="edit_submit_button">変更を保存</button>
                     </form>
                 </div>
             </div>
@@ -169,10 +171,10 @@
             <div id="re_auth_modal" class="re_auth_modal">
                 <div class="modal_content">
                     <span class="re_auth_modal_close">&times;</span>
-                    <form action="" method="post" class="add_form">
+                    <form action="" method="post" class="auth_form">
                         <div class="re_auth_form_group">
-                            <label for="password">パスワード:</label>
-                            <input type="password" id="password" name="password" required>
+                            <label for="auth_password">パスワード:</label>
+                            <input type="password" id="auth_password" name="password" required>
                         </div>
                         <button type="submit" class="show_submit_button">認証</button>
                     </form>
