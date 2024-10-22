@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start(); // セッションの開始
 
 // 接続情報
@@ -18,44 +18,61 @@ try {
     }
     $user_id = $_SESSION['user_id'];
 
-    // フォームからのデータ取得
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // `Managements`テーブル内の最大のitemNoを取得
-        $stmt = $pdo->query("SELECT MAX(itemNo) AS max_itemNo FROM Managements");
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $newItemNo = $result['max_itemNo'] + 1;
+    // 新規登録処理
+    if (isset($_POST['register'])) {
+        $title = $_POST['new_title'];
+        $starttime = $_POST['new_starttime'];
+        $endtime = $_POST['new_endtime'];
 
-        // フォームデータを取得
-        $title = $_POST['title'] ?? '';
-        $content = ''; // `content`は空のまま
-
-        // 現在の日時を取得
-        $inputdate = date('Y-m-d H:i:s');
-        $starttime = $_POST['starttime'] ?? null;
-        $endtime = $_POST['endtime'] ?? null;
-
-        // データベースへの挿入
-        $sql = "INSERT INTO Managements (user_id, itemNo, status, title, content, inputdate, starttime, endtime)
-                VALUES (:user_id, :itemNo, 's', :title, :content, :inputdate, :starttime, :endtime)";
-        
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->bindParam(':itemNo', $newItemNo, PDO::PARAM_INT);
-        $stmt->bindParam(':title', $title, PDO::PARAM_STR);
-        $stmt->bindParam(':content', $content, PDO::PARAM_STR);
-        $stmt->bindParam(':inputdate', $inputdate, PDO::PARAM_STR);
-        $stmt->bindParam(':starttime', $starttime, PDO::PARAM_STR);
-        $stmt->bindParam(':endtime', $endtime, PDO::PARAM_STR);
-
-        $stmt->execute();
-
-        echo "データが正常に挿入されました。";
+        $insertSql = "INSERT INTO Managements (title, starttime, endtime, user_id) VALUES (:title, :starttime, :endtime, :user_id)";
+        $insertStmt = $pdo->prepare($insertSql);
+        $insertStmt->bindParam(':title', $title, PDO::PARAM_STR);
+        $insertStmt->bindParam(':starttime', $starttime, PDO::PARAM_STR);
+        $insertStmt->bindParam(':endtime', $endtime, PDO::PARAM_STR);
+        $insertStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $insertStmt->execute();
     }
-    
+
+    // 削除処理
+    if (isset($_POST['delete'])) {
+        $itemNo = $_POST['itemNo'];
+        $deleteSql = "DELETE FROM Managements WHERE itemNo = :itemNo AND user_id = :user_id";
+        $deleteStmt = $pdo->prepare($deleteSql);
+        $deleteStmt->bindParam(':itemNo', $itemNo, PDO::PARAM_INT);
+        $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $deleteStmt->execute();
+    }
+
+    // 編集処理
+    if (isset($_POST['edit'])) {
+        $itemNo = $_POST['itemNo'];
+        $title = $_POST['title'];
+        $starttime = $_POST['starttime'];
+        $endtime = $_POST['endtime'];
+
+        $updateSql = "UPDATE Managements SET title = :title, starttime = :starttime, endtime = :endtime WHERE itemNo = :itemNo AND user_id = :user_id";
+        $updateStmt = $pdo->prepare($updateSql);
+        $updateStmt->bindParam(':title', $title, PDO::PARAM_STR);
+        $updateStmt->bindParam(':starttime', $starttime, PDO::PARAM_STR);
+        $updateStmt->bindParam(':endtime', $endtime, PDO::PARAM_STR);
+        $updateStmt->bindParam(':itemNo', $itemNo, PDO::PARAM_INT);
+        $updateStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $updateStmt->execute();
+    }
+
+    // スケジュール情報を取得
+    $sql = "SELECT * FROM Managements WHERE user_id = :user_id ORDER BY starttime ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
+    exit; // エラー発生時にスクリプトを終了
 } catch (Exception $e) {
     echo "エラー: " . $e->getMessage();
+    exit; // エラー発生時にスクリプトを終了
 }
 ?>
 
@@ -64,23 +81,53 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Managements 登録フォーム</title>
+    <title>スケジュール一覧</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h2>Managements 登録フォーム</h2>
-<form action="" method="post">
-    <label for="title">タイトル</label>
-    <input type="text" name="title" id="title" placeholder="タイトルを入力" required> <!-- 必須入力 -->
-
-    <label for="starttime">開始時刻</label>
-    <input type="datetime-local" name="starttime" id="starttime" required>
-
-    <label for="endtime">終了時刻</label>
-    <input type="datetime-local" name="endtime" id="endtime" required>
-
-    <input type="submit" value="登録">
+<h2>スケジュール登録</h2>
+<form method="post" action="">
+    <input type="text" name="new_title" placeholder="タイトル" required>
+    <input type="datetime-local" name="new_starttime" required>
+    <input type="datetime-local" name="new_endtime" required>
+    <input type="submit" name="register" value="登録">
 </form>
 
+<h2>スケジュール一覧</h2>
+<table>
+    <thead>
+        <tr>
+            <th>タイトル</th>
+            <th>開始時刻</th>
+            <th>終了時刻</th>
+            <th>登録日</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($schedules)): ?>
+            <?php foreach ($schedules as $schedule): ?>
+                <tr>
+                    <form method="post" action="">
+                        <td><input type="text" name="title" value="<?php echo htmlspecialchars($schedule['title'], ENT_QUOTES, 'UTF-8'); ?>" required></td>
+                        <td><input type="datetime-local" name="starttime" value="<?php echo htmlspecialchars($schedule['starttime'], ENT_QUOTES, 'UTF-8'); ?>" required></td>
+                        <td><input type="datetime-local" name="endtime" value="<?php echo htmlspecialchars($schedule['endtime'], ENT_QUOTES, 'UTF-8'); ?>" required></td>
+                        <td><?php echo htmlspecialchars($schedule['inputdate'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td>
+                            <input type="hidden" name="itemNo" value="<?php echo htmlspecialchars($schedule['itemNo'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="submit" name="edit" value="保存">
+                            <input type="submit" name="delete" value="削除" onclick="return confirm('本当に削除しますか？');">
+                        </td>
+                    </form>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5">スケジュールはありません。</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
 </body>
 </html>
