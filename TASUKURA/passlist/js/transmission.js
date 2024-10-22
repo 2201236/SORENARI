@@ -1,4 +1,4 @@
-document.querySelector(".edit_form").addEventListener("submit", function(e) {
+document.getElementById("edit_form", "add_form").addEventListener("submit", function(e) {
     e.preventDefault(); // デフォルトのフォーム送信を防ぐ
 
     const formData = new FormData(this);
@@ -12,7 +12,9 @@ document.querySelector(".edit_form").addEventListener("submit", function(e) {
     .then(data => {
         if (data.success) {
             // データの更新が成功したらページをリロード
-            window.location.reload();
+            // window.location.reload();
+            // データの更新が成功したらリダイレクト
+            window.location.href = 'passlist.php';
         } else {
             alert("データの更新に失敗しました");
         }

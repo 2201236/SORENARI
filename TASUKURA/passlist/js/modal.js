@@ -20,12 +20,12 @@ const closeEditModalBtn = editModal.getElementsByClassName("edit_modal_close")[0
 
 // Setting modal data
 const urlInput = document.getElementById("edit_url");
-const userIdInput = document.getElementById("edit_user_id");
-const passwordInput = document.getElementById("edit_password");
+const passNameInput = document.getElementById("edit_passName");
+const passtxtInput = document.getElementById("edit_passtxt");
 const passIdInput = document.getElementById("pass_id"); // pass_idのhiddenフィールド
 
 // モーダルを開く
-openEditModalBtns.forEach((button, index) => {
+Array.from(openEditModalBtns).forEach((button, index) => {
     button.onclick = () => {
         // 押されたボタンの行データを取得
         const row = button.closest("tr");
@@ -35,9 +35,9 @@ openEditModalBtns.forEach((button, index) => {
 
         // フォームにデータをセット
         urlInput.value = url;
-        userIdInput.value = userId;
+        passNameInput.value = userId;
         passIdInput.value = passId; // pass_idもhiddenフィールドにセット
-        passwordInput.value = ""; // パスワードは空で表示
+        passtxtInput.value = ""; // パスワードは空で表示
 
         editModal.style.display = "block"; // モーダルを表示
     };
