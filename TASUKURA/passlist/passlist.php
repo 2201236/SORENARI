@@ -79,7 +79,7 @@
                                 <?php foreach($list as $item):?>
                                     <tr>
                                         <td>
-                                            <hidden id="pass_id" value="<?php echo $item['pass_id']; ?>" />
+                                            <input type="hidden" class="pass_id" value="<?php echo $item['pass_id']; ?>" />
                                             <!-- 当該サイトに飛べる？ -->
                                             <?php echo htmlspecialchars($item['URL'], ENT_QUOTES, 'UTF-8'); ?>
                                         </td>
@@ -126,18 +126,18 @@
             <div id="add_modal" class="add_modal">
                 <div class="modal_content">
                     <span class="add_modal_close">&times;</span>
-                    <form action="" method="post" class="add_form">
-                        <div class="add_form_group">
+                    <form method="post" class="modal_form" id="add_form">
+                        <div class="form_group">
                             <label for="add_url">URL:</label>
-                            <input type="text" id="add_url" name="url" required>
+                            <input type="text" id="add_url" name="url">
                         </div>
-                        <div class="add_form_group">
-                            <label for="add_user_id">ユーザーID:</label>
-                            <input type="text" id="add_user_id" name="user_id" required>
+                        <div class="form_group">
+                            <label for="add_passName">ユーザーID:</label>
+                            <input type="text" id="add_passName" name="passName">
                         </div>
-                        <div class="add_form_group">
-                            <label for="add_password">パスワード:</label>
-                            <input type="password" id="add_password" name="password" minlength="4" required>
+                        <div class="form_group">
+                            <label for="add_passtxt">パスワード:</label>
+                            <input type="passtxt" id="add_passtxt" name="passtxt" minlength="4" required>
                         </div>
                         <button type="submit" class="add_submit_button">追加</button>
                     </form>
@@ -145,22 +145,23 @@
             </div>
 
             <!-- 編集用モーダル -->
+            <!-- 変更がなかった場合、変更情報を記入する旨の文を表示し、データ更新を行わない -->
             <div id="edit_modal" class="edit_modal">
                 <div class="modal_content">
                     <span class="edit_modal_close">&times;</span>
-                    <form method="post" class="edit_form">
+                    <form method="post" class="modal_form" id="edit_form">
                         <input type="hidden" id="pass_id" name="pass_id" />
-                        <div class="edit_form_group">
+                        <div class="form_group">
                             <label for="edit_url">URL:</label>
-                            <input type="text" id="edit_url" name="url" required>
+                            <input type="text" id="edit_url" name="url">
                         </div>
-                        <div class="edit_form_group">
-                            <label for="edit_user_id">ユーザーID:</label>
-                            <input type="text" id="edit_user_id" name="user_id" required>
+                        <div class="form_group">
+                            <label for="edit_passName">ユーザーID:</label>
+                            <input type="text" id="edit_passName" name="passName">
                         </div>
-                        <div class="edit_form_group">
-                            <label for="edit_password">パスワード:</label>
-                            <input type="password" id="edit_password" name="password" minlength="4" required>
+                        <div class="form_group">
+                            <label for="edit_passtxt">パスワード:</label>
+                            <input type="passtxt" id="edit_passtxt" name="passtxt" minlength="4">
                         </div>
                         <button type="submit" class="edit_submit_button">変更を保存</button>
                     </form>
@@ -171,10 +172,10 @@
             <div id="re_auth_modal" class="re_auth_modal">
                 <div class="modal_content">
                     <span class="re_auth_modal_close">&times;</span>
-                    <form action="" method="post" class="auth_form">
-                        <div class="re_auth_form_group">
-                            <label for="auth_password">パスワード:</label>
-                            <input type="password" id="auth_password" name="password" required>
+                    <form method="post" class="modal_form" id="auth_form">
+                        <div class="form_group">
+                            <label for="auth_passtxt">パスワード:</label>
+                            <input type="passtxt" id="auth_passtxt" name="passtxt" required>
                         </div>
                         <button type="submit" class="show_submit_button">認証</button>
                     </form>
@@ -187,4 +188,5 @@
         <!-- スクリプト導入 -->
         <script src="js/modal.js"></script>
         <script src="js/safe_param.js" async></script>
+        <script src="js/transmission.js"></script>
     </body>

@@ -1,4 +1,4 @@
-document.querySelector(".edit_form").addEventListener("submit", function(e) {
+document.getElementById("edit_form", "add_form").addEventListener("submit", function(e) {
     e.preventDefault(); // デフォルトのフォーム送信を防ぐ
 
     const formData = new FormData(this);
