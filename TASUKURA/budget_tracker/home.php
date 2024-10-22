@@ -32,12 +32,10 @@ try {
     $moutgo = $bankData['moutgo'];
 
 } catch (PDOException $e) {
-    // データベースエラー時の処理
     echo "データベースエラー: " . $e->getMessage();
     exit;
 
 } catch (Exception $e) {
-    // その他のエラー時の処理
     echo "エラー: " . $e->getMessage();
     exit;
 }
@@ -49,24 +47,23 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家計簿管理アプリ ダッシュボード</title>
-    <link rel="stylesheet" href="css/home.css"> <!-- スタイルシートのリンク -->
+    <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="../header/css/header.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQueryの読み込み -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-
-    <div class="container">
+<div class="container">
     <header>
-    <div class="header-content">
-        <h1>家計簿管理アプリ</h1>
-        <div class="btn">
-            <a href="total.php" target="_self">
-                <img src="../images/total.png" alt="集計" style="width:90px;">
-            </a>
+        <div class="header-content">
+            <h1>家計簿管理アプリ</h1>
+            <div class="btn">
+                <a href="total.php" target="_self">
+                    <img src="../images/total.png" alt="集計" style="width:70px;">
+                </a>
+            </div>
         </div>
-    </div>
     </header>
-
+    
     <div class="bar-chart">
         <div class="bar">
             <div class="bar-inner" id="used-amount" style="width: <?php echo ($moutgo / $budget) * 100; ?>%;"></div>
@@ -76,91 +73,101 @@ try {
         </div>
     </div>
 
-    <div class="form-container">
-    <section class="budget-section">
-    <h2>予算の設定</h2>
-    <form id="budget-form">
-        <input type="number" name="budget" id="budget" placeholder="月の予算" required>
-        <button type="submit">更新する</button>
-    </form>
-    <p id="update-result"></p> <!-- 更新結果を表示する場所 -->
-</section>
-
-
-
-<script>
-    $(document).ready(function() {
-        $('#budget-form').on('submit', function(e) {
-            e.preventDefault(); // フォームのデフォルトの送信を無効化
-
-            // フォームデータを取得
-            let budget = $('#budget').val();
-
-            // AJAXリクエストを送信してデータを更新
-            $.ajax({
-                url: 'update.php', // サーバーサイドの処理ファイル
-                type: 'POST',      // POSTメソッドで送信
-                data: { budget: budget }, // フォームデータを送信
-                success: function(response) {
-                    // サーバーからのレスポンスを処理
-                    $('#update-result').text(response); // サーバーのレスポンスを表示
-
-                    // 更新されたbudgetをページに反映
-                    $('#budget-text').text(`¥${budget}`);
-                    updateBarChart(); // バーの表示を更新
-                },
-                error: function() {
-                    // エラーが発生した場合の処理
-                    $('#update-result').text('更新に失敗しました。');
-                }
-            });
-        });
-
-        // バーグラフの更新処理
-        function updateBarChart() {
-            let budget = parseInt($('#budget-text').text().replace('¥', '')); // 現在の予算を取得
-            let moutgo = parseInt($('#used-text').text().replace('¥', '')); // 現在の支出額を取得
-            if (budget > 0) {
-                $('#used-amount').css('width', `${(moutgo / budget) * 100}%`);
-            }
-        }
-    });
-</script>
-
-
-        <section class="expense-input">
-            <h2>支出の入力</h2>
-            <form id="expense-form">
-                <input type="text" id="expense-description" placeholder="支出の内容" required>
-                <input type="text" id="expense-amount" placeholder="金額" required >
-                <input type="date" id="expense-date" required>
-                
-                <input type="number" id="num_id" placeholder="識別番号" required> <!-- num_id用のフィールド -->
-                
-                <button type="submit" class="button">支出を追加</button>
-            </form>
-        </section>
+    <!-- toggle-buttonsは右側に配置 -->
+    <div class="toggle-buttons">
+        <button id="show-expense-form" class="active">支出入力</button>
+        <button id="show-income-form">収入入力</button>
     </div>
+
+    <div class="form-container">
+        <div class="form-cards">
+            <section class="budget-section">
+                <h2>予算の設定</h2>
+                <form id="budget-form">
+                    <input type="number" name="budget" id="budget" placeholder="月の予算" required>
+                    <button type="submit">更新する</button>
+                </form>
+                <p id="update-result"></p>
+            </section>
+
+            <section class="expense-input">
+                <h2>支出の入力</h2>
+                <form id="expense-form">
+                    <input type="text" id="expense-description" placeholder="支出の内容" required>
+                    <input type="text" id="expense-amount" placeholder="金額" required>
+                    <input type="date" id="expense-date" required>
+                    <input type="number" id="num_id" placeholder="識別番号" required>
+                    <button type="submit" class="button">支出を追加</button>
+                </form>
+            </section>
+
+            <section class="income-input" style="display: none;">
+                <h2>収入の入力</h2>
+                <form id="income-form">
+                    <input type="text" id="income-description" placeholder="収入の内容" required>
+                    <input type="text" id="income-amount" placeholder="金額" required>
+                    <input type="date" id="income-date" required>
+                    <input type="number" id="income-num_id" placeholder="識別番号" required>
+                    <button type="submit" class="button">収入を追加</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+
+
     <script>
         $(document).ready(function() {
-            // 支出フォームの送信処理
-            const today = new Date().toISOString().split('T')[0];
-            $('#expense-date').val(today);
+            $('#show-expense-form').click(function() {
+                $('.income-input').hide();
+                $('.expense-input').show();
+                $(this).addClass('active');
+                $('#show-income-form').removeClass('active');
+            });
 
+            $('#show-income-form').click(function() {
+                $('.expense-input').hide();
+                $('.income-input').show();
+                $(this).addClass('active');
+                $('#show-expense-form').removeClass('active');
+            });
 
+            $('#budget-form').on('submit', function(e) {
+                e.preventDefault();
+                let budget = $('#budget').val();
+
+                $.ajax({
+                    url: 'update.php',
+                    type: 'POST',
+                    data: { budget: budget },
+                    success: function(response) {
+                        $('#update-result').text(response);
+                        $('#budget-text').text(`¥${budget}`);
+                        updateBarChart();
+                    },
+                    error: function() {
+                        $('#update-result').text('更新に失敗しました。');
+                    }
+                });
+            });
+
+            function updateBarChart() {
+                let budget = parseInt($('#budget-text').text().replace('¥', ''));
+                let moutgo = parseInt($('#used-text').text().replace('¥', ''));
+                if (budget > 0) {
+                    $('#used-amount').css('width', `${(moutgo / budget) * 100}%`);
+                }
+            }
 
             $('#expense-form').on('submit', function(e) {
-                e.preventDefault(); // デフォルトのフォーム送信を防ぐ
-
-                // フォームデータを取得
+                e.preventDefault();
                 let description = $('#expense-description').val();
                 let amount = $('#expense-amount').val();
                 let date = $('#expense-date').val();
-                let num_id = $('#num_id').val();  // 識別番号
+                let num_id = $('#num_id').val();
 
-                // AJAXリクエストを送信
                 $.ajax({
-                    url: 'insert_expense.php', // データベース挿入処理をするPHPファイル
+                    url: 'insert_expense.php',
                     type: 'POST',
                     data: {
                         description: description,
@@ -169,21 +176,39 @@ try {
                         num_id: num_id
                     },
                     success: function(response) {
-                        // 成功時の処理
-                        alert(response); // 成功メッセージを表示
+                        alert(response);
                     },
                     error: function() {
-                        // エラー時の処理
+                        alert('データの送信に失敗しました。');
+                    }
+                });
+            });
+
+            $('#income-form').on('submit', function(e) {
+                e.preventDefault();
+                let description = $('#income-description').val();
+                let amount = $('#income-amount').val();
+                let date = $('#income-date').val();
+                let num_id = $('#income-num_id').val();
+
+                $.ajax({
+                    url: 'insert_income.php',
+                    type: 'POST',
+                    data: {
+                        description: description,
+                        amount: amount,
+                        date: date,
+                        num_id: num_id
+                    },
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function() {
                         alert('データの送信に失敗しました。');
                     }
                 });
             });
         });
     </script>
-
-
-    <footer>
-        <p>2024 家計簿管理アプリ</p>
-    </footer>
 </body>
 </html>
