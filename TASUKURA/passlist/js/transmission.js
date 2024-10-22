@@ -12,7 +12,9 @@ document.getElementById("edit_form", "add_form").addEventListener("submit", func
     .then(data => {
         if (data.success) {
             // データの更新が成功したらページをリロード
-            window.location.reload();
+            // window.location.reload();
+            // データの更新が成功したらリダイレクト
+            window.location.href = 'passlist.php';
         } else {
             alert("データの更新に失敗しました");
         }
