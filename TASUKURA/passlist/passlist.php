@@ -26,6 +26,7 @@
 <html lang="js">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>パスワード</title>
         <link rel="stylesheet" href="css/pstyle.css">
         <link rel="stylesheet" href="css/modal.css">
@@ -71,6 +72,7 @@
                                     <th>URL</th>
                                     <th>ユーザーID</th>
                                     <th>パスワード</th>
+                                    <th></th>
                                     <th>安全性</th>
                                     <th></th>
                                 </tr>
@@ -91,15 +93,18 @@
                                             <!-- 表示する際は再認証させる -->
                                             <!-- 表示用ボタンを後で作る -->
                                             <?php echo htmlspecialchars($item['passtxt'], ENT_QUOTES, 'UTF-8');?>
+                                        </td>
+                                        <td>
                                             <!-- 表示用ボタンを後で作る -->
                                             <!-- 再認証しないと機能しない -->
-                                            <div class="show_passtxt_button">
-                                                表示用ボタンスペース
+                                            <div class="show_passtxt_button_wrapper">
+                                                <button type="button" class="show_passtxt_button">表示</button>
                                             </div>
                                             <!-- コピー用button -->
                                             <!-- 再認証しないと機能しない -->
-                                            <div class="copy_button">
-                                                コピー用ボタンスペース
+                                            <div class="copy_button_wrapper">
+                                                 <button type="button" class="copy_button">コピー</button>
+                                                 <p id="feedback"></p>
                                             </div>
                                         </td>
                                         <td>
@@ -110,9 +115,8 @@
                                         </td>
                                         <td>
                                             <!-- 編集用ボタン -->
-                                            <button class="open_edit_modal">
-                                                編集
-                                            </button>
+                                            <button class="open_edit_modal">編集</button>
+                                            <button type="button" class="del_button">削除</button>
                                         </td>
                                     </tr>
                                 <?php endforeach;?>
@@ -189,4 +193,5 @@
         <script src="js/modal.js"></script>
         <script src="js/safe_param.js" async></script>
         <script src="js/transmission.js"></script>
+        <script src="js/manipulate.js"></script>
     </body>
