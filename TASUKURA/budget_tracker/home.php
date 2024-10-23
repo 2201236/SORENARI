@@ -132,9 +132,16 @@ try {
                 $('#show-expense-form').removeClass('active');
             });
 
+            let monthly_outgo = <?php echo $monthly_outgo; ?>;
+
             $('#budget-form').on('submit', function(e) {
                 e.preventDefault();
                 let budget = $('#budget').val();
+
+                if (parseInt(budget) < monthly_outgo) {
+                alert('設定した予算が現在の支出額より少なくなっています。適切な予算を設定してください。');
+                return; // 送信処理を中断
+            }
 
                 $.ajax({
                     url: 'update.php',
