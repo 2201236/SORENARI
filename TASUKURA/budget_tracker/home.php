@@ -4,7 +4,6 @@ session_start(); // セッションの開始
 // データベース接続情報
 require '../db-connect/db-connect.php';
 
-// PDO接続とデータ取得
 try {
     // PDOのエラーモードを例外に設定
     $pdo = new PDO('mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8', USER, PASS);
@@ -22,14 +21,20 @@ try {
     $stmt->execute();
     $bankData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // データが取得できない場合のエラーハンドリング
     if (!$bankData) {
         throw new Exception("ユーザーの家計簿データが見つかりません。");
     }
 
-    // 取得したデータを変数に格納
     $budget = $bankData['budget'];
     $moutgo = $bankData['moutgo'];
+
+    // 現在の月の支出合計をDailySpendテーブルから取得
+    $stmt = $pdo->prepare("SELECT SUM(outgo) AS total_outgo FROM DailySpend WHERE user_id = :user_id AND MONTH(daily) = MONTH(CURRENT_DATE())");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $dailySpendData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $monthly_outgo = $dailySpendData['total_outgo'] ?? 0; // 結果がない場合は0を使用
 
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
@@ -66,14 +71,12 @@ try {
     
     <div class="bar-chart">
         <div class="bar">
-            <div class="bar-inner" id="used-amount" style="width: <?php echo ($moutgo / $budget) * 100; ?>%;"></div>
+            <div class="bar-inner" id="used-amount" style="width: <?php echo ($monthly_outgo / $budget) * 100; ?>%;"></div>
         </div>
         <div class="bar-labels">
-            <span id="used-text">¥<?php echo number_format($moutgo); ?></span> / <span id="budget-text">¥<?php echo number_format($budget); ?></span>
+            <span id="used-text">¥<?php echo number_format($monthly_outgo); ?></span> / <span id="budget-text">¥<?php echo number_format($budget); ?></span>
         </div>
     </div>
-
-    <!-- toggle-buttonsは右側に配置 -->
     <div class="toggle-buttons">
         <button id="show-expense-form" class="active">支出入力</button>
         <button id="show-income-form">収入入力</button>
@@ -87,7 +90,6 @@ try {
                     <input type="number" name="budget" id="budget" placeholder="月の予算" required>
                     <button type="submit">更新する</button>
                 </form>
-                <p id="update-result"></p>
             </section>
 
             <section class="expense-input">
@@ -113,8 +115,6 @@ try {
             </section>
         </div>
     </div>
-
-
 
     <script>
         $(document).ready(function() {
@@ -156,7 +156,10 @@ try {
                 let moutgo = parseInt($('#used-text').text().replace('¥', ''));
                 if (budget > 0) {
                     $('#used-amount').css('width', `${(moutgo / budget) * 100}%`);
-                }
+                    setTimeout(function() {
+                        location.reload();
+                    }, 3000);  // 3000ミリ秒（3秒）後にリロード
+                } 
             }
 
             $('#expense-form').on('submit', function(e) {
@@ -176,7 +179,9 @@ try {
                         num_id: num_id
                     },
                     success: function(response) {
-                        alert(response);
+                        setTimeout(function() {
+                        location.reload(); // 3秒後にページをリロード
+                    }, 3000);
                     },
                     error: function() {
                         alert('データの送信に失敗しました。');
