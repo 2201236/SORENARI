@@ -1,0 +1,96 @@
+<!DOCTYPE html> 
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家計簿グラフ</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/total.css"> <!-- CSSファイルのパスを指定 -->
+</head>
+<body>
+    <h2>家計簿 - 月ごとの出費</h2>
+    <div>
+        <button id="prevYear">前年度</button>
+        <span id="currentYear"></span>
+        <button id="nextYear">次年度</button>
+    </div>
+    <canvas id="expenseChart" width="600" height="300"></canvas> <!-- サイズを大きく設定 -->
+
+    <script>
+        let currentYear = new Date().getFullYear(); // 現在の年を取得
+        document.getElementById('currentYear').innerText = currentYear; // 初期表示
+        let expenseChart; // グラフのインスタンスを保持
+
+        const fetchData = (year) => {
+            fetch(`total.php?year=${year}`) // 年度をURLパラメータとして渡す
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // データを加工
+                    const labels = data.map(item => item.month);
+                    const totals = data.map(item => parseFloat(item.total_outgo)); // 数値に変換
+
+                    // グラフのデータ
+                    const expenseData = {
+                        labels: labels,
+                        datasets: [{
+                            label: '合計出費',
+                            data: totals,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    };
+
+                    // グラフの設定
+                    const config = {
+                        type: 'bar', // バーグラフ
+                        data: expenseData,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true, // Y軸は0から始まる
+                                    ticks: {
+                                        stepSize: 1000 // Y軸の目盛りの間隔を設定
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    // グラフが存在する場合は更新、存在しない場合は新規作成
+                    if (expenseChart) {
+                        expenseChart.data = expenseData; // データを更新
+                        expenseChart.update(); // グラフを更新
+                    } else {
+                        expenseChart = new Chart(
+                            document.getElementById('expenseChart'),
+                            config
+                        );
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        };
+
+        // 初期データの取得
+        fetchData(currentYear);
+
+        // ボタンのイベントリスナー
+        document.getElementById('prevYear').addEventListener('click', () => {
+            currentYear--;
+            document.getElementById('currentYear').innerText = currentYear; // 年度を更新
+            fetchData(currentYear); // データを再取得
+        });
+
+        document.getElementById('nextYear').addEventListener('click', () => {
+            currentYear++;
+            document.getElementById('currentYear').innerText = currentYear; // 年度を更新
+            fetchData(currentYear); // データを再取得
+        });
+    </script>
+</body>
+</html>
