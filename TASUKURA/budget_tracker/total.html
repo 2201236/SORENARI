@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,19 @@
         <button id="nextYear">次年度</button>
     </div>
     <canvas id="expenseChart" width="600" height="300"></canvas> <!-- サイズを大きく設定 -->
+    
+    <div id="expenseDetails">
+        <table id="detailsTable" style="width:100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>内容</th>
+                    <th>出費</th>
+                    <th>日付</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
     <script>
         let currentYear = new Date().getFullYear(); // 現在の年を取得
@@ -30,11 +43,9 @@
                     return response.json();
                 })
                 .then(data => {
-                    // データを加工
                     const labels = data.map(item => item.month);
                     const totals = data.map(item => parseFloat(item.total_outgo)); // 数値に変換
 
-                    // グラフのデータ
                     const expenseData = {
                         labels: labels,
                         datasets: [{
@@ -46,26 +57,34 @@
                         }]
                     };
 
-                    // グラフの設定
                     const config = {
-                        type: 'bar', // バーグラフ
+                        type: 'bar',
                         data: expenseData,
                         options: {
                             scales: {
                                 y: {
-                                    beginAtZero: true, // Y軸は0から始まる
+                                    beginAtZero: true,
                                     ticks: {
-                                        stepSize: 1000 // Y軸の目盛りの間隔を設定
+                                        stepSize: 1000
                                     }
+                                }
+                            },
+                            onClick: (event) => {
+                                const elements = expenseChart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+                                if (elements.length > 0) {
+                                    const clickedIndex = elements[0].index;
+                                    const selectedMonth = labels[clickedIndex];
+
+                                    // 該当月のデータを取得
+                                    fetchDetailsData(currentYear, selectedMonth);
                                 }
                             }
                         }
                     };
 
-                    // グラフが存在する場合は更新、存在しない場合は新規作成
                     if (expenseChart) {
-                        expenseChart.data = expenseData; // データを更新
-                        expenseChart.update(); // グラフを更新
+                        expenseChart.data = expenseData;
+                        expenseChart.update();
                     } else {
                         expenseChart = new Chart(
                             document.getElementById('expenseChart'),
@@ -76,19 +95,37 @@
                 .catch(error => console.error('Error fetching data:', error));
         };
 
-        // 初期データの取得
-        fetchData(currentYear);
+        const fetchDetailsData = (year, month) => {
+            fetch(`total.php?year=${year}&month=${month}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#detailsTable tbody');
+                    tableBody.innerHTML = ''; // 前回の内容をクリア
 
-        // ボタンのイベントリスナー
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td style="padding: 10px; border: 1px solid #ccc;">${item.content}</td>
+                            <td style="padding: 10px; border: 1px solid #ccc;">${item.outgo}円</td>
+                            <td style="padding: 10px; border: 1px solid #ccc;">${item.daily}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching details:', error));
+        };
+
+        fetchData(currentYear); // 初期データの取得
+
         document.getElementById('prevYear').addEventListener('click', () => {
             currentYear--;
-            document.getElementById('currentYear').innerText = currentYear; // 年度を更新
+            document.getElementById('currentYear').innerText = currentYear;
             fetchData(currentYear); // データを再取得
         });
 
         document.getElementById('nextYear').addEventListener('click', () => {
             currentYear++;
-            document.getElementById('currentYear').innerText = currentYear; // 年度を更新
+            document.getElementById('currentYear').innerText = currentYear;
             fetchData(currentYear); // データを再取得
         });
     </script>

@@ -14,19 +14,35 @@ if (!isset($_SESSION['user_id'])) {
 }
 $user_id = $_SESSION['user_id'];
 
-// 年度の取得（デフォルトは今年）
+// 年と月のパラメータを取得
 $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
+$month = isset($_GET['month']) ? intval($_GET['month']) : null;
 
-$sql = "SELECT DATE_FORMAT(daily, '%Y-%m') AS month, SUM(outgo) AS total_outgo 
-    FROM DailySpend 
-    WHERE user_id = :user_id AND YEAR(daily) = :year 
-    GROUP BY month 
-    ORDER BY month";
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-$stmt->bindParam(':year', $year, PDO::PARAM_INT);
-$stmt->execute();
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if ($month) {
+    // 月ごとの詳細データを取得
+    $sql = "SELECT content, outgo, daily 
+            FROM DailySpend 
+            WHERE user_id = :user_id AND YEAR(daily) = :year AND MONTH(daily) = :month
+            ORDER BY daily";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':year', $year, PDO::PARAM_INT);
+    $stmt->bindParam(':month', $month, PDO::PARAM_INT);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} else {
+    // 年ごとの月別出費合計を取得
+    $sql = "SELECT DATE_FORMAT(daily, '%Y-%m') AS month, SUM(outgo) AS total_outgo 
+            FROM DailySpend 
+            WHERE user_id = :user_id AND YEAR(daily) = :year 
+            GROUP BY month 
+            ORDER BY month";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->bindParam(':year', $year, PDO::PARAM_INT);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 // JSONとして返す
 header('Content-Type: application/json');
