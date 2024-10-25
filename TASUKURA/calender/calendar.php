@@ -1,3 +1,15 @@
+<?php
+session_start(); // セッションを開始
+
+// セッションに保存されている全ての情報を出力する
+if (!empty($_SESSION)) {
+    echo '<pre>';
+    print_r($_SESSION); // セッションの全てのデータを表示
+    echo '</pre>';
+} else {
+    echo "セッションにデータがありません。";
+}
+?>
 <!DOCTYPE html> 
 <html lang="ja">
 <head>
