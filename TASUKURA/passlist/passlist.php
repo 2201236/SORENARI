@@ -15,7 +15,7 @@
         exit;
     }
 
-    $sql= "SELECT pass_id, URL, passName, passtxt FROM PassList WHERE user_id = ? ";
+    $sql= "SELECT pass_id, URL, passName FROM PassList WHERE user_id = ? ";
             
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$_SESSION['user_id']]);
@@ -91,20 +91,19 @@
                                         <td>
                                             <!-- 基本的にマスクしておく -->
                                             <!-- 表示する際は再認証させる -->
-                                            <!-- 表示用ボタンを後で作る -->
-                                            <?php echo htmlspecialchars($item['passtxt'], ENT_QUOTES, 'UTF-8');?>
+                                            <span class="passtxt">***************</span>
                                         </td>
                                         <td>
-                                            <!-- 表示用ボタンを後で作る -->
-                                            <!-- 再認証しないと機能しない -->
-                                            <div class="show_passtxt_button_wrapper">
-                                                <button type="button" class="show_passtxt_button">表示</button>
-                                            </div>
-                                            <!-- コピー用button -->
-                                            <!-- 再認証しないと機能しない -->
-                                            <div class="copy_button_wrapper">
-                                                 <button type="button" class="copy_button">コピー</button>
-                                                 <p id="feedback"></p>
+                                            <div class="buttons_wrapper">
+                                                <!-- 再認証しないと機能しない -->
+                                                <div class="toggle_passtxt_button_wrapper">
+                                                    <button type="button" class="toggle_passtxt_button">表示</button>
+                                                </div>
+                                                <!-- 再認証しないと機能しない -->
+                                                <div class="copy_button_wrapper">
+                                                    <button type="button" class="copy_button">コピー</button>
+                                                </div>
+                                                <p class="feedback"></p>
                                             </div>
                                         </td>
                                         <td>
@@ -114,7 +113,6 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <!-- 編集用ボタン -->
                                             <button class="open_edit_modal">編集</button>
                                             <button type="button" class="del_button">削除</button>
                                         </td>
