@@ -2,14 +2,14 @@
 session_start(); // セッションの開始
 
 // 接続情報
-const SERVER = 'mysql310.phy.lolipop.lan';
-const DBNAME = 'LAA1517469-taskura';
-const USER = 'LAA1517469';
-const PASS = '1234';
+const SERVER = 'mysql310.phy.lolipop.lan'; // 正しいホスト名を使用
+const DBNAME = 'LAA1517469-taskura'; // データベース名
+const USER = 'LAA1517469'; // ユーザー名
+const PASS = '1234'; // パスワード
 
 // PDO接続
 try {
-    $pdo = new PDO('mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8', USER, PASS);
+    $pdo = new PDO("mysql:host=" . SERVER . ";dbname=" . DBNAME . ";charset=utf8", USER, PASS);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // セッションからユーザーIDを取得
@@ -94,11 +94,36 @@ try {
     $stmt->execute();
     $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // 開始日ごとにスケジュールをグループ化
+    $groupedSchedules = [];
+    foreach ($schedules as $schedule) {
+        $dateKey = date('Y-m-d', strtotime($schedule['starttime']));
+        $groupedSchedules[$dateKey][] = $schedule;
+    }
+
+    // 今日の日付
+    $today = date('Y-m-d');
+
+    // 今日から未来の日付にスケジュールを整列
+    $sortedDates = array_keys($groupedSchedules);
+    usort($sortedDates, function ($a, $b) {
+        return (strtotime($a) - strtotime($b));
+    });
+
+    // 選択された日付のスケジュールを表示するための変数
+    $selectedDate = isset($_POST['selected_date']) ? $_POST['selected_date'] : '';
+    $selectedSchedules = [];
+
+    // 選択された日付に基づいてスケジュールを取得
+    if ($selectedDate) {
+        $selectedSchedules = $groupedSchedules[$selectedDate] ?? [];
+    }
+
 } catch (PDOException $e) {
-    echo "データベースエラー: " . $e->getMessage();
+    echo "接続エラー: " . $e->getMessage(); // 接続エラーを表示
     exit; // エラー発生時にスクリプトを終了
 } catch (Exception $e) {
-    echo "エラー: " . $e->getMessage();
+    echo "エラー: " . $e->getMessage(); // その他のエラーを表示
     exit; // エラー発生時にスクリプトを終了
 }
 ?>
@@ -121,40 +146,85 @@ try {
     <input type="submit" name="register" value="登録">
 </form>
 
+<h2>日付選択</h2>
+<form method="post" action="">
+    <input type="date" name="selected_date" value="<?php echo htmlspecialchars($selectedDate); ?>" required>
+    <input type="submit" value="表示">
+</form>
+
 <h2>スケジュール一覧</h2>
-<table>
-    <thead>
-        <tr>
-            <th>タイトル</th>
-            <th>開始時刻</th>
-            <th>終了時刻</th>
-            <th>登録日</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (!empty($schedules)): ?>
-            <?php foreach ($schedules as $schedule): ?>
+<?php if ($selectedDate): ?>
+    <h3><?php echo htmlspecialchars($selectedDate, ENT_QUOTES, 'UTF-8'); ?></h3>
+    <?php if (!empty($selectedSchedules)): ?>
+        <table>
+            <thead>
                 <tr>
-                    <form method="post" action="">
-                        <td><input type="text" name="title" value="<?php echo htmlspecialchars($schedule['title'], ENT_QUOTES, 'UTF-8'); ?>" required></td>
-                        <td><input type="datetime-local" name="starttime" value="<?php echo htmlspecialchars($schedule['starttime'], ENT_QUOTES, 'UTF-8'); ?>"></td>
-                        <td><input type="datetime-local" name="endtime" value="<?php echo htmlspecialchars($schedule['endtime'], ENT_QUOTES, 'UTF-8'); ?>"></td>
-                        <td><?php echo htmlspecialchars($schedule['inputdate'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td>
-                            <input type="hidden" name="itemNo" value="<?php echo htmlspecialchars($schedule['itemNo'], ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="submit" name="edit" value="保存">
-                            <input type="submit" name="delete" value="削除" onclick="return confirm('本当に削除しますか？');">
-                        </td>
-                    </form>
+                    <th>タイトル</th>
+                    <th>開始時刻</th>
+                    <th>終了時刻</th>
+                    <th>登録日</th>
+                    <th>操作</th>
                 </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="5">スケジュールはありません。</td>
-            </tr>
-        <?php endif; ?>
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+                <?php foreach ($selectedSchedules as $schedule): ?>
+                    <tr>
+                        <form method="post" action="">
+                            <td><input type="text" name="title" value="<?php echo htmlspecialchars($schedule['title'], ENT_QUOTES, 'UTF-8'); ?>" required></td>
+                            <td><input type="datetime-local" name="starttime" value="<?php echo htmlspecialchars($schedule['starttime'], ENT_QUOTES, 'UTF-8'); ?>"></td>
+                            <td><input type="datetime-local" name="endtime" value="<?php echo htmlspecialchars($schedule['endtime'], ENT_QUOTES, 'UTF-8'); ?>"></td>
+                            <td><?php echo htmlspecialchars($schedule['inputdate'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td>
+                                <input type="hidden" name="itemNo" value="<?php echo htmlspecialchars($schedule['itemNo'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="submit" name="edit" value="編集">
+                                <input type="submit" name="delete" value="削除">
+                            </td>
+                        </form>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>この日付にスケジュールはありません。</p>
+    <?php endif; ?>
+<?php else: ?>
+    <p>日付を選択してください。</p>
+<?php endif; ?>
+
+<h2>全スケジュール一覧</h2>
+<?php foreach ($sortedDates as $date): ?>
+    <?php if ($date >= $today): // 今日以降の日付のみ表示 ?>
+        <h3><?php echo htmlspecialchars($date, ENT_QUOTES, 'UTF-8'); ?></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>開始時刻</th>
+                    <th>終了時刻</th>
+                    <th>登録日</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($groupedSchedules[$date] as $schedule): ?>
+                    <tr>
+                        <form method="post" action="">
+                            <td><?php echo htmlspecialchars($schedule['title'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($schedule['starttime'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($schedule['endtime'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($schedule['inputdate'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td>
+                                <input type="hidden" name="itemNo" value="<?php echo htmlspecialchars($schedule['itemNo'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="submit" name="edit" value="編集">
+                                <input type="submit" name="delete" value="削除">
+                            </td>
+                        </form>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+<?php endforeach; ?>
+
 </body>
 </html>
