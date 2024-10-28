@@ -38,14 +38,32 @@ h2 {
     font-size: 14px; /* フォントサイズを小さく */
 }
 
+#detailsTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
 #detailsTable th {
     background-color: #4bc0c0;
     color: white;
-    padding: 8px 12px; /* パディングを調整 */
+    padding: 8px 12px;
     font-weight: 600;
     text-align: left;
-    border: none;
 }
+
+#detailsTable th:first-child {
+    width: 50%; /* 内容列の幅 */
+}
+
+#detailsTable th:nth-child(2) {
+    width: 25%; /* 支出額列の幅 */
+}
+
+#detailsTable th:last-child {
+    width: 25%; /* 日付列の幅 */
+}
+
 
 #detailsTable td {
     padding: 6px 12px; /* パディングを調整 */
@@ -73,13 +91,18 @@ h2 {
 
 /* レスポンシブ対応 */
 @media screen and (max-width: 600px) {
+    #expenseDetails {
+        width: 95%; /* モバイル時は画面幅に合わせる */
+        margin: 20px auto;
+    }
+    
     #detailsTable {
-        font-size: 13px; /* モバイルでさらに小さく */
+        font-size: 13px;
     }
     
     #detailsTable th,
     #detailsTable td {
-        padding: 6px 8px; /* モバイルでパディングを縮小 */
+        padding: 6px 8px;
     }
 }
 /* 金額を右寄せに */
