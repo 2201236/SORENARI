@@ -33,12 +33,20 @@ $pdo = connectDB();
 
 try {
     // パスワードを取得
-    $stmt = $pdo->prepare("SELECT passtxt FROM PassList WHERE pass_id = ? AND user_id = ?");
+    $stmt = $pdo->prepare("SELECT passtxt, arcaneKey FROM PassList WHERE pass_id = ? AND user_id = ?");
     $stmt->execute([$pass_id, $_SESSION['user_id']]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($result) {
-        echo json_encode(['success' => true, 'passtxt' => $result['passtxt']]);
+        $key = base64_decode($result['arcaneKey']);
+        $combined = base64_decode($result['passtxt']);
+
+        $iv = substr($combined, 0, 16);
+        $ciphertext = substr($combined, 16);
+
+        $decryptionPasstxt = openssl_decrypt($ciphertext, 'aes-256-cbc', $key, 0, $iv);
+
+        echo json_encode(['success' => true, 'passtxt' => $decryptionPasstxt]);
     } else {
         echo json_encode(['success' => false, 'error' => 'パスワードが見つかりません']);
     }

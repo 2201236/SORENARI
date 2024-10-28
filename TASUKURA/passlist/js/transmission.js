@@ -1,18 +1,18 @@
 // イベントの呼び出し
-document.getElementById("add_form").addEventListener("submit", handle_submit);
-document.getElementById("edit_form").addEventListener("submit", handle_submit);
+document.getElementById("add_form").addEventListener("submit", handleSubmit);
+document.getElementById("edit_form").addEventListener("submit", handleSubmit);
 document.querySelectorAll(".del_button").forEach(button => {
-    button.addEventListener("click", handle_delete);
+    button.addEventListener("click", handleDelete);
 });
 
 
 // 追加・更新
-function handle_submit(e) {
+function handleSubmit(e) {
     e.preventDefault(); // デフォルトのフォーム送信を防ぐ
 
     const formData = new FormData(this);
 
-    send_data('update_data.php', formData)
+    sendData('update_data.php', formData)
         .then(data => {
             if (data.success) {
                 // データの更新が成功したらリダイレクト
@@ -28,14 +28,14 @@ function handle_submit(e) {
 }
 
 // 削除
-function handle_delete(e) {
+function handleDelete(e) {
     const row = this.closest("tr");
     const pass_id = row.querySelector(".pass_id").value;
 
     if (confirm("本当にこのアイテムを削除しますか？")) {
         const params = new URLSearchParams({ pass_id: pass_id });
 
-        send_data('delete_data.php', params)
+        sendData('delete_data.php', params)
             .then(data => {
                 if (data.success) {
                     // 削除後、passlist.phpにリダイレクトする。
@@ -52,7 +52,7 @@ function handle_delete(e) {
 }
 
 // AJAXリクエストを処理するヘルパー関数
-function send_data(url, body) {
+function sendData(url, body) {
     return fetch(url, {
         method: 'POST',
         body: body
