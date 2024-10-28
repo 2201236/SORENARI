@@ -26,8 +26,66 @@ h2 {
     background-color: #f4f4f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* テーブルの最大幅を制限 */
+    margin-left: auto;
+    margin-right: auto;
+
 }
 
+#detailsTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px; /* フォントサイズを小さく */
+}
+
+#detailsTable th {
+    background-color: #4bc0c0;
+    color: white;
+    padding: 8px 12px; /* パディングを調整 */
+    font-weight: 600;
+    text-align: left;
+    border: none;
+}
+
+#detailsTable td {
+    padding: 6px 12px; /* パディングを調整 */
+    border-bottom: 1px solid #eee; /* 下線のみ表示 */
+    color: #333;
+}
+
+#detailsTable tr:nth-child(even) {
+    background-color: #f8f9fa; /* 偶数行の背景色 */
+}
+
+#detailsTable tr:hover {
+    background-color: #f1f7f7; /* ホバー時の背景色 */
+}
+
+/* 金額を右寄せに */
+#detailsTable td:nth-child(2) {
+    text-align: right;
+}
+
+/* 日付を中央寄せに */
+#detailsTable td:nth-child(3) {
+    text-align: center;
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 600px) {
+    #detailsTable {
+        font-size: 13px; /* モバイルでさらに小さく */
+    }
+    
+    #detailsTable th,
+    #detailsTable td {
+        padding: 6px 8px; /* モバイルでパディングを縮小 */
+    }
+}
+/* 金額を右寄せに */
+#detailsTable td:nth-child(2) {
+    text-align: right;
+}
 /* Table styling */
 table {
     width: 100%;
