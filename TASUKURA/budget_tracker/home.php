@@ -51,7 +51,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>家計簿管理アプリ ダッシュボード</title>
+    <title>家計簿管理 ダッシュボード</title>
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="../header/css/header.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -60,9 +60,9 @@ try {
 <div class="container">
     <header>
         <div class="header-content">
-            <h1>家計簿管理アプリ</h1>
+            <h1>家計簿管理</h1>
             <div class="btn">
-                <a href="total.php" target="_self">
+                <a href="total.html" target="_self">
                     <img src="../images/total.png" alt="集計" style="width:70px;">
                 </a>
             </div>
@@ -118,6 +118,17 @@ try {
 
     <script>
         $(document).ready(function() {
+            const today = new Date();
+        // yyyy-mm-dd の形式に変換
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // 月は0始まりなので+1
+        const dd = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        
+        // テキストボックスに今日の日付を設定
+        document.getElementById('expense-date').value = formattedDate;
+        document.getElementById('income-date').value = formattedDate;
+
             $('#show-expense-form').click(function() {
                 $('.income-input').hide();
                 $('.expense-input').show();
@@ -176,6 +187,17 @@ try {
                 let date = $('#expense-date').val();
                 let num_id = $('#num_id').val();
 
+                 // PHPから取得した budget と monthly_outgo をJavaScriptで整数変換
+                let budget = Number(<?php echo json_encode($budget); ?>);
+                let current_outgo = Number(<?php echo json_encode($monthly_outgo); ?>) + Number(amount);
+
+                console.log("Current Outgo:", current_outgo, "Budget:", budget, "Amount:", amount); // デバッグ用ログ
+
+                if (current_outgo > budget) {
+                    alert('予算を超えています');
+                    return; // フォーム送信を停止
+                }
+                
                 $.ajax({
                     url: 'insert_expense.php',
                     type: 'POST',
