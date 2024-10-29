@@ -34,8 +34,10 @@ $stmt->execute([$mailaddress, $password]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($result) {
-    $_SESSION['user_id'] = $result['user_id'];
-    $_SESSION['name'] = htmlspecialchars($result['name']);
+    if (!isset($_SESSION)) {
+        $_SESSION['user_id'] = $result['user_id'];
+        $_SESSION['name'] = htmlspecialchars($result['name']);
+    }
     echo json_encode(['success' => true]);
 } else {
     echo json_encode(['success' => false]);
