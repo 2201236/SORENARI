@@ -5,21 +5,31 @@
     const DBNAME = 'LAA1517469-taskura';
     const USER ='LAA1517469';
     const PASS ='1234';
-    $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
-    $pdo=new PDO($connect, USER, PASS);
 
-    try {
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo "接続エラー: " . $e->getMessage();
-        exit;
+    $is_logged_in = isset($_SESSION['user_id']) ? true : false;
+    $limited_session = false;
+
+    // ユーザーがログインしているかチェックする
+    if ($is_logged_in) {
+        $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
+        $pdo=new PDO($connect, USER, PASS);
+
+        try {
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo "接続エラー: " . $e->getMessage();
+            exit;
+        }
+
+        $sql= "SELECT pass_id, URL, passName FROM PassList WHERE user_id = ? ";
+                
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$_SESSION['user_id']]);
+        $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    } else {
+        $list = [];
     }
-
-    $sql= "SELECT pass_id, URL, passName FROM PassList WHERE user_id = ? ";
-            
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$_SESSION['user_id']]);
-    $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -38,6 +48,7 @@
         </header>
         <main>
         <div class="container">
+            <span id="feedback"></span>
                 <div class="left_side">
                     <div class="search_window">
                         <form action="" method="post" class="search_form">
@@ -73,7 +84,6 @@
                                     <th>ユーザーID</th>
                                     <th>パスワード</th>
                                     <th></th>
-                                    <th>安全性</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -82,39 +92,32 @@
                                     <tr>
                                         <td>
                                             <input type="hidden" class="pass_id" value="<?php echo $item['pass_id']; ?>" />
-                                            <!-- 当該サイトに飛べる？ -->
                                             <?php echo htmlspecialchars($item['URL'], ENT_QUOTES, 'UTF-8'); ?>
                                         </td>
                                         <td>
                                             <?php echo htmlspecialchars($item['passName'], ENT_QUOTES, 'UTF-8');?>
                                         </td>
                                         <td>
-                                            <!-- 基本的にマスクしておく -->
-                                            <!-- 表示する際は再認証させる -->
                                             <span class="passtxt">***************</span>
                                         </td>
                                         <td>
                                             <div class="buttons_wrapper">
-                                                <!-- 再認証しないと機能しない -->
-                                                <div class="toggle_passtxt_button_wrapper">
+                                                <div class="button_wrapper">
                                                     <button type="button" class="toggle_passtxt_button">表示</button>
                                                 </div>
-                                                <!-- 再認証しないと機能しない -->
-                                                <div class="copy_button_wrapper">
+                                                <div class="button_wrapper">
                                                     <button type="button" class="copy_button">コピー</button>
                                                 </div>
                                                 <p class="feedback"></p>
                                             </div>
                                         </td>
                                         <td>
-                                            <!-- パスワード強度表示バー -->
-                                            <div class="safe_param_bar">
-                                                <div class="bar" :style="{ width: safe_param_bar_width + '%' }"></div>
+                                            <div class="button_wrapper">
+                                                <button class="open_edit_modal">編集</button>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <button class="open_edit_modal">編集</button>
-                                            <button type="button" class="del_button">削除</button>
+                                            <div class="button_wrapper">
+                                                <button class="del_button">削除</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach;?>
@@ -139,7 +142,7 @@
                         </div>
                         <div class="form_group">
                             <label for="add_passtxt">パスワード:</label>
-                            <input type="passtxt" id="add_passtxt" name="passtxt" minlength="4" required>
+                            <input type="password" id="add_passtxt" name="passtxt" minlength="4" required>
                         </div>
                         <button type="submit" class="add_submit_button">追加</button>
                     </form>
@@ -163,21 +166,25 @@
                         </div>
                         <div class="form_group">
                             <label for="edit_passtxt">パスワード:</label>
-                            <input type="passtxt" id="edit_passtxt" name="passtxt" minlength="4">
+                            <input type="password" id="edit_passtxt" name="passtxt" minlength="4">
                         </div>
                         <button type="submit" class="edit_submit_button">変更を保存</button>
                     </form>
                 </div>
             </div>
 
-            <!-- 再認証用モーダル -->
-            <div id="re_auth_modal" class="re_auth_modal">
+            <!-- 認証用モーダル -->
+            <div id="auth_modal" class="auth_modal">
                 <div class="modal_content">
-                    <span class="re_auth_modal_close">&times;</span>
+                    <span class="auth_modal_close">&times;</span>
                     <form method="post" class="modal_form" id="auth_form">
                         <div class="form_group">
+                            <label for="auth_passName">ユーザーID:</label>
+                            <input type="text" id="auth_passName" name="user_id" placeholder="メールアドレス" required>
+                        </div>
+                        <div class="form_group">
                             <label for="auth_passtxt">パスワード:</label>
-                            <input type="passtxt" id="auth_passtxt" name="passtxt" required>
+                            <input type="password" id="auth_passtxt" name="passtxt" placeholder="パスワード" required>
                         </div>
                         <button type="submit" class="show_submit_button">認証</button>
                     </form>
@@ -188,8 +195,11 @@
         <footer></footer>
 
         <!-- スクリプト導入 -->
+        <script>
+            const isLoggedIn = <?php echo json_encode($is_logged_in); ?>
+            const limited_session = <?php echo json_encode($limited_session); ?>
+        </script>
         <script src="js/modal.js"></script>
-        <script src="js/safe_param.js" async></script>
         <script src="js/transmission.js"></script>
         <script src="js/manipulate.js"></script>
     </body>
