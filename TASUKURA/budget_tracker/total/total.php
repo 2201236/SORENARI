@@ -2,7 +2,7 @@
 session_start(); // セッションの開始
 
 // データベース接続情報
-require '../db-connect/db-connect.php';
+require '../../db-connect/db-connect.php';
 
 // データベース接続とSQL実行
 $pdo = new PDO('mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8', USER, PASS);
