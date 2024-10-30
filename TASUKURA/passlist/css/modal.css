@@ -1,5 +1,5 @@
 /* モーダル全体のスタイル */
-.add_modal, .edit_modal, .re_auth_modal {
+.add_modal, .edit_modal, .auth_modal {
     display: none; /* 初期は非表示 */
     position: fixed; 
     z-index: 1; 
@@ -24,16 +24,16 @@
 
 /* 閉じるボタン */
 .add_modal_close, .edit_modal_close,
-.re_auth_modal_close {
+.auth_modal_close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.add_modal_close:hover, .edit_modal_close:hover,
-.add_modal_close:focus, .edit_modal_close:focus,
-.re_auth_modal_close:hover, .re_auth_modal_close:focus {
+.add_modal_close:hover, .add_modal_close:focus,
+.edit_modal_close:hover, .edit_modal_close:focus,
+.auth_modal_close:hover, .auth_modal_close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;

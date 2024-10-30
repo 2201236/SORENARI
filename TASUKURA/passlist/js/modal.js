@@ -53,8 +53,14 @@ Array.from(openEditModalBtns).forEach((button) => {
 closeEditModalBtn.onclick = () => closeModal(editModal);
 
 // 認証用
-const reAuthModal = document.getElementById("re_auth_modal");
-const closeReAuthModalBtn = reAuthModal.getElementsByClassName("re_auth_modal_close")[0];
+const authModal = document.getElementById("auth_modal");
+const closeAuthModalBtn = authModal.getElementsByClassName("auth_modal_close")[0];
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (!isLoggedIn) {
+        openModal(authModal);
+    }
+});
 
 // モーダルを閉じる
-closeReAuthModalBtn.onclick = () => closeModal(reAuthModal);
+closeAuthModalBtn.onclick = () => closeModal(authModal);
