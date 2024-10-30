@@ -1,0 +1,192 @@
+/* 画面全体に対する共通設定 */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 青枠部分のスタイル */
+.time-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.time-box {
+  position: relative; /* ラベルと円の位置を相対的に配置 */
+  text-align: center;
+  padding: 20px;
+  width: 150px;
+  height: 150px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* タイトルを円の上に配置 */
+.time-box h3 {
+  position: absolute;
+  top: -25px; /* 上に移動 */
+  font-size: 16px;
+  margin: 0;
+}
+
+.time-box div {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* 赤枠部分のスタイル */
+.stopwatch-container {
+  display: flex;
+  flex-direction: column; /* 縦に配置 */
+  align-items: center;    /* 中央に配置 */
+  margin: 20px 0;
+}
+
+.stopwatch {
+  display: flex;
+  flex-direction: column; /* 縦に配置 */
+  align-items: center;     /* 中央に配置 */
+  margin: 10px 0;
+}
+
+/* 時間表示のスタイル */
+#time-display {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* 時間を保存ボタンのスタイル */
+#save-time-button {
+  margin-top: 20px; /* ストップウォッチから十分な余白をとる */
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column; /* 縦に配置 */
+  align-items: center;     /* 中央に配置 */
+}
+
+.form-container select {
+  font-size: 16px;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+button {
+  width: 60px;    /* ボタンの横幅 */
+  height: 60px;   /* ボタンの縦幅 */
+  border: none;
+  border-radius: 50%; /* 完全に丸くする */
+  background-color: #007bff; /* ボタンの背景色 */
+  color: white; /* ボタンのテキスト色 */
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center; /* テキストを中央に配置 */
+  align-items: center;     /* テキストを中央に配置 */
+}
+
+button:disabled {
+  background-color: #cccccc; /* 無効化されたボタンの色 */
+}
+
+/* 時間を保存ボタンのスタイル */
+#save-time-button {
+  width: auto;     /* 幅を自動調整 */
+  height: auto;    /* 高さを自動調整 */
+  padding: 10px 20px;  /* 長方形に見えるようにパディングを設定 */
+  border-radius: 5px;  /* 角を少し丸くする */
+  background-color: #28a745; /* 緑色の背景 */
+  color: white;
+  font-size: 16px;
+}
+
+#calendar {
+  margin: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+#calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#calendar-table th, #calendar-table td {
+  border: 1px solid #000;
+  padding: 10px;
+  width: 14%; /* 各曜日が均等に表示されるように調整 */
+}
+
+/* 科目が2つ以上ある場合の省略表示 */
+.more-items {
+  color: blue;
+  cursor: pointer;
+}
+
+/* ポップアップスタイル */
+.popup {
+  display: none; /* 初期状態は非表示 */
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.popup-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 300px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.study-time {
+  color: blue;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.subjects {
+  margin-top: 5px;
+}
+
+.subject-item {
+  font-size: 0.9em;
+  margin: 2px 0;
+}
+.today {
+  background-color: #ffffe0;
+}
+.holiday {
+  font-weight: bold;
+}
+
+.holiday-background {
+  background-color: #ffe6e6; /* 祝日の背景を薄い赤に */
+}

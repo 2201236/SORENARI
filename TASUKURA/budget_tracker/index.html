@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React 家計簿ダッシュボード</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+canvas {
+  width: 80%;
+  margin: 0 auto;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+div {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 1.2em;
+}
+
+</style>
+</head>
+
+<body>
+  <div id="root"></div> <!-- Reactアプリをここに描画 -->
+  <script src="https://cdn.jsdelivr.net/npm/react/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone"></script>
+  <script type="text/babel" src="App.js"></script>
+</body>
+</html>
