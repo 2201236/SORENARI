@@ -1,9 +1,11 @@
 <?php
 require '../db-connect/db-connect.php';
 
+session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = $_POST['subject'];
-    $user_id = 1;  // 仮のユーザーID
+    $user_id = $_SESSION['user_id'];
 
     // 'elapsed_time' がセットされているか確認し、なければデフォルトで0を設定
     $elapsed_time = isset($_POST['elapsed_time']) ? $_POST['elapsed_time'] : 0;
@@ -19,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // データベースに挿入
     $stmt = $pdo->prepare("
-        INSERT INTO Study (subject, user_id, study_date, study_time) 
-        VALUES (:subject, :user_id, :today, :study_time)
+        INSERT INTO Study (subject_name, user_id, study_date, study_time) 
+        VALUES (:subject_name, :user_id, :today, :study_time)
     ");
     $stmt->execute([
-        'subject' => $subject,
+        'subject_name' => $subject,  // subject_name カラムを指定
         'user_id' => $user_id,
         'today' => $today,
         'study_time' => $formatted_time
@@ -32,9 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 出力が行われる前にリダイレクトを実行
     if (!headers_sent()) {
         header('Location: study_management.php');
-        exit();  // header()後にスクリプトの実行を停止
+        exit();
     } else {
-        // デバッグ: Headersが送信されている場合の処理
         echo "Headers already sent. Cannot redirect.";
     }
 }
