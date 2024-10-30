@@ -1,5 +1,5 @@
 <?php
-// データベース接続
+session_start();
 $host = 'mysql310.phy.lolipop.lan';
 $dbname = 'LAA1517469-taskura';
 $username = 'LAA1517469';
@@ -12,19 +12,27 @@ try {
     die("データベース接続失敗: " . $e->getMessage());
 }
 
-// リクエストされた日付
-$date = $_GET['date'] ?? null;
+if (isset($_GET['date'])) {
+    $date = $_GET['date'];
 
-if ($date) {
-    // SQLで特定の日付のスケジュールを取得
-    $stmt = $pdo->prepare("SELECT * FROM Managements WHERE DATE(starttime) = :date");
-    $stmt->execute([':date' => $date]);
-    $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // JSONとして結果を返す
-    header('Content-Type: application/json');
-    echo json_encode($schedules);
+    try {
+        $pdo = new PDO('mysql:host=mysql310.phy.lolipop.lan;dbname=LAA1517469-taskura;charset=utf8', 'LAA1517469', '1234');
+        
+        $stmt = $pdo->prepare("
+            SELECT itemNo, title, starttime, endtime, content
+            FROM Managements
+            WHERE DATE(starttime) = :date AND status = 's'
+        ");
+        $stmt->bindParam(':date', $date);
+        $stmt->execute();
+        
+        $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        header('Content-Type: application/json');
+        echo json_encode($schedules);
+    } catch (PDOException $e) {
+        echo json_encode(['error' => 'スケジュールの取得に失敗しました: ' . $e->getMessage()]);
+    }
 } else {
-    echo json_encode(['error' => '日付が指定されていません。']);
+    echo json_encode(['error' => '日付が指定されていません']);
 }
-?>

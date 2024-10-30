@@ -60,6 +60,12 @@ if (!empty($_SESSION)) {
     </table>
 </div>
 
+<!-- スケジュール表示エリア -->
+<h3>スケジュール</h3>
+<ul id="schedule-list">
+    <li>日付をクリックすると、その日の予定が表示されます。</li>
+</ul>
+
 <!-- 外部JavaScriptファイルをリンク -->
 <script src="js/calendar.js"></script>
 
