@@ -76,9 +76,10 @@ require '../header/header.php';
 </div>
 
 <div class="stopwatch-container">
-    <form method="POST" action="start_stopwatch.php" class="form-container">
+    <form method="POST" action="start_stopwatch.php" class="form-container" id="stopwatch-form">
         <label for="subject">科目を入力：</label>
         <input type="text" name="subject" id="subject" placeholder="科目名を入力してください">
+        <div id="error-message" style="color: red; display: none;">科目を入力してください。</div>
         <input type="hidden" name="elapsed_time" id="elapsed_time" value="0">
 
         <div class="stopwatch">
@@ -131,6 +132,30 @@ require '../header/header.php';
     </table>
 </div>
 
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <span class="close" id="close-popup">&times;</span>
+        <h2 id="popup-date">日付の詳細</h2>
+        <ul id="popup-details"></ul>
+    </div>
+</div>
+
 <script src="./js/study.js"></script>
+<script>
+    document.getElementById("stopwatch-form").addEventListener("submit", function(event) {
+        var subjectInput = document.getElementById("subject");
+        var errorMessage = document.getElementById("error-message");
+        
+        // 科目が入力されているかチェック
+        if (subjectInput.value.trim() === "") {
+            // エラーメッセージを表示し、フォームの送信を停止
+            errorMessage.style.display = "block";
+            event.preventDefault();
+        } else {
+            // エラーメッセージを非表示にしてフォームを送信
+            errorMessage.style.display = "none";
+        }
+    });
+</script>
 </body>
 </html>
