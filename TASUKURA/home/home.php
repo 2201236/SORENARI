@@ -1,4 +1,3 @@
-<?php require '../header/header.php'; ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,22 +6,15 @@
     <title>ホーム</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding-top: 60px; /* ヘッダーの高さに応じて余白を設定 */
+    background-color: #f9f9f9;
         }
         .container {
             text-align: center;
             width: 80%;
             max-width: 600px;
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
         }
         .grid {
             display: grid;
@@ -42,57 +34,41 @@
             font-size: 48px;
             margin-bottom: 10px;
         }
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            text-decoration: none;
-            color: black;
-        }
-        .menu {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-        }
     </style>
 </head>
 <body>
-    <a href="#" class="back-button">⬅</a>
+<?php require '../header/header.php'; ?>
     <div class="container">
-        <h1>タスクラ</h1>
         <div class="grid">
-            <a href="todo.php" class="item">
+            <a href="../todo/todo.php" class="item">
                 <div class="icon">✔️</div>
                 Todo
             </a>
-            <a href="schedule.php" class="item">
+            <a href="../schedule/schedule.php" class="item">
                 <div class="icon">🕒</div>
                 スケジュール
             </a>
-            <a href="calendar.php" class="item">
+            <a href="../calendar/calendar.php" class="item">
                 <div class="icon">📅</div>
                 カレンダー
             </a>
-            <a href="study.php" class="item">
+            <a href="../study/study_management.php" class="item">
                 <div class="icon">📖</div>
                 学習
             </a>
-            <a href="budget.php" class="item">
+            <a href="../budget_tracker/home.php" class="item">
                 <div class="icon">💰</div>
                 家計簿
             </a>
-            <a href="shared_board.php" class="item">
+            <a href="../shared_board/" class="item">
                 <div class="icon">📒</div>
                 共有ボード
             </a>
-            <a href="password.php" class="item">
+            <a href="../passlist/passlist.php" class="item">
                 <div class="icon">🔑</div>
                 パスワード
             </a>
         </div>
     </div>
-    <div class="menu">MENU</div>
 </body>
 </html>
