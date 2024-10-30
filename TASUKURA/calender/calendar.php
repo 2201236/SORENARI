@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start(); // セッションを開始
 
 // セッションに保存されている全ての情報を出力する
@@ -59,6 +59,12 @@ if (!empty($_SESSION)) {
         </tbody>
     </table>
 </div>
+
+<!-- スケジュール表示エリア -->
+<h3>スケジュール</h3>
+<ul id="schedule-list">
+    <li>日付をクリックすると、その日の予定が表示されます。</li>
+</ul>
 
 <!-- 外部JavaScriptファイルをリンク -->
 <script src="js/calendar.js"></script>
