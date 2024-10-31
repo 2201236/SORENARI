@@ -6,8 +6,8 @@
     const USER ='LAA1517469';
     const PASS ='1234';
 
-    $is_logged_in = isset($_SESSION['user_id']) ? true : false;
-    $limited_session = false;
+    $_SESSION['is_logged_in'] = isset($_SESSION['user_id']) ? true : false;
+    $is_logged_in = $_SESSION['is_logged_in'];
 
     // ユーザーがログインしているかチェックする
     if ($is_logged_in) {
@@ -130,7 +130,7 @@
             <!-- 追加用モーダル -->
             <div id="add_modal" class="add_modal">
                 <div class="modal_content">
-                    <span class="add_modal_close">&times;</span>
+                    <span id="add_modal_close" class="modal_close">&times;</span>
                     <form method="post" class="modal_form" id="add_form">
                         <div class="form_group">
                             <label for="add_url">URL:</label>
@@ -153,7 +153,7 @@
             <!-- 変更がなかった場合、変更情報を記入する旨の文を表示し、データ更新を行わない -->
             <div id="edit_modal" class="edit_modal">
                 <div class="modal_content">
-                    <span class="edit_modal_close">&times;</span>
+                    <span id="edit_modal_close" class="modal_close">&times;</span>
                     <form method="post" class="modal_form" id="edit_form">
                         <input type="hidden" id="pass_id" name="pass_id" />
                         <div class="form_group">
@@ -176,7 +176,7 @@
             <!-- 認証用モーダル -->
             <div id="auth_modal" class="auth_modal">
                 <div class="modal_content">
-                    <span class="auth_modal_close">&times;</span>
+                    <span id="auth_modal_close" class="modal_close">&times;</span>
                     <form method="post" class="modal_form" id="auth_form">
                         <div class="form_group">
                             <label for="auth_passName">ユーザーID:</label>
@@ -197,9 +197,10 @@
         <!-- スクリプト導入 -->
         <script>
             const isLoggedIn = <?php echo json_encode($is_logged_in); ?>;
-            const limited_session = <?php echo json_encode($limited_session); ?>;
         </script>
         <script src="js/modal.js"></script>
         <script src="js/transmission.js"></script>
         <script src="js/manipulate.js"></script>
+        <script src="js/auth_check.js"></script>
     </body>
+</html>

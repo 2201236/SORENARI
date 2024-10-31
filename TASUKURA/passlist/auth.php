@@ -34,9 +34,10 @@ $stmt->execute([$mailaddress, $password]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($result) {
-    if (!isset($_SESSION)) {
+    if (!$_SESSION['is_logged_in']) {
         $_SESSION['user_id'] = $result['user_id'];
         $_SESSION['name'] = htmlspecialchars($result['name']);
+        $_SESSION['limited_session'] = false;
     }
     echo json_encode(['success' => true]);
 } else {
