@@ -36,6 +36,13 @@ async function showSchedules(date) {
     }
 }
 
+// ページ読み込み時に当日のスケジュールを表示
+window.onload = function() {
+    const today = new Date();
+    const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    showSchedules(formattedToday);
+};
+
 async function generateCalendar(year, month) {
     const calendarBody = document.getElementById('calendar-body');
     calendarBody.innerHTML = '';
@@ -138,4 +145,5 @@ document.getElementById('next-month').addEventListener('click', async () => {
     await generateCalendar(year, month);
 });
 
+// 初期表示で当月のカレンダーを生成
 generateCalendar(currentYear, new Date().getMonth());
