@@ -62,8 +62,11 @@ try {
         <div class="header-content">
             <h1>家計簿管理</h1>
             <div class="btn">
-                <a href="total.html" target="_self">
+                <a href="total/total.html" target="_self">
                     <img src="../images/total.png" alt="集計" style="width:70px;">
+                </a>
+                <a href="save/save.php" target="_self">
+                    <img src="../images/bank.png" alt="集計" style="width:70px;">
                 </a>
             </div>
         </div>
