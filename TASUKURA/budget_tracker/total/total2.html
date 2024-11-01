@@ -8,16 +8,20 @@
     <link rel="stylesheet" href="css/total2.css">
 </head>
 <body>
-    <h2>家計簿 - 月ごとの収入</h2>
+    <header>
+        <div class="header-content">
+            <h1>家計簿管理</h1>
+           
+        </div>
+    </header>
     <div>
-        <button id="prevYear">前年度</button>
+        <button id="prevYear">＜</button>
         <span id="currentYear"></span>
-        <button id="nextYear">次年度</button>
+        <button id="nextYear">＞</button>
     </div>
     <canvas id="incomeChart" width="600" height="300"></canvas>
     
     <div class="button-container">
-        <button class="switch-button" onclick="location.href='total2.html'">収入管理</button>
         <button class="switch-button" onclick="location.href='total.html'">支出管理</button>
     </div>
 
