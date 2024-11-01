@@ -51,16 +51,17 @@ function handleDelete(e) {
 // 認証処理
 function handleAuth(e) {
     e.preventDefault();
-    
+    const feedback_element = document.getElementById('feedback'); // フィードバック要素の取得
     const formData = new FormData(e.target);
 
-    // 認証結果をPromiseで返す
-    sendData('auth.php', formData)
+    return sendData('auth.php', formData)
         .then(result => {
             if (result.success) {
                 feedback_element.textContent = ""; // 認証成功でフィードバックをクリア
                 return true; // 認証成功
             } else {
+                feedback_element.textContent = '認証に失敗しました';
+                clearFeedback(feedback_element, 3000);
                 return false; // 認証失敗
             }
         })
@@ -71,7 +72,6 @@ function handleAuth(e) {
             return false; // エラーが発生した場合も失敗
         });
 }
-
 
 // AJAXリクエストを処理するヘルパー関数
 function sendData(url, body) {

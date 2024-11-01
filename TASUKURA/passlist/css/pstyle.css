@@ -61,15 +61,7 @@ main {
     align-items: center;
 }
 
-/* パスワード強度の表示バー */
-.safe_param_bar {
-    height: 10px;
-    background-color: #ddd;
-    border-radius: 5px;
-}
-
-.bar {
-    height: 100%;
-    background-color: red; /* 初期値 */
-    border-radius: 5px;
+/* テーブル */
+table {
+    /* 要素がない場合は「パスワードは保存されていません」と出す */
 }

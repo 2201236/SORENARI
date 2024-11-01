@@ -2,9 +2,9 @@
 session_start();
 header('Content-Type: application/json');
 
-if (!$_SESSION['limited_session']) {
-    echo json_encode(['success' => false, 'error' => 'セッション期限が切れています']);
-}
+// if (!$_SESSION['limited_session']) {
+//     echo json_encode(['success' => false, 'error' => 'セッション期限が切れています']);
+// }
 
 // DB接続設定
 define('SERVER', 'mysql310.phy.lolipop.lan');
