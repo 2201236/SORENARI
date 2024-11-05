@@ -64,11 +64,8 @@ function handleAuth(e) {
     return sendData('auth.php', formData)
         .then(result => {
             if (result.success) {
-                feedback_element.textContent = ""; // 認証成功でフィードバックをクリア
                 return true; // 認証成功
             } else {
-                feedback_element.textContent = '認証に失敗しました';
-                clearFeedback(feedback_element, 3000);
                 return false; // 認証失敗
             }
         })

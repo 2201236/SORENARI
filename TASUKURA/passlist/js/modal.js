@@ -56,10 +56,20 @@ closeEditModalBtn.onclick = () => closeModal(editModal);
 const authModal = document.getElementById("auth_modal");
 const closeAuthModalBtn = document.getElementById("auth_modal_close");
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    const feedback_element = document.getElementById('feedback');
+
     if (!isLoggedIn) {
-        // 認証プロセスを実行
-        mainProcess();
+        try {
+            // 認証プロセスを実行
+            if (await mainProcess()) {
+                // 認証成功
+                window.location.replace('passlist.php');
+            }
+        } catch (error) {
+            console.error('認証プロセスエラー:', error);
+            feedback_element.textContent = 'エラーが発生しました';
+        }
     }
 });
 
