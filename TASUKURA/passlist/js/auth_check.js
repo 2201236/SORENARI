@@ -20,8 +20,11 @@ async function mainProcess() {
     if (!authResult) { // 認証失敗
         feedback_element.textContent = '認証に失敗しました';
         clearFeedback(feedback_element, 3000);
-    } else if (!$_SESSION['is_logged_in']) {
+    } else if (sessionStorage.getItem('is_logged_in')) {
         // 認証成功の場合にリダイレクト
         window.location.replace('passlist.php'); // replaceを使って履歴に残さないリダイレクト
+    } else {
+        feedback_element.textContent = 'エラーが発生しました';
+        clearFeedback(feedback_element, 3000);
     }
 }

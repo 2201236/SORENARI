@@ -9,7 +9,7 @@
     $_SESSION['is_logged_in'] = isset($_SESSION['user_id']) ? true : false;
     $is_logged_in = $_SESSION['is_logged_in'];
 
-    // ユーザーがログインしているかチェックする
+    // ユーザーがログインしていればpasslistを取得
     if ($is_logged_in) {
         $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
         $pdo=new PDO($connect, USER, PASS);
