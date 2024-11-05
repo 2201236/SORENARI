@@ -2,7 +2,7 @@
 session_start(); // セッションの開始
 
 // データベース接続情報
-require '../db-connect/db-connect.php';
+require '../../db-connect/db-connect.php';
 
 try {
     // PDO接続

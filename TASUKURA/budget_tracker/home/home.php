@@ -2,7 +2,7 @@
 session_start(); // セッションの開始
 
 // データベース接続情報
-require '../db-connect/db-connect.php';
+require '../../db-connect/db-connect.php';
 
 try {
     // PDOのエラーモードを例外に設定
@@ -53,7 +53,6 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家計簿管理 ダッシュボード</title>
     <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="../header/css/header.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -62,11 +61,11 @@ try {
         <div class="header-content">
             <h1>家計簿管理</h1>
             <div class="btn">
-                <a href="total/total.html" target="_self">
-                    <img src="../images/total.png" alt="集計" style="width:70px;">
+                <a href="../total/total.html" target="_self">
+                    <img src="../../images/total.png" alt="集計" style="width:70px;">
                 </a>
-                <a href="save/save.php" target="_self">
-                    <img src="../images/bank.png" alt="集計" style="width:70px;">
+                <a href="../save/save.php" target="_self">
+                    <img src="../../images/bank.png" alt="集計" style="width:70px;">
                 </a>
             </div>
         </div>
