@@ -6,13 +6,10 @@
     <title>ホーム</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding-top: 60px; /* ヘッダーの高さに応じて余白を設定 */
+    background-color: #f9f9f9;
         }
         .container {
             text-align: center;
