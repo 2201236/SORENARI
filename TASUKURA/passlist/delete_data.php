@@ -2,13 +2,17 @@
 session_start();
 header('Content-Type: application/json');
 
-// 定数を定義
+// if (!$_SESSION['limited_session']) {
+//     echo json_encode(['success' => false, 'error' => 'セッション期限が切れています']);
+// }
+
+// DB接続設定
 define('SERVER', 'mysql310.phy.lolipop.lan');
 define('DBNAME', 'LAA1517469-taskura');
 define('USER', 'LAA1517469');
 define('PASS', '1234');
 
-// データベース接続を関数化
+// データベース接続関数
 function connectDB() {
     $dsn = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
     try {

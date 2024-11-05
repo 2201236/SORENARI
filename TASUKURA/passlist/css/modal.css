@@ -23,17 +23,14 @@
 }
 
 /* 閉じるボタン */
-.add_modal_close, .edit_modal_close,
-.auth_modal_close {
+.modal_close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.add_modal_close:hover, .add_modal_close:focus,
-.edit_modal_close:hover, .edit_modal_close:focus,
-.auth_modal_close:hover, .auth_modal_close:focus {
+.modal_close:hover, .modal_close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;

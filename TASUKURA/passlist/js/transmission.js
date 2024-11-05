@@ -4,9 +4,7 @@ document.getElementById("edit_form").addEventListener("submit", handleSubmit);
 document.querySelectorAll(".del_button").forEach(button => {
     button.addEventListener("click", handleDelete);
 });
-
-// 認証
-document.getElementById('auth_form').addEventListener('submit', handleAuth);
+// document.getElementById('auth_form').addEventListener('submit', handleAuth);
 
 // 追加・更新
 function handleSubmit(e) {
@@ -50,25 +48,28 @@ function handleDelete(e) {
     }
 }
 
-// 認証
+// 認証処理
 function handleAuth(e) {
     e.preventDefault();
-    const feedback_element = document.getElementById('feedback');
+    const feedback_element = document.getElementById('feedback'); // フィードバック要素の取得
     const formData = new FormData(e.target);
-    
-    sendData('auth.php', formData)
+
+    return sendData('auth.php', formData)
         .then(result => {
             if (result.success) {
-                location.reload();
+                feedback_element.textContent = ""; // 認証成功でフィードバックをクリア
+                return true; // 認証成功
             } else {
-                feedback_element.textContent = 'ログイン失敗';
-                clearFeedback(feedback_element, 5000);
+                feedback_element.textContent = '認証に失敗しました';
+                clearFeedback(feedback_element, 3000);
+                return false; // 認証失敗
             }
         })
         .catch(error => {
             console.error("エラー:", error);
             feedback_element.textContent = "エラーが発生しました";
-            clearFeedback(feedback_element, 5000);
+            clearFeedback(feedback_element, 3000);
+            return false; // エラーが発生した場合も失敗
         });
 }
 

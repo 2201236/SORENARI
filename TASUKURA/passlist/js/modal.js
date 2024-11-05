@@ -11,7 +11,7 @@ const closeModal = (modal) => {
 // 追加用
 const addModal = document.getElementById("add_modal");
 const openAddModalBtn = document.getElementById("open_add_modal");
-const closeAddModalBtn = addModal.getElementsByClassName("add_modal_close")[0];
+const closeAddModalBtn = document.getElementById("add_modal_close");
 
 // モーダルを開く
 openAddModalBtn.onclick = () => openModal(addModal);
@@ -22,9 +22,9 @@ closeAddModalBtn.onclick = () => closeModal(addModal);
 // 編集用
 const editModal = document.getElementById("edit_modal");
 const openEditModalBtns = document.querySelectorAll(".open_edit_modal");
-const closeEditModalBtn = editModal.getElementsByClassName("edit_modal_close")[0];
+const closeEditModalBtn = document.getElementById("edit_modal_close");
 
-// Setting modal data
+// 編集データのセット
 const urlInput = document.getElementById("edit_url");
 const passNameInput = document.getElementById("edit_passName");
 const passtxtInput = document.getElementById("edit_passtxt");
@@ -54,11 +54,12 @@ closeEditModalBtn.onclick = () => closeModal(editModal);
 
 // 認証用
 const authModal = document.getElementById("auth_modal");
-const closeAuthModalBtn = authModal.getElementsByClassName("auth_modal_close")[0];
+const closeAuthModalBtn = document.getElementById("auth_modal_close");
 
 document.addEventListener('DOMContentLoaded', function() {
     if (!isLoggedIn) {
-        openModal(authModal);
+        // 認証プロセスを実行
+        mainProcess();
     }
 });
 

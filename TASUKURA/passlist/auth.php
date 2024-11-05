@@ -29,14 +29,15 @@ $password = $_POST['passtxt'];
 $pdo = connectDB();
 
 // パスワードをハッシュ化して取得
-$stmt = $pdo->prepare("SELECT user_id, name FROM Users WHERE mailaddress = ? AND password = ?");
-$stmt->execute([$mailaddress, $password]);
+$stmt = $pdo->prepare("SELECT user_id, name, password FROM Users WHERE mailaddress = ?");
+$stmt->execute([$mailaddress]);
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($result) {
-    if (!isset($_SESSION)) {
+if ($result && (password_verify($password, $result['password']) || $password === $result['password'])) {
+    if (!$_SESSION['is_logged_in']) {
         $_SESSION['user_id'] = $result['user_id'];
         $_SESSION['name'] = htmlspecialchars($result['name']);
+        $_SESSION['limited_session'] = false;
     }
     echo json_encode(['success' => true]);
 } else {
