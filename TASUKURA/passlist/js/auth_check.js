@@ -1,8 +1,17 @@
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
 // 認証モーダルを開き、認証が完了するまで待つ関数
 async function openAuthModalAndWaitForAuth() {
     if (!limitedSession) {
         document.getElementById('auth_form_group_passName').style.display = "none";
-        document.getElementById('auth_passName').value = userId;
+        document.getElementById('auth_passName').value = generateRandomString(20);
     }
     openModal(authModal); // モーダルを開く
     

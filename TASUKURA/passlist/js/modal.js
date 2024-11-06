@@ -32,12 +32,16 @@ const passIdInput = document.getElementById("pass_id"); // pass_idのhiddenフ�
 
 // モーダルを開く
 Array.from(openEditModalBtns).forEach((button) => {
-    button.onclick = () => {
+    button.onclick = async() => {
         // 押されたボタンの行データを取得
         const row = button.closest("tr");
         const url = row.querySelector("td:nth-child(1)").textContent.trim(); // URLを取得
         const userId = row.querySelector("td:nth-child(2)").textContent.trim(); // passNameを取得
         const passId = row.querySelector(".pass_id").value; // pass_idを取得
+
+        if (!(await sessionCheck())) {
+            return;
+        }
 
         // フォームにデータをセット
         urlInput.value = url;

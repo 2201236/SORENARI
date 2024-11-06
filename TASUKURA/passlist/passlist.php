@@ -197,8 +197,10 @@
         <!-- スクリプト導入 -->
         <script>
             const isLoggedIn = <?php echo json_encode($is_logged_in); ?>;
-            const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
-            const limitedSession = <?php echo json_encode($_SESSION['limited_session']);?>;
+            if (isLoggedIn) {
+                const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
+                const limitedSession = <?php echo json_encode($_SESSION['limited_session']['status']);?>;
+            }
         </script>
         <script src="js/modal.js"></script>
         <script src="js/transmission.js"></script>
