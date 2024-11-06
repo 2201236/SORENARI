@@ -21,17 +21,22 @@
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .login-container input[type="email"],
         .login-container input[type="password"] {
-            width: 100%;
+            width: 90%;
+            max-width: 250px;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
         .login-container input[type="submit"] {
-            width: 100%;
+            width: 90%;
+            max-width: 250px;
             padding: 10px;
             background-color: #007BFF;
             color: white;
@@ -62,7 +67,7 @@
         <input type="password" name="password" placeholder="パスワード" required>
         <input type="submit" value="送信">
     </form>
-    <a href="newinput.php">新規登録はこちら</a>
+    <a href="../account/newinput.php">新規登録はこちら</a>
 </div>
 </body>
 </html>

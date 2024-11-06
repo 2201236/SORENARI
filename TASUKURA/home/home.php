@@ -40,14 +40,6 @@
 <?php require '../header/header.php'; ?>
     <div class="container">
         <div class="grid">
-            <a href="../todo/todo.php" class="item">
-                <div class="icon">✔️</div>
-                Todo
-            </a>
-            <a href="../schedule/schedule.php" class="item">
-                <div class="icon">🕒</div>
-                スケジュール
-            </a>
             <a href="../calendar/calendar.php" class="item">
                 <div class="icon">📅</div>
                 カレンダー
