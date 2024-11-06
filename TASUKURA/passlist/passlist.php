@@ -9,7 +9,7 @@
     $_SESSION['is_logged_in'] = isset($_SESSION['user_id']) ? true : false;
     $is_logged_in = $_SESSION['is_logged_in'];
 
-    // ユーザーがログインしているかチェックする
+    // ユーザーがログインしていればpasslistを取得
     if ($is_logged_in) {
         $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
         $pdo=new PDO($connect, USER, PASS);
@@ -178,7 +178,7 @@
                 <div class="modal_content">
                     <span id="auth_modal_close" class="modal_close">&times;</span>
                     <form method="post" class="modal_form" id="auth_form">
-                        <div class="form_group">
+                        <div class="form_group" id="auth_form_group_passName">
                             <label for="auth_passName">ユーザーID:</label>
                             <input type="text" id="auth_passName" name="user_id" placeholder="メールアドレス" required>
                         </div>
@@ -197,6 +197,8 @@
         <!-- スクリプト導入 -->
         <script>
             const isLoggedIn = <?php echo json_encode($is_logged_in); ?>;
+            const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
+            const limitedSession = <?php echo json_encode($_SESSION['limited_session']);?>;
         </script>
         <script src="js/modal.js"></script>
         <script src="js/transmission.js"></script>

@@ -1,10 +1,17 @@
-// イベントの呼び出し
-document.getElementById("add_form").addEventListener("submit", handleSubmit);
-document.getElementById("edit_form").addEventListener("submit", handleSubmit);
-document.querySelectorAll(".del_button").forEach(button => {
-    button.addEventListener("click", handleDelete);
-});
-// document.getElementById('auth_form').addEventListener('submit', handleAuth);
+// AJAXリクエストを処理するヘルパー関数
+function sendData(url, body) {
+    return fetch(url, {
+        method: 'POST',
+        body: body
+    }).then(response => response.json());
+}
+
+function clearFeedback(element, timeout) {
+    setTimeout(() => {
+        element.textContent = "";
+    }, timeout);
+}
+
 
 // 追加・更新
 function handleSubmit(e) {
@@ -14,7 +21,7 @@ function handleSubmit(e) {
     sendData('update_data.php', formData)
         .then(data => {
             if (data.success) {
-                window.location.href = 'passlist.php';
+                window.location.replace('passlist.php');
             } else {
                 alert("データの更新に失敗しました");
             }
@@ -36,7 +43,7 @@ function handleDelete(e) {
         sendData('delete_data.php', params)
             .then(data => {
                 if (data.success) {
-                    window.location.href = 'passlist.php';
+                    window.location.replace('passlist.php');
                 } else {
                     alert("削除に失敗しました: " + data.error);
                 }
@@ -57,11 +64,8 @@ function handleAuth(e) {
     return sendData('auth.php', formData)
         .then(result => {
             if (result.success) {
-                feedback_element.textContent = ""; // 認証成功でフィードバックをクリア
                 return true; // 認証成功
             } else {
-                feedback_element.textContent = '認証に失敗しました';
-                clearFeedback(feedback_element, 3000);
                 return false; // 認証失敗
             }
         })
@@ -73,16 +77,10 @@ function handleAuth(e) {
         });
 }
 
-// AJAXリクエストを処理するヘルパー関数
-function sendData(url, body) {
-    return fetch(url, {
-        method: 'POST',
-        body: body
-    }).then(response => response.json());
-}
 
-function clearFeedback(element, timeout) {
-    setTimeout(() => {
-        element.textContent = "";
-    }, timeout);
-}
+// イベントの呼び出し
+document.getElementById("add_form").addEventListener("submit", handleSubmit);
+document.getElementById("edit_form").addEventListener("submit", handleSubmit);
+document.querySelectorAll(".del_button").forEach(button => {
+    button.addEventListener("click", handleDelete);
+});
