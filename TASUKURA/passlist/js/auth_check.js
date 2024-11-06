@@ -9,9 +9,10 @@ function generateRandomString(length) {
 
 // 認証モーダルを開き、認証が完了するまで待つ関数
 async function openAuthModalAndWaitForAuth() {
-    if (!limitedSession) {
+    if (!limitedSession && !(typeof limitedSession === 'undefined')) {
         document.getElementById('auth_form_group_passName').style.display = "none";
         document.getElementById('auth_passName').value = generateRandomString(20);
+        document.getElementById('auth_passtxt').value = '';
     }
     openModal(authModal); // モーダルを開く
     

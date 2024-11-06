@@ -62,7 +62,7 @@ function handleAuth(e) {
     const feedback_element = document.getElementById('feedback'); // フィードバック要素の取得
     const formData = new FormData(e.target);
 
-    if (!limitedSession) {
+    if (!limitedSession && !(typeof limitedSession === 'undefined')) {
         formData.set("user_id", userId);
     }
 

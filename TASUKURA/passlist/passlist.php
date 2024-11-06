@@ -40,7 +40,6 @@
         <title>パスワード</title>
         <link rel="stylesheet" href="css/pstyle.css">
         <link rel="stylesheet" href="css/modal.css">
-        <link rel="stylesheet" href="../header/css/header.css">
     </head>
     <body>
         <header>
@@ -197,10 +196,16 @@
         <!-- スクリプト導入 -->
         <script>
             const isLoggedIn = <?php echo json_encode($is_logged_in); ?>;
-            if (isLoggedIn) {
-                const userId = <?php echo json_encode($_SESSION['user_id']); ?>;
-                const limitedSession = <?php echo json_encode($_SESSION['limited_session']['status']);?>;
-            }
+            let userId;
+            let limitedSession;
+            
+            <?php if (isset($_SESSION['user_id'])): ?>
+            userId = <?php echo json_encode($_SESSION['user_id']); ?>;
+            <?php endif; ?>
+            
+            <?php if (isset($_SESSION['limited_session']['status'])): ?>
+            limitedSession = <?php echo json_encode($_SESSION['limited_session']['status']); ?>;
+            <?php endif; ?>
         </script>
         <script src="js/modal.js"></script>
         <script src="js/transmission.js"></script>
