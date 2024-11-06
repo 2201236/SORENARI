@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+h1 {
+    margin: 0;
+    color: #4292fb;
+    flex: 1; /* タイトルが左側に寄るように伸縮可能にする */
+}
+
+.budget-section,
+.expense-input,
+.income-input { /* 収入入力セクションも追加 */
+    margin: 20px 0;
+    text-align: center;
+}
+
+.budget-section input,
+.expense-input input,
+.income-input input { /* 収入入力のスタイルを追加 */
+    margin: 5px 0;
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+/* ↓↓↓青バー↓↓↓ */
+.bar-chart {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.bar {
+    width: 100%;
+    height: 30px;
+    background: #e2e6ea;
+    border-radius: 5px;
+    position: relative;
+}
+
+.bar-inner {
+    height: 100%;
+    background: #007BFF;
+    border-radius: 5px;
+    transition: width 0.5s;
+}
+
+.bar-labels {
+    margin-top: 5px;
+    font-size: 16px;
+}
+/* ↑↑↑青バー↑↑↑ */
+.button {
+    margin: 10px;
+    padding: 10px 20px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.button:hover {
+    background: #0056b3;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* フォームのスタイル */
+.form-container {
+    display: flex; /* フレックスボックスを使用 */
+    justify-content: space-between; /* フォームの間隔を均等に */
+    margin: 20px 0;   
+}
+.form-container section {
+    flex: 1; /* 各フォームを均等に幅を占める */
+    margin-right: 10px; /* 右側のフォームにマージンを追加 */
+}
+.form-container section:last-child {
+    margin-right: 0; /* 最後のフォームのマージンをリセット */
+}
+.toggle-buttons {
+    background-color: #ff0000;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    width: 12rem;
+    height: 3rem;
+    margin: 20px 0; /* 上下に余白を追加 */
+    display: flex; /* ボタンを横並びにする */
+    justify-content: space-around; /* ボタン間のスペースを均等に */
+    margin-left: auto; /* 左のマージンを自動にして右寄せ */
+    align-items: center; /* ボタンを中央に揃える */
+}
+
+  
+.toggle-buttons button {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.toggle-buttons button:hover {
+    color: #111827;
+}
+
+.toggle-buttons button.active {
+    background-color: white;
+    color: #2563eb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
