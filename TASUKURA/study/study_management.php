@@ -77,17 +77,23 @@ require '../header/header.php';
 
 <div class="stopwatch-container">
     <form method="POST" action="start_stopwatch.php" class="form-container" id="stopwatch-form">
-        <label for="subject">科目を入力：</label>
-        <input type="text" name="subject" id="subject" placeholder="科目名を入力してください">
-        <div id="error-message" style="color: red; display: none;">科目を入力してください。</div>
-        <input type="hidden" name="elapsed_time" id="elapsed_time" value="0">
+        <button type="submit" id="reset-button" class="reset-button">時間をリセット</button>
 
-        <div class="stopwatch">
-            <div id="time-display">00:00:00</div>
-            <button type="button" id="start-button">開始</button>
-            <button type="button" id="stop-button" disabled>停止</button>
+        <div class="subject-container">
+            <label for="subject">科目を入力：</label>
+            <input type="text" name="subject" id="subject" placeholder="科目名を入力してください">
         </div>
 
+        <div id="error-message" style="color: red; display: none;">科目を入力してください。</div>
+            <input type="hidden" name="elapsed_time" id="elapsed_time" value="0">
+
+        <div class="horizontal-container">
+            <div class="stopwatch">
+                <div id="time-display">00:00:00</div>
+                <button type="button" id="start-button">開始</button>
+                <button type="button" id="stop-button" disabled>停止</button>
+            </div>
+        </div>
         <button type="submit" id="save-time-button">時間を保存</button>
     </form>
 </div>
