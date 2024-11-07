@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ヘッダー</title>
+    <title>TASUKURA</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,6 +19,10 @@
             align-items: center;
             padding: 10px;
             background-color: #f0f0f0;
+            position: fixed; /* ヘッダーを固定する */
+            width: 98%; /* ヘッダーが画面全体に広がるように */
+            top: 0; /* ヘッダーをページの最上部に配置 */
+            z-index: 1000; /* ヘッダーを他のコンテンツの上に表示 */
         }
         .back-button {
             font-size: 24px;
@@ -67,15 +71,16 @@
     </header>
 
     <nav class="menu" id="menu">
-        <a href="#" class="menu-item">🏠 ホーム</a>
+        <a href="../home/home.php" class="menu-item">🏠 ホーム</a>
         <a href="#" class="menu-item">✓ Todo</a>
-        <a href="#" class="menu-item">🕓 スケジュール</a>
-        <a href="#" class="menu-item">📅 カレンダー</a>
-        <a href="#" class="menu-item">📕 読書</a>
-        <a href="#" class="menu-item">🏦 家計簿</a>
-        <a href="#" class="menu-item">📒 共有ボード</a>
-        <a href="#" class="menu-item">🗝 パスワード</a>
+        <a href="../schedule_management/schedule.php" class="menu-item">🕓 スケジュール</a>
+        <a href="../calendar/calender.php" class="menu-item">📅 カレンダー</a>
+        <a href="../study/study_management.php" class="menu-item">📖 学習管理</a>
+        <a href="../budget_tracker/home.php" class="menu-item">🏦 家計簿</a>
+        <a href="#" class="menu-item">🗂️ 共有ボード</a>
+        <a href="../passlist/passlist.php" class="menu-item">🗝 パスワード</a>
         <a href="#" class="menu-item">⚙ 設定</a>
+        <a href="../logout/input.php" class="menu-item">👋ログアウト</a>
     </nav>
 
     <script>
