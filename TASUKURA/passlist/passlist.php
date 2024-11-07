@@ -206,6 +206,13 @@
             <?php if (isset($_SESSION['limited_session']['status'])): ?>
             limitedSession = <?php echo json_encode($_SESSION['limited_session']['status']); ?>;
             <?php endif; ?>
+
+            document.addEventListener("click", function(event) {
+                    <?php if (isset($_SESSION['limited_session']['status'])): ?>
+                    limitedSession = <?php echo json_encode($_SESSION['limited_session']['status']); ?>;
+                    console.log(limitedSession);
+                    <?php endif; ?>
+                }, true);
         </script>
         <script src="js/modal.js"></script>
         <script src="js/transmission.js"></script>
