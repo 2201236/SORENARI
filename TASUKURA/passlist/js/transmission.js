@@ -33,16 +33,17 @@ function handleSubmit(e) {
 }
 
 // 削除
-function handleDelete(e) {
+async function handleDelete(e) {
     const row = this.closest("tr");
     const pass_id = row.querySelector(".pass_id").value;
 
-    if (confirm("本当にこのアイテムを削除しますか？")) {
+    if (await sessionCheck() && confirm("本当にこのアイテムを削除しますか？")) {
         const params = new URLSearchParams({ pass_id: pass_id });
 
         sendData('delete_data.php', params)
             .then(data => {
                 if (data.success) {
+
                     window.location.replace('passlist.php');
                 } else {
                     alert("削除に失敗しました: " + data.error);
@@ -60,6 +61,10 @@ function handleAuth(e) {
     e.preventDefault();
     const feedback_element = document.getElementById('feedback'); // フィードバック要素の取得
     const formData = new FormData(e.target);
+
+    if (!limitedSession && !(typeof limitedSession === 'undefined')) {
+        formData.set("user_id", userId);
+    }
 
     return sendData('auth.php', formData)
         .then(result => {
