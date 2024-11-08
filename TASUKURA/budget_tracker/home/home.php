@@ -15,6 +15,29 @@ try {
     }
     $user_id = $_SESSION['user_id'];
 
+    // Bankテーブルからデータがあるか確認
+    $stmt = $pdo->prepare("SELECT 1 FROM Bank WHERE user_id = :user_id");
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $exists = $stmt->fetchColumn();
+
+
+     // データが存在しない場合は挿入する
+     if (!$exists) {
+        $stmt = $pdo->prepare("INSERT INTO Bank (user_id, budget, moutgo, youtgo, lyoutgo) VALUES (:user_id, :budget, :moutgo, :youtgo, :lyoutgo)");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindValue(':budget', 1000, PDO::PARAM_INT);
+        $stmt->bindValue(':moutgo', 0, PDO::PARAM_INT);
+        $stmt->bindValue(':youtgo', 0, PDO::PARAM_INT);
+        $stmt->bindValue(':lyoutgo', 0, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // データ挿入後にページを更新
+        echo "<script>location.reload();</script>";
+        exit;
+    }
+
+
     // Bankテーブルからbudgetとmoutgoを取得
     $stmt = $pdo->prepare("SELECT budget, moutgo FROM Bank WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
