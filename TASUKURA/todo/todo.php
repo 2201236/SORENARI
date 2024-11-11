@@ -1,109 +1,102 @@
-<?php 
-session_start(); // セッションの開始
+<?php
+session_start();
 
-// 接続情報
-const SERVER = 'mysql310.phy.lolipop.lan';
-const DBNAME = 'LAA1517469-taskura';
-const USER = 'LAA1517469';
-const PASS = '1234';
+// セッションからユーザー情報を取得
+$user_id = $_SESSION['user_id']; // セッションからuser_idを取得
+$user_name = $_SESSION['name'];  // セッションからユーザー名を取得
 
-// PDO接続
+// データベース接続設定
+$host = 'mysql310.phy.lolipop.lan'; // ホスト名
+$dbname = 'LAA1517469-taskura';  // データベース名
+$username = 'LAA1517469'; // ユーザー名
+$password = '1234';  // パスワード
+
 try {
-    $pdo = new PDO('mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8', USER, PASS);
+    // データベース接続
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // セッションからユーザーIDを取得
-    if (!isset($_SESSION['user_id'])) {
-        throw new Exception("ログインユーザーが無効です。");
-    }
-    $user_id = $_SESSION['user_id'];
-
-    // フォーム送信後のリダイレクトを避けるためにフラグを設定
-    $redirect = false;
-
-    // 新規登録処理
-    if (isset($_POST['register'])) {
-        $title = $_POST['new_title'];
-        $content = !empty($_POST['new_content']) ? $_POST['new_content'] : ''; // 内容が空の場合は空文字を設定
-        $endtime = !empty($_POST['new_endtime']) ? $_POST['new_endtime'] : NULL; // 未入力の場合はNULL
-        $checks = isset($_POST['new_checks']) ? 1 : 0; // チェックボックスの値を取得
-
-        // itemNoをデータベース内での最大値+1に設定する
-        $itemNoQuery = "SELECT MAX(itemNo) AS maxItemNo FROM Managements";
-        $itemNoStmt = $pdo->query($itemNoQuery);
-        $result = $itemNoStmt->fetch(PDO::FETCH_ASSOC);
-        $newItemNo = $result['maxItemNo'] + 1;
-
-        $insertSql = "INSERT INTO Managements (itemNo, user_id, title, content, endtime, inputdate, status, checks) 
-                      VALUES (:itemNo, :user_id, :title, :content, :endtime, NOW(), 't', :checks)";
-        $insertStmt = $pdo->prepare($insertSql);
-        $insertStmt->bindParam(':itemNo', $newItemNo, PDO::PARAM_INT);
-        $insertStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $insertStmt->bindParam(':title', $title, PDO::PARAM_STR);
-        $insertStmt->bindParam(':content', $content, PDO::PARAM_STR);
-        $insertStmt->bindParam(':endtime', $endtime, PDO::PARAM_STR);
-        $insertStmt->bindParam(':checks', $checks, PDO::PARAM_INT);
-        $insertStmt->execute();
-
-        // 登録処理後にリダイレクトフラグを設定
-        $redirect = true;
-    }
-
-    // 削除処理
-    if (isset($_POST['delete'])) {
-        $itemNo = $_POST['itemNo'];
-        $deleteSql = "DELETE FROM Managements WHERE itemNo = :itemNo AND user_id = :user_id";
-        $deleteStmt = $pdo->prepare($deleteSql);
-        $deleteStmt->bindParam(':itemNo', $itemNo, PDO::PARAM_INT);
-        $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $deleteStmt->execute();
-
-        // 削除処理後にリダイレクトフラグを設定
-        $redirect = true;
-    }
-
-    // 編集処理
-    if (isset($_POST['edit'])) {
-        $itemNo = $_POST['itemNo'];
-        $title = $_POST['title'];
-        $content = !empty($_POST['content']) ? $_POST['content'] : ''; // 内容が空の場合は空文字
-        $endtime = !empty($_POST['endtime']) ? $_POST['endtime'] : NULL; // 未入力の場合はNULL
-        $checks = isset($_POST['checks']) ? 1 : 0; // チェックボックスの値を取得
-
-        $updateSql = "UPDATE Managements SET title = :title, content = :content, endtime = :endtime, checks = :checks 
-                      WHERE itemNo = :itemNo AND user_id = :user_id";
-        $updateStmt = $pdo->prepare($updateSql);
-        $updateStmt->bindParam(':title', $title, PDO::PARAM_STR);
-        $updateStmt->bindParam(':content', $content, PDO::PARAM_STR);
-        $updateStmt->bindParam(':endtime', $endtime, PDO::PARAM_STR);
-        $updateStmt->bindParam(':checks', $checks, PDO::PARAM_INT);
-        $updateStmt->bindParam(':itemNo', $itemNo, PDO::PARAM_INT);
-        $updateStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $updateStmt->execute();
-
-        // 編集処理後にリダイレクトフラグを設定
-        $redirect = true;
-    }
-
-    // リダイレクトが必要であれば実行
-    if ($redirect) {
-        header("Location: " . $_SERVER['PHP_SELF']);
-        exit; // リダイレクト後の処理を止める
-    }
-
-    // スケジュール情報を取得（statusが't'のものに限定）
-    $sql = "SELECT * FROM Managements WHERE user_id = :user_id AND status = 't' ORDER BY endtime ASC";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
-    echo "データベースエラー: " . $e->getMessage();
-    exit; // エラー発生時にスクリプトを終了
-} catch (Exception $e) {
-    echo "エラー: " . $e->getMessage();
-    exit; // エラー発生時にスクリプトを終了
+    die("データベース接続失敗: " . $e->getMessage());
+}
+
+// ユーザー情報をデータベースから取得
+$stmt = $pdo->prepare("SELECT * FROM Users WHERE user_id = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// ユーザー情報が取得できなかった場合
+if (!$user) {
+    die('ユーザー情報の取得に失敗しました');
+}
+
+// Todoリストを取得
+$todolist_stmt = $pdo->prepare("SELECT * FROM Todos WHERE user_id = :user_id");
+$todolist_stmt->execute(['user_id' => $user_id]);
+$todolist = $todolist_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 新しいタスクの登録処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task']) && isset($_POST['due_date']) && !isset($_POST['update_id'])) {
+    $task = $_POST['task'];
+    $due_date = $_POST['due_date'];
+
+    // 入力データの検証
+    if (!empty($task) && !empty($due_date)) {
+        // データベースに新しいタスクを追加
+        try {
+            $insert_stmt = $pdo->prepare("INSERT INTO Todos (user_id, task, due_date, is_done) VALUES (:user_id, :task, :due_date, 0)");
+            $insert_stmt->execute(['user_id' => $user_id, 'task' => $task, 'due_date' => $due_date]);
+            
+            // 登録後、todo.phpにリダイレクト
+            header("Location: todo.php");
+            exit();
+        } catch (PDOException $e) {
+            echo "タスクの追加に失敗しました: " . $e->getMessage();
+        }
+    } else {
+        echo "タスクと期日を正しく入力してください。";
+    }
+}
+
+// タスクの更新処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id']) && isset($_POST['update_task']) && isset($_POST['update_due_date'])) {
+    $update_id = $_POST['update_id'];
+    $update_task = $_POST['update_task'];
+    $update_due_date = $_POST['update_due_date'];
+
+    // タスクを更新
+    $update_stmt = $pdo->prepare("UPDATE Todos SET task = :task, due_date = :due_date WHERE id = :id AND user_id = :user_id");
+    $update_stmt->execute(['task' => $update_task, 'due_date' => $update_due_date, 'id' => $update_id, 'user_id' => $user_id]);
+
+    // 更新後、todo.phpにリダイレクト
+    header("Location: todo.php");
+    exit();
+}
+
+// タスクの削除処理
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+
+    // タスクを削除
+    $delete_stmt = $pdo->prepare("DELETE FROM Todos WHERE id = :id AND user_id = :user_id");
+    $delete_stmt->execute(['id' => $delete_id, 'user_id' => $user_id]);
+
+    // 削除後、todo.phpにリダイレクト
+    header("Location: todo.php");
+    exit();
+}
+
+// タスクの完了状態を更新
+if (isset($_POST['is_done_id'])) {
+    $is_done_id = $_POST['is_done_id'];
+    $is_done = isset($_POST['is_done']) ? 1 : 0;
+
+    // 完了状態を更新
+    $update_done_stmt = $pdo->prepare("UPDATE Todos SET is_done = :is_done WHERE id = :id AND user_id = :user_id");
+    $update_done_stmt->execute(['is_done' => $is_done, 'id' => $is_done_id, 'user_id' => $user_id]);
+
+    // 更新後、todo.phpにリダイレクト
+    header("Location: todo.php");
+    exit();
 }
 ?>
 
@@ -112,59 +105,74 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スケジュール一覧</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Todoアプリ</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <h1>ようこそ、<?php echo htmlspecialchars($user_name, ENT_QUOTES, 'UTF-8'); ?>さん</h1>
+    </header>
+    
+    <section>
+        <h2>新しいタスクの登録</h2>
+        <!-- タスク登録フォーム -->
+        <form action="todo.php" method="POST">
+            <label for="task">タスク内容</label>
+            <input type="text" name="task" id="task" required>
 
-<h2>スケジュール登録</h2>
-<form method="post" action="">
-    <input type="text" name="new_title" placeholder="タイトル" required>
-    <textarea name="new_content" placeholder="内容を入力"></textarea>
-    <input type="datetime-local" name="new_endtime" placeholder="終了時刻を入力">
-    <label>
-        <input type="checkbox" name="new_checks" value="1"> チェック
-    </label>
-    <input type="submit" name="register" value="登録">
-</form>
+            <label for="due_date">期日</label>
+            <input type="date" name="due_date" id="due_date" required>
 
-<h2>スケジュール一覧</h2>
-<table>
-    <thead>
-        <tr>
-            <th>タイトル</th>
-            <th>内容</th>
-            <th>終了時刻</th>
-            <th>チェック</th>
-            <th>登録日</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (!empty($schedules)): ?>
-            <?php foreach ($schedules as $schedule): ?>
-                <tr>
-                    <form method="post" action="">
-                        <td><input type="text" name="title" value="<?php echo htmlspecialchars($schedule['title'], ENT_QUOTES, 'UTF-8'); ?>" required></td>
-                        <td><textarea name="content"><?php echo htmlspecialchars($schedule['content'], ENT_QUOTES, 'UTF-8'); ?></textarea></td>
-                        <td><input type="datetime-local" name="endtime" value="<?php echo htmlspecialchars($schedule['endtime'], ENT_QUOTES, 'UTF-8'); ?>"></td>
-                        <td><input type="checkbox" name="checks" value="1" <?php echo $schedule['checks'] ? 'checked' : ''; ?>></td>
-                        <td><?php echo htmlspecialchars($schedule['inputdate'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td>
-                            <input type="hidden" name="itemNo" value="<?php echo htmlspecialchars($schedule['itemNo'], ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="submit" name="edit" value="保存">
-                            <input type="submit" name="delete" value="削除" onclick="return confirm('本当に削除しますか？');">
-                        </td>
-                    </form>
-                </tr>
+            <button type="submit">登録</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Todoリスト</h2>
+        <ul>
+            <?php foreach ($todolist as $todo): ?>
+                <li>
+                    <input type="checkbox" 
+                           name="is_done" 
+                           value="1" 
+                           id="todo-<?php echo $todo['id']; ?>" 
+                           <?php echo $todo['is_done'] ? 'checked' : ''; ?>
+                           onclick="this.form.submit()">
+                    <label for="todo-<?php echo $todo['id']; ?>"><?php echo htmlspecialchars($todo['task'], ENT_QUOTES, 'UTF-8'); ?> (期日: <?php echo $todo['due_date']; ?>)</label>
+
+                    <!-- 編集フォーム -->
+                    <a href="todo.php?edit_id=<?php echo $todo['id']; ?>">編集</a>
+
+                    <!-- 削除リンク -->
+                    <a href="todo.php?delete_id=<?php echo $todo['id']; ?>" onclick="return confirm('本当に削除しますか？')">削除</a>
+                </li>
             <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="6">スケジュールはありません。</td>
-            </tr>
-        <?php endif; ?>
-    </tbody>
-</table>
+        </ul>
+    </section>
+
+    <?php
+    // 編集フォーム表示
+    if (isset($_GET['edit_id'])):
+        $edit_id = $_GET['edit_id'];
+        $edit_stmt = $pdo->prepare("SELECT * FROM Todos WHERE id = :id AND user_id = :user_id");
+        $edit_stmt->execute(['id' => $edit_id, 'user_id' => $user_id]);
+        $edit_todo = $edit_stmt->fetch(PDO::FETCH_ASSOC);
+    ?>
+        <section>
+            <h2>タスクの更新</h2>
+            <form action="todo.php" method="POST">
+                <input type="hidden" name="update_id" value="<?php echo $edit_todo['id']; ?>">
+
+                <label for="update_task">タスク内容</label>
+                <input type="text" name="update_task" value="<?php echo htmlspecialchars($edit_todo['task'], ENT_QUOTES, 'UTF-8'); ?>" required>
+
+                <label for="update_due_date">期日</label>
+                <input type="date" name="update_due_date" value="<?php echo $edit_todo['due_date']; ?>" required>
+
+                <button type="submit">更新</button>
+            </form>
+        </section>
+    <?php endif; ?>
 
 </body>
 </html>
