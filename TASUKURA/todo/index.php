@@ -16,6 +16,21 @@ try {
 // ログインセッション
 $_SESSION['user_id'] = 1;  // ダミーユーザーID (本番ではログイン処理が必要)
 
+// サブタスクの完了状態更新
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_complete'])) {
+    $subtask_id = $_POST['subtask_id'];
+    $is_done = isset($_POST['is_done']) ? 1 : 0;  // チェックされていれば 1 (完了)、されていなければ 0 (未完了)
+
+    // サブタスクの完了状態を更新
+    $sql = "UPDATE Subtasks SET is_done = ? WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$is_done, $subtask_id]);
+
+    // 完了状態が変更された後、ページをリダイレクトして再読み込み
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
 // タスクの追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
     $task = $_POST['task'];
@@ -33,18 +48,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
 }
 
 // サブタスクの追加
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_subtask'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_subtasks'])) {
     $task_id = $_POST['task_id'];
-    $subtask = $_POST['subtask'];
+    $subtasks_input = $_POST['subtasks']; // カンマ区切りのサブタスク
 
-    $sql = "INSERT INTO Subtasks (task_id, subtask) VALUES (?, ?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$task_id, $subtask]);
+    // カンマでサブタスクを分割して登録
+    $subtasks = explode(',', $subtasks_input);
+    foreach ($subtasks as $subtask) {
+        $subtask = trim($subtask); // 前後の空白を削除
+        if (!empty($subtask)) {
+            $sql = "INSERT INTO Subtasks (task_id, subtask) VALUES (?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$task_id, $subtask]);
+        }
+    }
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 }
 
-// タスクの進捗更新
+// 進捗更新
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_progress'])) {
     $task_id = $_POST['task_id'];
     $progress = $_POST['progress'];
@@ -53,28 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_progress'])) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$progress, $task_id]);
 
-    // 履歴に追加
-    $description = "タスクの進捗を {$progress}% に更新しました";
-    $sql = "INSERT INTO TaskHistory (task_id, change_description) VALUES (?, ?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$task_id, $description]);
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-}
-// タスクの削除
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_task'])) {
-    $task_id = $_POST['task_id'];
-
-    // まず TaskHistory から関連レコードを削除
-    $sql = "DELETE FROM TaskHistory WHERE task_id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$task_id]);
-
-    // 次に Todos からタスクを削除
-    $sql = "DELETE FROM Todos WHERE id = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$task_id]);
-
+    // 進捗が更新された後、ページをリダイレクトして再読み込み
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 }
@@ -88,17 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_task'])) {
     <title>ToDoリスト</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body.dark-mode {
-            background-color: #333;
-            color: #fff;
-        }
-        /* 追加のCSSスタイル */
-    </style>
+    <script>
+        $(document).ready(function() {
+            // 進捗バーが動いたときに％を更新
+            $('input[type="range"]').on('input', function() {
+                var progressValue = $(this).val();  // 進捗バーの現在の値を取得
+                $(this).next('span').text(progressValue + '%');  // ％表示を更新
+            });
+        });
+    </script>
 </head>
 <body>
-    <button id="themeToggle">ダークモード切替</button>
-
     <h1>ToDoリスト</h1>
 
     <!-- タスク追加フォーム -->
@@ -115,9 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_task'])) {
             <option value="3">低</option>
         </select>
         <label>カテゴリ:</label>
-        <input type="text" name="category" value="">
+        <input type="text" name="category">
         <label>タグ:</label>
-        <input type="text" name="tags" value="">
+        <input type="text" name="tags">
         <button type="submit">タスク追加</button>
     </form>
 
@@ -135,49 +136,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_task'])) {
             echo "<p>期日: " . htmlspecialchars($task['due_date']) . "</p>";
             echo "<p>優先度: " . htmlspecialchars($task['priority']) . "</p>";
 
-            // カテゴリの表示
-            if (!empty($task['category'])) {
-                echo "<p>カテゴリ: " . htmlspecialchars($task['category']) . "</p>";
+            // サブタスク表示
+            echo "<h4>サブタスク:</h4><ul>";
+            $subtasks_stmt = $pdo->prepare("SELECT * FROM Subtasks WHERE task_id = ?");
+            $subtasks_stmt->execute([$task['id']]);
+            $subtasks = $subtasks_stmt->fetchAll();
+            foreach ($subtasks as $subtask) {
+                echo "<li>" . htmlspecialchars($subtask['subtask']);
+                // チェックボックス形式で完了/未完了を切り替え
+                echo "<form method='POST' style='display:inline;'>";
+                echo "<input type='hidden' name='subtask_id' value='{$subtask['id']}'>";
+                echo "<input type='checkbox' name='is_done' value='1' " . ($subtask['is_done'] ? "checked" : "") . " onchange='this.form.submit();'>";
+                echo "<input type='hidden' name='mark_complete' value='1'>";
+                echo "</form>";
+                echo "</li>";
             }
+            echo "</ul>";
 
-            // タグの表示
-            if (!empty($task['tags'])) {
-                echo "<p>タグ: " . htmlspecialchars($task['tags']) . "</p>";
-            }
-
+            // サブタスク追加フォーム (カンマ区切り入力)
             echo "<form method='POST'>";
             echo "<input type='hidden' name='task_id' value='{$task['id']}'>";
-            echo "<label>進捗: </label><input type='range' name='progress' min='0' max='100' value='{$task['progress']}' id='progress_{$task['id']}'>";
-            echo "<span id='progress_value_{$task['id']}'>" . $task['progress'] . "%</span>";
-            echo "<button type='submit' name='update_progress'>更新</button>";
-            echo "<button type='submit' name='delete_task'>削除</button>";
+            echo "<label>サブタスク (カンマ区切り):</label>";
+            echo "<input type='text' name='subtasks' required>";
+            echo "<button type='submit' name='add_subtasks'>サブタスク追加</button>";
             echo "</form>";
+
+            // 進捗更新フォーム
+            echo "<form method='POST'>";
+            echo "<input type='hidden' name='task_id' value='{$task['id']}'>";
+            echo "<label>進捗: </label><input type='range' name='progress' min='0' max='100' value='{$task['progress']}'>";
+            echo "<span>" . $task['progress'] . "%</span>";  // 初期値として進捗を表示
+            echo "<button type='submit' name='update_progress'>進捗更新</button>";
+            echo "</form>";
+
             echo "</div>";
         }
         ?>
     </div>
-
-    <script>
-        setInterval(function(){
-            $.ajax({
-                url: 'fetch_tasks.php',
-                method: 'GET',
-                success: function(data) {
-                    $('#task_list').html(data);
-                }
-            });
-        }, 5000);
-
-        document.getElementById("themeToggle").addEventListener("click", function() {
-            document.body.classList.toggle("dark-mode");
-        });
-
-        // 進捗バーの更新
-        $("input[type='range']").on("input", function() {
-            var progressId = $(this).attr("id").split("_")[1];
-            var progressValue = $(this).val();
-            $("#progress_value_" + progressId).text(progressValue + "%");
-        });
-    </script>
 </body>
 </html>
+

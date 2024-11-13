@@ -1,40 +1,40 @@
 <?php
-session_start(); // セッションの開始
+session_start(); // Start the session
 
-// 接続情報
+// Database connection information
 const SERVER = 'mysql310.phy.lolipop.lan';
 const DBNAME = 'LAA1517469-taskura';
 const USER = 'LAA1517469';
 const PASS = '1234';
 
-// PDO接続
+// PDO connection
 try {
     $pdo = new PDO('mysql:host=' . SERVER . ';dbname=' . DBNAME . ';charset=utf8', USER, PASS);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // セッションからユーザーIDを取得
+    // Retrieve user ID from session
     if (!isset($_SESSION['user_id'])) {
         throw new Exception("ログインユーザーが無効です。");
     }
     $user_id = $_SESSION['user_id'];
 
-    // フォーム送信後のリダイレクトを避けるためにフラグを設定
+    // Prevent re-submission after form submission by using a redirect flag
     $redirect = false;
 
-    // 新規登録処理
+    // Register new schedule
     if (isset($_POST['register'])) {
         $title = $_POST['new_title'];
-        $starttime = !empty($_POST['new_starttime']) ? $_POST['new_starttime'] : NULL; // 未入力の場合はNULL
-        $endtime = !empty($_POST['new_endtime']) ? $_POST['new_endtime'] : NULL; // 未入力の場合はNULL
+        $starttime = !empty($_POST['new_starttime']) ? $_POST['new_starttime'] : NULL; // NULL if not entered
+        $endtime = !empty($_POST['new_endtime']) ? $_POST['new_endtime'] : NULL; // NULL if not entered
 
-        // itemNoをデータベース内での最大値+1に設定する
+        // Set itemNo as max itemNo in the database + 1
         $itemNoQuery = "SELECT MAX(itemNo) AS maxItemNo FROM Managements";
         $itemNoStmt = $pdo->query($itemNoQuery);
         $result = $itemNoStmt->fetch(PDO::FETCH_ASSOC);
         $newItemNo = $result['maxItemNo'] + 1;
 
-        $insertSql = "INSERT INTO Managements (itemNo, user_id, title, starttime, endtime, inputdate, status, content) 
-                      VALUES (:itemNo, :user_id, :title, :starttime, :endtime, NOW(), 's', '')";
+        $insertSql = "INSERT INTO Managements (itemNo, user_id, title, starttime, endtime, inputdate) 
+                      VALUES (:itemNo, :user_id, :title, :starttime, :endtime, NOW())";
         $insertStmt = $pdo->prepare($insertSql);
         $insertStmt->bindParam(':itemNo', $newItemNo, PDO::PARAM_INT);
         $insertStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -43,11 +43,11 @@ try {
         $insertStmt->bindParam(':endtime', $endtime, PDO::PARAM_STR);
         $insertStmt->execute();
 
-        // 登録処理後にリダイレクトフラグを設定
+        // Set redirect flag after registration
         $redirect = true;
     }
 
-    // 削除処理
+    // Delete schedule
     if (isset($_POST['delete'])) {
         $itemNo = $_POST['itemNo'];
         $deleteSql = "DELETE FROM Managements WHERE itemNo = :itemNo AND user_id = :user_id";
@@ -56,16 +56,16 @@ try {
         $deleteStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $deleteStmt->execute();
 
-        // 削除処理後にリダイレクトフラグを設定
+        // Set redirect flag after deletion
         $redirect = true;
     }
 
-    // 編集処理
+    // Edit schedule
     if (isset($_POST['edit'])) {
         $itemNo = $_POST['itemNo'];
         $title = $_POST['title'];
-        $starttime = !empty($_POST['starttime']) ? $_POST['starttime'] : NULL; // 未入力の場合はNULL
-        $endtime = !empty($_POST['endtime']) ? $_POST['endtime'] : NULL; // 未入力の場合はNULL
+        $starttime = !empty($_POST['starttime']) ? $_POST['starttime'] : NULL;
+        $endtime = !empty($_POST['endtime']) ? $_POST['endtime'] : NULL;
 
         $updateSql = "UPDATE Managements SET title = :title, starttime = :starttime, endtime = :endtime 
                       WHERE itemNo = :itemNo AND user_id = :user_id";
@@ -77,18 +77,18 @@ try {
         $updateStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $updateStmt->execute();
 
-        // 編集処理後にリダイレクトフラグを設定
+        // Set redirect flag after editing
         $redirect = true;
     }
 
-    // リダイレクトが必要であれば実行
+    // Perform redirect if needed
     if ($redirect) {
         header("Location: " . $_SERVER['PHP_SELF']);
-        exit; // リダイレクト後の処理を止める
+        exit; // Stop further execution after redirection
     }
 
-    // スケジュール情報を取得（statusが's'のものに限定）
-    $sql = "SELECT * FROM Managements WHERE user_id = :user_id AND status = 's' ORDER BY starttime ASC";
+    // Fetch schedule information (filtered by 's' status)
+    $sql = "SELECT * FROM Managements WHERE user_id = :user_id ORDER BY starttime ASC";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -96,10 +96,10 @@ try {
 
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
-    exit; // エラー発生時にスクリプトを終了
+    exit; // Exit script on error
 } catch (Exception $e) {
     echo "エラー: " . $e->getMessage();
-    exit; // エラー発生時にスクリプトを終了
+    exit; // Exit script on error
 }
 ?>
 
@@ -158,4 +158,5 @@ try {
 </table>
 </body>
 </html>
+
 
