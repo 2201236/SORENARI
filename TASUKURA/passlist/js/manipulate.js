@@ -8,26 +8,33 @@ function sendData(url, body) {
 }
 
 // フィードバックのクリア処理
-function clearFeedback(element, timeout) {
-    setTimeout(() => {
-        element.textContent = "";
-    }, timeout);
-}
-
-// セッション期限の確認と認証処理
-async function sessionCheck() {
-    if (!limitedSession) {
-        return mainProcess();
-    } else if (limitedSession) {
-        return true;
+function clearFeedback(element, timeout = 3000) {
+    if (!element) {
+        console.error('要素が見つかりません');
+        return;
     }
+    
+    element.classList.add('show');
+
+    // 3秒後にフェードアウトを開始
+    setTimeout(() => {
+        element.style.transition = "opacity 0.5s ease";
+        element.style.opacity = "0";
+        element.classList.remove('show'); // 非表示にする
+
+        // フェードアウト完了後にテキストを空にする
+        setTimeout(() => {
+            element.textContent = "";
+            element.style.opacity = "1"; // 次回表示のためにリセット
+        }, 500); // フェードアウトアニメーションの時間と一致
+    }, timeout);
 }
 
 
 // パスワード取得の共通処理
 async function getPasstxt(row) {
     const pass_id = row.querySelector(".pass_id").value;
-    const feedback_element = row.querySelector(".feedback");
+    const feedback_element = document.getElementById("feedback");
     
     try {
         const formData = new FormData();
@@ -38,13 +45,13 @@ async function getPasstxt(row) {
             return data.passtxt;
         } else {
             feedback_element.textContent = "パスワードの取得に失敗しました";
-            clearFeedback(feedback_element, 5000);
+            clearFeedback(feedback_element);
             return null;
         }
     } catch (error) {
         console.error("エラー:", error);
         feedback_element.textContent = "パスワードの取得に失敗しました";
-        clearFeedback(feedback_element, 5000);
+        clearFeedback(feedback_element);
         return null;
     }
 }
@@ -56,7 +63,7 @@ async function togglePasstxt(button) {
     
     switch (toggle) {
         case "hide":
-            if (await sessionCheck()) {
+            if (await mainProcess()) {
                 const passtxt = await getPasstxt(row);
                 if (passtxt) {
                     row.querySelector(".passtxt").textContent = passtxt;
@@ -75,9 +82,9 @@ async function togglePasstxt(button) {
 // コピー処理
 async function copy(button) {
     const row = button.closest("tr");
-    const feedback_element = row.querySelector(".feedback");
+    const feedback_element = document.getElementById("feedback");
 
-    if (await sessionCheck()) {
+    if (await mainProcess()) {
         const passtxt = await getPasstxt(row);
         if (!passtxt) return;
 
@@ -85,10 +92,10 @@ async function copy(button) {
         try {
             await navigator.clipboard.writeText(passtxt);
             feedback_element.textContent = "コピーしました";
-            clearFeedback(feedback_element, 2000);
+            clearFeedback(feedback_element);
         } catch (err) {
             feedback_element.textContent = "コピーに失敗しました";
-            clearFeedback(feedback_element, 5000);
+            clearFeedback(feedback_element);
             console.error("コピーエラー: ", err);
         }
     }

@@ -65,3 +65,24 @@ main {
 table {
     /* 要素がない場合は「パスワードは保存されていません」と出す */
 }
+
+/* 初期スタイル：右下に固定して非表示 */
+#feedback {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    z-index: 1000; /* 他要素の上に表示 */
+}
+
+/* 表示中のスタイル */
+#feedback.show {
+    opacity: 1;
+    visibility: visible;
+}

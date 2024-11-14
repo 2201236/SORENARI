@@ -9,20 +9,35 @@ function generateRandomString(length) {
 
 // 認証モーダルを開き、認証が完了するまで待つ関数
 async function openAuthModalAndWaitForAuth() {
-    if (!limitedSession && !(typeof limitedSession === 'undefined')) {
+    if (typeof userId === 'undefined') {
+        document.getElementById("auth_modal_close").style.display = "none";
+    } else {
         document.getElementById('auth_form_group_passName').style.display = "none";
         document.getElementById('auth_passName').value = generateRandomString(20);
         document.getElementById('auth_passtxt').value = '';
     }
+    
     openModal(authModal); // モーダルを開く
+
+    // 既存の submit イベントリスナーを削除して、重複を防ぐ
+    const authForm = document.getElementById('auth_form');
+    authForm.removeEventListener('submit', authForm._submitListener);
+
+    // 認証処理のための新しい submit イベントリスナーを追加
+    authForm._submitListener = async (e) => {
+        const isAuthenticated = await handleAuth(e);
+        if (isAuthenticated) {
+            closeModal(authModal); // 認証が完了したらモーダルを閉じる
+        }
+    };
     
     return new Promise((resolve) => {
         // 認証フォームのsubmitイベントリスナーを設定
         document.getElementById('auth_form').addEventListener('submit', async (e) => {
             const isAuthenticated = await handleAuth(e);
-            closeModal(authModal); // 認証が完了したらモーダルを閉じる
+            if (isAuthenticated) closeModal(authModal); // 認証が完了したらモーダルを閉じる
             resolve(isAuthenticated); // 認証結果をresolveで返す
-        }, { once: true }); // once: trueで一度だけイベントが発生するように設定
+        }); // once: trueで一度だけイベントが発生するように設定
     });
 }
 
@@ -33,7 +48,7 @@ async function mainProcess() {
 
     if (!authResult) { // 認証失敗
         feedback_element.textContent = '認証に失敗しました';
-        clearFeedback(feedback_element, 3000);
+        clearFeedback(feedback_element);
     } else {
         return new Promise((resolve) => {
             resolve(authResult); 
