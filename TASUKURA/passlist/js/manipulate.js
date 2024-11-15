@@ -14,21 +14,20 @@ function clearFeedback(element, timeout = 3000) {
         return;
     }
     
+    // フィードバックを表示
     element.classList.add('show');
 
-    // 3秒後にフェードアウトを開始
+    // 指定した時間後にフェードアウトを開始
     setTimeout(() => {
-        element.style.transition = "opacity 0.5s ease";
-        element.style.opacity = "0";
-        element.classList.remove('show'); // 非表示にする
+        element.classList.remove('show'); // フェードアウト開始
 
-        // フェードアウト完了後にテキストを空にする
+        // フェードアウトが完了するまで待ってからテキストをクリア
         setTimeout(() => {
             element.textContent = "";
-            element.style.opacity = "1"; // 次回表示のためにリセット
         }, 500); // フェードアウトアニメーションの時間と一致
     }, timeout);
 }
+
 
 
 // パスワード取得の共通処理
