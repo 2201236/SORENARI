@@ -1,18 +1,3 @@
-// AJAXリクエストを処理するヘルパー関数
-function sendData(url, body) {
-    return fetch(url, {
-        method: 'POST',
-        body: body
-    }).then(response => response.json());
-}
-
-function clearFeedback(element, timeout) {
-    setTimeout(() => {
-        element.textContent = "";
-    }, timeout);
-}
-
-
 // 追加・更新
 function handleSubmit(e) {
     e.preventDefault();
@@ -37,7 +22,7 @@ async function handleDelete(e) {
     const row = this.closest("tr");
     const pass_id = row.querySelector(".pass_id").value;
 
-    if (await sessionCheck() && confirm("本当にこのアイテムを削除しますか？")) {
+    if (await mainProcess() && confirm("本当にこのアイテムを削除しますか？")) {
         const params = new URLSearchParams({ pass_id: pass_id });
 
         sendData('delete_data.php', params)
@@ -62,7 +47,7 @@ function handleAuth(e) {
     const feedback_element = document.getElementById('feedback'); // フィードバック要素の取得
     const formData = new FormData(e.target);
 
-    if (!limitedSession && !(typeof limitedSession === 'undefined')) {
+    if (!(typeof userId === 'undefined')) {
         formData.set("user_id", userId);
     }
 
@@ -77,11 +62,10 @@ function handleAuth(e) {
         .catch(error => {
             console.error("エラー:", error);
             feedback_element.textContent = "エラーが発生しました";
-            clearFeedback(feedback_element, 3000);
+            clearFeedback(feedback_element);
             return false; // エラーが発生した場合も失敗
         });
 }
-
 
 // イベントの呼び出し
 document.getElementById("add_form").addEventListener("submit", handleSubmit);

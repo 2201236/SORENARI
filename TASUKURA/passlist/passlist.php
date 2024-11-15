@@ -7,10 +7,9 @@
     const PASS ='1234';
 
     $_SESSION['is_logged_in'] = isset($_SESSION['user_id']) ? true : false;
-    $is_logged_in = $_SESSION['is_logged_in'];
 
     // ユーザーがログインしていればpasslistを取得
-    if ($is_logged_in) {
+    if ($_SESSION['is_logged_in']) {
         $connect = 'mysql:host='. SERVER . ';dbname='. DBNAME . ';charset=utf8';
         $pdo=new PDO($connect, USER, PASS);
 
@@ -47,7 +46,6 @@
         </header>
         <main>
         <div class="container">
-            <span id="feedback"></span>
                 <div class="left_side">
                     <div class="search_window">
                         <form action="" method="post" class="search_form">
@@ -107,7 +105,6 @@
                                                 <div class="button_wrapper">
                                                     <button type="button" class="copy_button">コピー</button>
                                                 </div>
-                                                <p class="feedback"></p>
                                             </div>
                                         </td>
                                         <td>
@@ -127,7 +124,7 @@
             </div>
 
             <!-- 追加用モーダル -->
-            <div id="add_modal" class="add_modal">
+            <div id="add_modal" class="modal_wrapper">
                 <div class="modal_content">
                     <span id="add_modal_close" class="modal_close">&times;</span>
                     <form method="post" class="modal_form" id="add_form">
@@ -150,7 +147,7 @@
 
             <!-- 編集用モーダル -->
             <!-- 変更がなかった場合、変更情報を記入する旨の文を表示し、データ更新を行わない -->
-            <div id="edit_modal" class="edit_modal">
+            <div id="edit_modal" class="modal_wrapper">
                 <div class="modal_content">
                     <span id="edit_modal_close" class="modal_close">&times;</span>
                     <form method="post" class="modal_form" id="edit_form">
@@ -173,7 +170,7 @@
             </div>
 
             <!-- 認証用モーダル -->
-            <div id="auth_modal" class="auth_modal">
+            <div id="auth_modal" class="modal_wrapper">
                 <div class="modal_content">
                     <span id="auth_modal_close" class="modal_close">&times;</span>
                     <form method="post" class="modal_form" id="auth_form">
@@ -192,28 +189,19 @@
 
         </main>
         <footer></footer>
+        <span id="feedback"></span>
 
         <!-- スクリプト導入 -->
-        <script>
-            const isLoggedIn = <?php echo json_encode($is_logged_in); ?>;
-            let userId;
-            let limitedSession;
-            
-            <?php if (isset($_SESSION['user_id'])): ?>
-            userId = <?php echo json_encode($_SESSION['user_id']); ?>;
-            <?php endif; ?>
-            
-            <?php if (isset($_SESSION['limited_session']['status'])): ?>
-            limitedSession = <?php echo json_encode($_SESSION['limited_session']['status']); ?>;
-            <?php endif; ?>
-
-            document.addEventListener("click", function(event) {
-                    <?php if (isset($_SESSION['limited_session']['status'])): ?>
-                    limitedSession = <?php echo json_encode($_SESSION['limited_session']['status']); ?>;
-                    console.log(limitedSession);
-                    <?php endif; ?>
-                }, true);
-        </script>
+        <div id="hidden_container" style="display: none">
+            <script>
+                const isLoggedIn = <?php echo json_encode($_SESSION['is_logged_in']); ?>;
+                let userId;
+                
+                <?php if (isset($_SESSION['user_id'])): ?>
+                userId = <?php echo json_encode($_SESSION['user_id']); ?>;
+                <?php endif; ?>
+            </script>
+        </div> 
         <script src="js/modal.js"></script>
         <script src="js/transmission.js"></script>
         <script src="js/manipulate.js"></script>

@@ -39,7 +39,7 @@ Array.from(openEditModalBtns).forEach((button) => {
         const userId = row.querySelector("td:nth-child(2)").textContent.trim(); // passNameを取得
         const passId = row.querySelector(".pass_id").value; // pass_idを取得
 
-        if (!(await sessionCheck())) {
+        if (!(await mainProcess())) {
             return;
         }
 
@@ -60,6 +60,9 @@ closeEditModalBtn.onclick = () => closeModal(editModal);
 const authModal = document.getElementById("auth_modal");
 const closeAuthModalBtn = document.getElementById("auth_modal_close");
 
+// モーダルを閉じる
+closeAuthModalBtn.onclick = () => closeModal(authModal);
+
 document.addEventListener('DOMContentLoaded', async function() {
     const feedback_element = document.getElementById('feedback');
 
@@ -76,6 +79,3 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
     }
 });
-
-// モーダルを閉じる
-closeAuthModalBtn.onclick = () => closeModal(authModal);

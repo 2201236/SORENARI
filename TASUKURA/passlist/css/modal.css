@@ -1,5 +1,5 @@
 /* モーダル全体のスタイル */
-.add_modal, .edit_modal, .auth_modal {
+.modal_wrapper {
     display: none; /* 初期は非表示 */
     position: fixed; 
     z-index: 1; 
