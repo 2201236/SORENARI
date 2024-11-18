@@ -19,6 +19,14 @@ async function openAuthModalAndWaitForAuth() {
     
     openModal(authModal); // モーダルを開く
 
+    if (typeof userId === 'undefined') {
+        document.getElementById('auth_passName').focus();
+        document.getElementById('auth_passName').select();
+    } else {
+        document.getElementById('auth_passtxt').focus();
+        document.getElementById('auth_passtxt').select();
+    }
+
     // 既存の submit イベントリスナーを削除して、重複を防ぐ
     const authForm = document.getElementById('auth_form');
     authForm.removeEventListener('submit', authForm._submitListener);

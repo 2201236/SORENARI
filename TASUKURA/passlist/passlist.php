@@ -45,81 +45,78 @@
             <?php require '../header/header.php' ?>
         </header>
         <main>
-        <div class="container">
-                <div class="left_side">
-                    <div class="search_window">
-                        <form action="" method="post" class="search_form">
-                            <div class="search_bar">
-                                <input type="text" autocomplete="off" aria-autocomplete="list" aria-controls="react-autowhatever-1" class="search_word_input" .
-                                placeholder="パスワードを検索" name="search_word_input" value="" spellcheck="false" data-ms-editor="true">
-                            </div>
-                            <div class="search_button">
-                                <button type="submit" class="search_word_submit_button">
-                                    検索
-                                </button>
-                            </div>
-                        </form>
+            <div class="container">
+                <div class="container_header">
+                    <div class="left_side">
+                        <div class="search_window">
+                            <form action="" method="post" class="search_form">
+                                <div class="search_bar">
+                                    <input type="text" autocomplete="off" aria-autocomplete="list" aria-controls="react-autowhatever-1" class="search_word_input" .
+                                    placeholder="パスワードを検索" name="search_word_input" value="" spellcheck="false" data-ms-editor="true">
+                                </div>
+                                <div class="search_button">
+                                    <button type="submit" class="search_word_submit_button">
+                                        検索
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="search_preset">
-                        <!-- ここに検索ワードのプリセットを表示 -->
-                        <div class="search_preset_item">Google</div>
-                        <div class="search_preset_item">Microsoft</div>
+                    <div class="right_side">
+                        <div class="open_add_modal_button_wrapper">
+                            <!-- 押したら追加フォームのモーダルが開く -->
+                            <button class="open_add_modal" id="open_add_modal">
+                                パスワードを追加
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="right_side">
-                    <div class="open_add_modal_button_wrapper">
-                        <!-- 押したら追加フォームのモーダルが開く -->
-                        <button class="open_add_modal" id="open_add_modal">
-                            パスワードを追加
-                        </button>
-                    </div>
-                    <div class="table_wrapper">
-                        <table class="pass_table"> 
-                            <thead>
+                <div class="table_wrapper">
+                    <table class="pass_table"> 
+                        <thead>
+                            <tr>
+                                <th>URL</th>
+                                <th>ユーザーID</th>
+                                <th>パスワード</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table_container">
+                            <?php foreach($list as $item):?>
                                 <tr>
-                                    <th>URL</th>
-                                    <th>ユーザーID</th>
-                                    <th>パスワード</th>
-                                    <th></th>
-                                    <th></th>
+                                    <td>
+                                        <input type="hidden" class="pass_id" value="<?php echo $item['pass_id']; ?>" />
+                                        <?php echo htmlspecialchars($item['URL'], ENT_QUOTES, 'UTF-8'); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo htmlspecialchars($item['passName'], ENT_QUOTES, 'UTF-8');?>
+                                    </td>
+                                    <td>
+                                        <span class="passtxt">***************</span>
+                                    </td>
+                                    <td>
+                                        <div class="buttons_wrapper">
+                                            <div class="button_wrapper">
+                                                <button type="button" class="toggle_passtxt_button">表示</button>
+                                            </div>
+                                            <div class="button_wrapper">
+                                                <button type="button" class="copy_button">コピー</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="button_wrapper">
+                                            <button class="open_edit_modal">編集</button>
+                                        </div>
+                                        <div class="button_wrapper">
+                                            <button class="del_button">削除</button>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody class="table_container">
-                                <?php foreach($list as $item):?>
-                                    <tr>
-                                        <td>
-                                            <input type="hidden" class="pass_id" value="<?php echo $item['pass_id']; ?>" />
-                                            <?php echo htmlspecialchars($item['URL'], ENT_QUOTES, 'UTF-8'); ?>
-                                        </td>
-                                        <td>
-                                            <?php echo htmlspecialchars($item['passName'], ENT_QUOTES, 'UTF-8');?>
-                                        </td>
-                                        <td>
-                                            <span class="passtxt">***************</span>
-                                        </td>
-                                        <td>
-                                            <div class="buttons_wrapper">
-                                                <div class="button_wrapper">
-                                                    <button type="button" class="toggle_passtxt_button">表示</button>
-                                                </div>
-                                                <div class="button_wrapper">
-                                                    <button type="button" class="copy_button">コピー</button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="button_wrapper">
-                                                <button class="open_edit_modal">編集</button>
-                                            </div>
-                                            <div class="button_wrapper">
-                                                <button class="del_button">削除</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach;?>
-                            </tbody>
-                        </table>
-                    </div>
+                            <?php endforeach;?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -146,7 +143,6 @@
             </div>
 
             <!-- 編集用モーダル -->
-            <!-- 変更がなかった場合、変更情報を記入する旨の文を表示し、データ更新を行わない -->
             <div id="edit_modal" class="modal_wrapper">
                 <div class="modal_content">
                     <span id="edit_modal_close" class="modal_close">&times;</span>
