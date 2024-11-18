@@ -20,12 +20,33 @@
             exit;
         }
 
-        $sql= "SELECT pass_id, URL, passName FROM PassList WHERE user_id = ? ";
-                
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$_SESSION['user_id']]);
-        $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // 検索ワードの取得と安全な処理
+        $search_word = '';
+        if (isset($_GET['s'])) {
+            // 文字エンコーディングを確実にUTF-8に
+            $search_word = mb_convert_encoding(trim($_GET['s']), 'UTF-8', 'AUTO');
+            
+            // HTMLスペシャルキャラクターをエスケープ
+            $search_word = htmlspecialchars($search_word, ENT_QUOTES, 'UTF-8');
+        }
 
+        if ($search_word) {
+            // 検索ワードがある場合に部分一致検索
+            $sql = "SELECT pass_id, URL, passName FROM PassList WHERE user_id = ? AND (URL LIKE ? OR passName LIKE ?)";
+            $stmt = $pdo->prepare($sql);
+        
+            // 部分一致検索用のワイルドカードを検索ワードに追加
+            $search_term = '%' . $search_word . '%';
+            $stmt->execute([$_SESSION['user_id'], $search_term, $search_term]);
+        
+            $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            // 検索ワードが空の場合、全件を取得
+            $sql = "SELECT pass_id, URL, passName FROM PassList WHERE user_id = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_SESSION['user_id']]);
+            $list = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     } else {
         $list = [];
     }
@@ -42,37 +63,33 @@
     </head>
     <body>
         <header>
-            <?php require '../header/header.php' ?>
+            <?php require '../header/header2.php' ?>
         </header>
         <main>
             <div class="container">
                 <div class="container_header">
-                    <div class="left_side">
-                        <div class="search_window">
-                            <form action="" method="post" class="search_form">
-                                <div class="search_bar">
-                                    <input type="text" autocomplete="off" aria-autocomplete="list" aria-controls="react-autowhatever-1" class="search_word_input" .
-                                    placeholder="パスワードを検索" name="search_word_input" value="" spellcheck="false" data-ms-editor="true">
-                                </div>
-                                <div class="search_button">
-                                    <button type="submit" class="search_word_submit_button">
-                                        検索
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="search_window">
+                        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="get" class="search_form">
+                            <div class="search_bar">
+                                <input type="text" autocomplete="off" aria-autocomplete="list" aria-controls="react-autowhatever-1" class="search_word_input" .
+                                placeholder="パスワードを検索" name="s" value="" spellcheck="false" data-ms-editor="true">
+                            </div>
+                            <div class="search_button">
+                                <button type="submit" class="search_word_submit_button">
+                                    検索
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="right_side">
-                        <div class="open_add_modal_button_wrapper">
-                            <!-- 押したら追加フォームのモーダルが開く -->
-                            <button class="open_add_modal" id="open_add_modal">
-                                パスワードを追加
-                            </button>
-                        </div>
+                    <div class="open_add_modal_button_wrapper">
+                        <!-- 押したら追加フォームのモーダルが開く -->
+                        <button class="open_add_modal" id="open_add_modal">
+                            パスワードを追加
+                        </button>
                     </div>
                 </div>
                 <div class="table_wrapper">
-                    <table class="pass_table"> 
+                    <table class="table_header"> 
                         <thead>
                             <tr>
                                 <th>URL</th>
@@ -95,7 +112,7 @@
                                     <td>
                                         <span class="passtxt">***************</span>
                                     </td>
-                                    <td>
+                                    <td class="buttons_view">
                                         <div class="buttons_wrapper">
                                             <div class="button_wrapper">
                                                 <button type="button" class="toggle_passtxt_button">表示</button>
@@ -104,13 +121,13 @@
                                                 <button type="button" class="copy_button">コピー</button>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <div class="button_wrapper">
-                                            <button class="open_edit_modal">編集</button>
-                                        </div>
-                                        <div class="button_wrapper">
-                                            <button class="del_button">削除</button>
+                                        <div class="buttons_wrapper">
+                                            <div class="button_wrapper">
+                                                <button class="open_edit_modal">編集</button>
+                                            </div>
+                                            <div class="button_wrapper">
+                                                <button class="del_button">削除</button>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -127,17 +144,17 @@
                     <form method="post" class="modal_form" id="add_form">
                         <div class="form_group">
                             <label for="add_url">URL:</label>
-                            <input type="text" id="add_url" name="url">
+                            <input type="text" class="url" id="add_url" name="url">
                         </div>
                         <div class="form_group">
                             <label for="add_passName">ユーザーID:</label>
-                            <input type="text" id="add_passName" name="passName">
+                            <input type="text" class="passName" id="add_passName" name="passName">
                         </div>
                         <div class="form_group">
                             <label for="add_passtxt">パスワード:</label>
-                            <input type="password" id="add_passtxt" name="passtxt" minlength="4" required>
+                            <input type="password" class="passtxt" id="add_passtxt" name="passtxt" minlength="4" required>
                         </div>
-                        <button type="submit" class="add_submit_button">追加</button>
+                        <button type="submit" class="submit_button">追加</button>
                     </form>
                 </div>
             </div>
@@ -150,17 +167,17 @@
                         <input type="hidden" id="pass_id" name="pass_id" />
                         <div class="form_group">
                             <label for="edit_url">URL:</label>
-                            <input type="text" id="edit_url" name="url">
+                            <input type="text" class="url" id="edit_url" name="url">
                         </div>
                         <div class="form_group">
                             <label for="edit_passName">ユーザーID:</label>
-                            <input type="text" id="edit_passName" name="passName">
+                            <input type="text" class="passName" id="edit_passName" name="passName">
                         </div>
                         <div class="form_group">
                             <label for="edit_passtxt">パスワード:</label>
-                            <input type="password" id="edit_passtxt" name="passtxt" minlength="4">
+                            <input type="password" class="passtxt" id="edit_passtxt" name="passtxt" minlength="4">
                         </div>
-                        <button type="submit" class="edit_submit_button">変更を保存</button>
+                        <button type="submit" class="submit_button">変更を保存</button>
                     </form>
                 </div>
             </div>
@@ -172,13 +189,13 @@
                     <form method="post" class="modal_form" id="auth_form">
                         <div class="form_group" id="auth_form_group_passName">
                             <label for="auth_passName">ユーザーID:</label>
-                            <input type="text" id="auth_passName" name="user_id" placeholder="メールアドレス" required>
+                            <input type="text" class="passName" id="auth_passName" name="user_id" placeholder="メールアドレス" required>
                         </div>
                         <div class="form_group">
                             <label for="auth_passtxt">パスワード:</label>
-                            <input type="password" id="auth_passtxt" name="passtxt" placeholder="パスワード" required>
+                            <input type="password" class="passtxt" id="auth_passtxt" name="passtxt" placeholder="パスワード" required>
                         </div>
-                        <button type="submit" class="show_submit_button">認証</button>
+                        <button type="submit" class="submit_button">認証</button>
                     </form>
                 </div>
             </div>
