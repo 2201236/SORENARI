@@ -23,8 +23,8 @@ body {
 
 header {
     text-align: center;
-    background-color: #3F3FEB; /* Bolder turquoise for the header */
-    color: white; /* Contrast text for readability */
+    background-color: #ffffff; /* Bolder turquoise for the header */
+    color: rgb(0, 0, 0); /* Contrast text for readability */
     padding: 30px;
     border-radius: 12px;
     margin-bottom: 20px;
@@ -60,7 +60,7 @@ h1 {
 }
 
 .bar-inner {
-    background-color: #0A0AB0; /* Darker green for contrast */
+    background-color: #0040ff; /* Darker green for contrast */
     height: 100%;
     border-radius: 10px;
     transition: width 0.5s ease-in-out; /* Smooth transition */
@@ -68,7 +68,7 @@ h1 {
 
 .bar-labels {
     text-align: center;
-    font-weight: 500;
+    font-size:25px ;
     color: #0A0AB0;
 }
 
@@ -142,4 +142,3 @@ button:hover {
 .budget-section:hover, .expense-input:hover, .income-input:hover {
     transform: translateY(-5px); /* Hover lift for interactivity */
 }
-

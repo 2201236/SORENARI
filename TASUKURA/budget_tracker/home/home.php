@@ -76,9 +76,31 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>家計簿管理 ダッシュボード</title>
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="../../header/css/header2.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+<button class="back-button" onclick="window.history.back()">← </button>
+
+    <!-- トグルメニューボタン -->
+    <button class="menu-toggle" id="menuToggle"> ☰</button>
+
+    <!-- メニュー -->
+    <nav class="menu" id="menu">
+        <ul>
+            <li><a href="../../home/home.php" class="menu-item">🏠 ホーム</a></li>
+            <li><a href="../../calendar/calendar.php" class="menu-item">📅 カレンダー</a></li>
+            <li><a href="../../study/study_management.php" class="menu-item">📖 学習管理</a></li>
+            <li><a href="../../budget_tracker/home/home.php" class="menu-item">🏦 家計簿</a></li>
+            <li><a href="#" class="menu-item">🗂️ 共有ボード</a></li>
+            <li><a href="../../passlist/passlist.php" class="menu-item">🗝 パスワード</a></li>
+            <li><a href="#" class="menu-item">⚙ 設定</a></li>
+            <li><a href="../../logout/logoutinput.php" class="menu-item">👋 ログアウト</a></li>
+        </ul>
+    </nav>
+
+    <script src="../../header/js/menu.js"></script>
+
 <div class="container">
     <header>
         <div class="header-content">
@@ -123,7 +145,7 @@ try {
                     <input type="text" id="expense-description" placeholder="支出の内容" required>
                     <input type="text" id="expense-amount" placeholder="金額" required>
                     <input type="date" id="expense-date" required>
-                    <input type="number" id="num_id" placeholder="識別番号" required>
+                  
                     <button type="submit" class="button">支出を追加</button>
                 </form>
             </section>
@@ -134,7 +156,7 @@ try {
                     <input type="text" id="income-description" placeholder="収入の内容" required>
                     <input type="text" id="income-amount" placeholder="金額" required>
                     <input type="date" id="income-date" required>
-                    <input type="number" id="income-num_id" placeholder="識別番号" required>
+                    
                     <button type="submit" class="button">収入を追加</button>
                 </form>
             </section>
@@ -210,7 +232,7 @@ try {
                 let description = $('#expense-description').val();
                 let amount = $('#expense-amount').val();
                 let date = $('#expense-date').val();
-                let num_id = $('#num_id').val();
+              
 
                  // PHPから取得した budget と monthly_outgo をJavaScriptで整数変換
                 let budget = Number(<?php echo json_encode($budget); ?>);
@@ -230,7 +252,7 @@ try {
                         description: description,
                         amount: amount,
                         date: date,
-                        num_id: num_id
+                       
                     },
                     success: function(response) {
                         setTimeout(function() {
@@ -248,7 +270,7 @@ try {
                 let description = $('#income-description').val();
                 let amount = $('#income-amount').val();
                 let date = $('#income-date').val();
-                let num_id = $('#income-num_id').val();
+                
 
                 $.ajax({
                     url: 'insert_income.php',
@@ -257,7 +279,7 @@ try {
                         description: description,
                         amount: amount,
                         date: date,
-                        num_id: num_id
+                       
                     },
                     success: function(response) {
                         alert(response);
