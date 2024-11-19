@@ -15,3 +15,15 @@ function toggleDetails(element) {
         details.style.display = "none";
     }
 }
+
+// サブタスクの開閉を制御する関数
+function toggleDetails(button, taskId) {
+    var details = document.getElementById('subtask-details-' + taskId);
+    if (details.style.display === 'none' || details.style.display === '') {
+        details.style.display = 'block';
+        button.classList.add('details-expanded');
+    } else {
+        details.style.display = 'none';
+        button.classList.remove('details-expanded');
+    }
+}

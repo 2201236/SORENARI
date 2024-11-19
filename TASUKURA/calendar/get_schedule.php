@@ -15,28 +15,39 @@ try {
     die("データベース接続失敗: " . $e->getMessage());
 }
 
-// 日付パラメータが指定されているか確認
-if (isset($_GET['date'])) {
+// 日付とユーザーIDが指定されているか確認
+if (isset($_GET['date']) && isset($_SESSION['user_id'])) {
     $date = $_GET['date'];
+    $user_id = $_SESSION['user_id']; // セッションからユーザーIDを取得
 
-    try {
-        // スケジュールを取得するSQL文を準備
-        $stmt = $pdo->prepare("
-            SELECT itemNo, title, starttime, endtime
-            FROM Managements
-            WHERE :date BETWEEN DATE(starttime) AND DATE(endtime)
-        ");
-        $stmt->bindParam(':date', $date, PDO::PARAM_STR); // 日付の型を指定
-        $stmt->execute();
+    // 日付の形式をチェック
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+        try {
+            // ユーザーIDと日付でスケジュールを絞り込むSQL文を準備
+            $stmt = $pdo->prepare("
+                SELECT itemNo, title, starttime, endtime
+                FROM Managements
+                WHERE user_id = :user_id 
+                AND DATE(starttime) <= :date AND DATE(endtime) >= :date
+            ");
+            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT); // ユーザーIDの型を指定
+            $stmt->bindParam(':date', $date, PDO::PARAM_STR); // 日付の型を指定
+            $stmt->execute();
 
-        // スケジュールを取得してJSONで出力
-        $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // スケジュールを取得してJSONで出力
+            $schedules = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            header('Content-Type: application/json');
+            echo json_encode($schedules);
+        } catch (PDOException $e) {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'スケジュールの取得に失敗しました: ' . $e->getMessage()]);
+        }
+    } else {
         header('Content-Type: application/json');
-        echo json_encode($schedules);
-    } catch (PDOException $e) {
-        echo json_encode(['error' => 'スケジュールの取得に失敗しました: ' . $e->getMessage()]);
+        echo json_encode(['error' => '無効な日付形式です']);
     }
 } else {
-    echo json_encode(['error' => '日付が指定されていません']);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => '日付またはユーザーIDが指定されていません']);
 }

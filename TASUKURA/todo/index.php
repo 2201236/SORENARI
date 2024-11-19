@@ -1,6 +1,9 @@
-<?php
+<?php 
 // db_connection.php: データベース接続設定
-session_start();
+// セッションがまだ開始されていなければ開始する
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 $host = 'mysql310.phy.lolipop.lan';
 $dbname = 'LAA1517469-taskura';
 $username = 'LAA1517469';
@@ -13,8 +16,11 @@ try {
     die("データベース接続エラー: " . $e->getMessage());
 }
 
-// ログインセッション
-$_SESSION['user_id'] = 1;  // ダミーユーザーID (本番ではログイン処理が必要)
+// ログインセッション (ダミーユーザーIDを削除し、実際のセッションIDを使用)
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+if (!$user_id) {
+    die("ユーザーがログインしていません");
+}
 
 // サブタスクの完了状態更新
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_complete'])) {
@@ -38,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
     $priority = $_POST['priority'];
     $category = $_POST['category'];
     $tags = $_POST['tags'];
-    $user_id = $_SESSION['user_id'];
 
     $sql = "INSERT INTO Todos (user_id, task, due_date, priority, category, tags) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $pdo->prepare($sql);
@@ -87,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_progress'])) {
 <head>
     <meta charset="UTF-8">
     <title>ToDoリスト</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -95,6 +100,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_progress'])) {
             $('input[type="range"]').on('input', function() {
                 var progressValue = $(this).val();  // 進捗バーの現在の値を取得
                 $(this).next('span').text(progressValue + '%');  // ％表示を更新
+            });
+
+            // サブタスク展開・非表示
+            $('.toggle-details').click(function() {
+                $(this).next('.subtask-details').toggle();
             });
         });
     </script>
@@ -125,33 +135,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_progress'])) {
     <!-- タスクリスト表示 -->
     <div id="task_list">
         <?php
-        $user_id = $_SESSION['user_id'];
         $stmt = $pdo->prepare("SELECT * FROM Todos WHERE user_id = ? ORDER BY due_date ASC");
         $stmt->execute([$user_id]);
         $tasks = $stmt->fetchAll();
 
         foreach ($tasks as $task) {
-            echo "<div>";
+            echo "<div class='task-item'>";
             echo "<h3>" . htmlspecialchars($task['task']) . "</h3>";
             echo "<p>期日: " . htmlspecialchars($task['due_date']) . "</p>";
             echo "<p>優先度: " . htmlspecialchars($task['priority']) . "</p>";
 
             // サブタスク表示
-            echo "<h4>サブタスク:</h4><ul>";
+            echo "<h4 class='toggle-details'>サブタスク:</h4>";
+            echo "<div class='subtask-details'>";
             $subtasks_stmt = $pdo->prepare("SELECT * FROM Subtasks WHERE task_id = ?");
             $subtasks_stmt->execute([$task['id']]);
             $subtasks = $subtasks_stmt->fetchAll();
             foreach ($subtasks as $subtask) {
-                echo "<li>" . htmlspecialchars($subtask['subtask']);
+                echo "<div class='subtask-item'>" . htmlspecialchars($subtask['subtask']);
                 // チェックボックス形式で完了/未完了を切り替え
                 echo "<form method='POST' style='display:inline;'>";
                 echo "<input type='hidden' name='subtask_id' value='{$subtask['id']}'>";
                 echo "<input type='checkbox' name='is_done' value='1' " . ($subtask['is_done'] ? "checked" : "") . " onchange='this.form.submit();'>";
                 echo "<input type='hidden' name='mark_complete' value='1'>";
                 echo "</form>";
-                echo "</li>";
+                echo "</div>";
             }
-            echo "</ul>";
+            echo "</div>";
 
             // サブタスク追加フォーム (カンマ区切り入力)
             echo "<form method='POST'>";
@@ -174,5 +184,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_progress'])) {
         ?>
     </div>
 </body>
-</html>
-
+</html>  
