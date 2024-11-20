@@ -50,7 +50,6 @@
     } else {
         $list = [];
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="js">
