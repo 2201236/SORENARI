@@ -24,7 +24,7 @@ main {
 
 /* Main Wrapper */
 .container {
-  max-width: 80vw;
+  max-width: 90vw;
   width: 100%;
   padding: 2rem;
   margin-top: 50px;
@@ -82,67 +82,185 @@ main {
   text-decoration: underline;
 }
 
-/* Header */
-.container_headerh {
+/* Container header */
+.container_header {
   display: flex;
-  justify-content: space-between; /* Positions elements at left and right */
-  align-items: center; /* Centers elements vertically within the header */
-  gap: 1rem; /* Adds space between left and right elements */
-  padding: 1rem; /* Optional padding for visual spacing */
+  justify-content: space-between; /* エレメントを左右に配置 */
+  align-items: center; /* 要素をヘッダー内で垂直に中央揃えする */
+  gap: 1rem; /* 左右の要素の間にスペースを加える */
+  padding: 1rem; /* 視覚的スペーシングのためのオプションのパディング */
 }
 
-/* Input and Search Bar */
-.container input[type="text"],
-.container textarea {
-  width: calc(100% - 100px); /* Adjust width to make room for button */
-  padding: 0.5rem;
+.search_form {
+  display: flex;
+  align-items: center;
+}
+
+/* 検索フォームと追加ボタン */
+/* ボタンと検索バーをリセットして統一 */
+.container_header .search_bar .search_word_input {
+  padding: 0.5rem 1rem; /* 入力欄の内側余白 */
   border: 2px solid #1e90ff;
-  border-radius: 4px 0 0 4px;
-  font-size: 1rem;
+  border-radius: 8px 0 0 8px; /* 左側の角丸 */
+  font-size: 1rem; /* テキストサイズを統一 */
   outline: none;
+  height: 40px; /* 明示的に高さを統一 */
+  box-sizing: border-box; /* パディングを含むボックスモデル */
 }
 
-.container input[type="text"]:focus,
-.container textarea:focus {
+.container_header .search_bar .search_word_input:focus {
   border-color: #104e8b;
 }
 
-/* Search Button (beside search box) */
-.container .search-button {
-  padding: 0.5rem 1rem;
-  background-color: #1e90ff;
-  color: white;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-  font-size: 1rem;
+.container_header .search_button button {
+  padding: 0.5rem 1rem; /* ボタンの内側余白 */
+  background-color: #1e90ff; /* ボタン背景色 */
+  color: white; /* テキスト色 */
+  border: none; /* デフォルトの枠線を削除 */
+  border-radius: 0 8px 8px 0; /* 右側の角丸 */
+  font-size: 1rem; /* テキストサイズを統一 */
+  cursor: pointer; /* カーソルをポインターに設定 */
+  height: 40px; /* 検索バーと高さを揃える */
+  box-sizing: border-box;
   transition: background-color 0.3s;
 }
 
-.container .search-button:hover {
-  background-color: #104e8b;
+.container_header .search_button button:hover {
+  background-color: #104e8b; /* ホバー時の色変更 */
+}
+
+/* パスワード追加ボタン */
+.open_add_modal_button_wrapper .open_add_modal {
+  padding: 0.5rem 1rem; /* 内側余白 */
+  background-color: #f0f0f0; /* 背景色（オプション） */
+  color: black; /* テキスト色 */
+  border: 1px solid #ccc; /* ボーダー色 */
+  border-radius: 8px; /* 全角丸 */
+  font-size: 1rem; /* テキストサイズ */
+  cursor: pointer;
+  height: 40px; /* 他のボタンと高さを統一 */
+  box-sizing: border-box;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.open_add_modal_button_wrapper .open_add_modal:hover {
+  background-color: #e0e0e0; /* ホバー時の背景色変更 */
+  border-color: #aaa; /* ホバー時のボーダー色変更 */
 }
 
 /* Tables */
-.container table {
+.table_wrapper {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 1.5rem;
+  font-size: 10.5pt;
+  max-height: 77vh; /* tbodyの高さを制限 */
+  overflow-y: auto; /* 縦スクロールを有効化 */
+  overflow-x: auto; /* 横スクロールを有効化 */
+  position: relative; /* スクロールバーをスタイリングするため */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.container table th, .container table td {
+.table_wrapper::-webkit-scrollbar {
+  display: none; /* スクロールバーを非表示 */
+}
+
+.table_header {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table_header th, .table_header td {
   padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #1e90ff;
 }
 
-.container table th {
+.table_header th {
   background-color: #1e90ff;
   color: #ffffff;
+  position: sticky;
+  top: 0; /* ヘッダーを固定 */
+  z-index: 1; /* ヘッダーを他の要素より上に表示 */
 }
 
-.container table tr:hover {
+.table_header tr:hover {
   background-color: #e0f7ff;
+}
+
+.buttons_view {
+  display: flex;
+  gap: 10px;
+}
+
+/* ボタン群のラッパー */
+.buttons_wrapper {
+  display: flex;
+  gap: 0.5rem; /* ボタン間のスペース */
+}
+
+/* 各ボタンの共通スタイル */
+.button_wrapper button {
+  width: 60px;
+  /* padding: 0.5rem 0.5rem; */
+  font-size: 10pt; /* 少し小さめの文字サイズ */
+  border: none; /* デフォルトの枠線を削除 */
+  border-radius: 8px; /* 柔らかい印象の角丸 */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  height: 36px; /* 高さを揃える */
+  box-sizing: border-box;
+}
+
+/* 表示ボタン */
+.toggle_passtxt_button {
+  background-color: #1e90ff; /* 青系 */
+  color: white; /* テキストを白 */
+}
+
+.toggle_passtxt_button:hover {
+  background-color: #104e8b; /* ホバー時に濃い青 */
+}
+
+/* コピーボタン */
+.copy_button {
+  background-color: #1e90ff; /* 緑系 */
+  color: white;
+}
+
+.copy_button:hover {
+  background-color: #104e8b; /* ホバー時に濃い緑 */
+}
+
+/* 編集ボタン */
+.open_edit_modal {
+  background-color: #1e90ff; /* オレンジ系 */
+  color: white;
+}
+
+.open_edit_modal:hover {
+  background-color: #104e8b; /* ホバー時に濃いオレンジ */
+}
+
+/* 削除ボタン */
+.del_button {
+  background-color: #ff4500; /* 赤系 */
+  color: white;
+}
+
+.del_button:hover {
+  background-color: #cc3700; /* ホバー時に濃い赤 */
+}
+
+/* スモールスクリーン対応 */
+@media (max-width: 768px) {
+  .buttons_wrapper {
+    flex-direction: column; /* ボタンを縦に並べる */
+    gap: 0.3rem; /* スペースを少し狭める */
+  }
+
+  .button_wrapper button {
+    width: 100%; /* ボタンを横幅いっぱいにする */
+  }
 }
 
 /* Footer
