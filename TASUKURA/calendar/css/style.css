@@ -1,4 +1,84 @@
-/* Base styles for body */
+/* ヘッダーに適切なスタイルを追加 */
+header {
+  position: relative; /* 必要に応じて固定を解除 */
+  z-index: 10; /* ヘッダーが上に来るように調整 */
+  background-color: #fff; /* ヘッダーの背景色を明確に */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+/* メインコンテナのスタイル修正 */
+#main-container {
+  display: flex;
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 70px; /* ヘッダー高さ分の余白を確保 */
+  padding: 10px;
+  box-sizing: border-box; /* ボックスサイズを調整 */
+}
+
+/* カレンダーセクションの調整 */
+#calendar {
+  flex: 1;
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; /* 少し角丸を追加 */
+}
+
+/* ToDoリストセクションの調整 */
+#todo-schedule-container {
+  flex: 1;
+  max-width: 350px;
+  overflow-y: auto;
+  height: 600px;
+  padding: 10px;
+  border-left: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; /* 少し角丸を追加 */
+}
+
+/* 各タスクやサブタスクのスタイル修正 */
+.task-item, .subtask-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px; /* カード風にするため角丸追加 */
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.task-item:hover, .subtask-item:hover {
+  transform: translateX(5px);
+  background-color: rgba(243, 244, 246, 0.8);
+}
+
+/* カレンダーの余白とデザインの調整 */
+#calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#calendar-table th, #calendar-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#calendar-body td {
+  height: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#calendar-body .today {
+  background-color: #e0f7fa;
+  font-weight: bold;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -12,6 +92,15 @@ body {
   display: flex;
   max-width: 1100px;
   width: 100%;
+}
+/* 時計のデザイン */
+#clock {
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  color: #ff69b4; /* ピンク色 */
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 /* Calendar section */

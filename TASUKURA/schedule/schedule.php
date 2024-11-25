@@ -102,37 +102,39 @@ try {
     exit; // Exit script on error
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スケジュール一覧</title>
+    <title>スケジュール管理</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <header>
+    <?php require '../header/header2.php' ?>
+    </header>
+    <main>
+        <h2>スケジュール登録</h2>
+        <form method="post" action="">
+            <input type="text" name="new_title" placeholder="タイトル" required>
+            <input type="datetime-local" name="new_starttime">
+            <input type="datetime-local" name="new_endtime">
+            <input type="submit" name="register" value="登録">
+        </form>
 
-<h2>スケジュール登録</h2>
-<form method="post" action="">
-    <input type="text" name="new_title" placeholder="タイトル" required>
-    <input type="datetime-local" name="new_starttime">
-    <input type="datetime-local" name="new_endtime">
-    <input type="submit" name="register" value="登録">
-</form>
-
-<h2>スケジュール一覧</h2>
-<table>
-    <thead>
-        <tr>
-            <th>タイトル</th>
-            <th>開始時刻</th>
-            <th>終了時刻</th>
-            <th>登録日</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
+        <h2>スケジュール一覧</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>開始時刻</th>
+                    <th>終了時刻</th>
+                    <th>登録日</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
         <?php if (!empty($schedules)): ?>
             <?php foreach ($schedules as $schedule): ?>
                 <tr>
@@ -155,8 +157,7 @@ try {
             </tr>
         <?php endif; ?>
     </tbody>
-</table>
+        </table>
+    </main>
 </body>
 </html>
-
-

@@ -27,3 +27,6 @@ function toggleDetails(button, taskId) {
         button.classList.remove('details-expanded');
     }
 }
+    
+    
+    
