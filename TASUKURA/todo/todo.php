@@ -73,30 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_progress'])) {
     exit();
 }
 
-// タスクの完了/未完了処理
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_done'])) {
-    $task_id = $_POST['task_id'];
-
-    // 完了状態に切り替え
-    $update_task_sql = "UPDATE Todos SET is_done = 1 WHERE id = ?";
-    $stmt = $pdo->prepare($update_task_sql);
-    $stmt->execute([$task_id]);
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mark_incomplete'])) {
-    $task_id = $_POST['task_id'];
-
-    // 未完了状態に切り替え
-    $update_task_sql = "UPDATE Todos SET is_done = 0 WHERE id = ?";
-    $stmt = $pdo->prepare($update_task_sql);
-    $stmt->execute([$task_id]);
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-}
-
-
 // タスク削除処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_task'])) {
     $task_id = $_POST['task_id'];
@@ -266,17 +242,8 @@ foreach ($tasks as $task) {
     echo "<button type='submit' name='update_progress'>進捗更新</button>";
     echo "</form>";
 
-    // 完了/未完了切り替えボタン
-    echo "<form method='POST' class='complete-form'>";
-    echo "<input type='hidden' name='task_id' value='{$task['id']}'>";
-    if ($task['is_done']) {
-        echo "<button type='submit' name='mark_incomplete' value='1'>未完了</button>";
-    } else {
-        echo "<button type='submit' name='mark_done' value='1'>完了</button>";
-    }
-    echo "</form>";
 
-    // タスク削除ボタン (完了した場合)
+    // タスク削除ボタン
     if ($task['is_done']) {
         echo "<form method='POST' class='delete-form' onsubmit='return confirm(\"このタスクを削除しますか？\");'>";
         echo "<input type='hidden' name='task_id' value='{$task['id']}'>";
