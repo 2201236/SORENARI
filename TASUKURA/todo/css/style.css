@@ -1,0 +1,127 @@
+/* ??????? */
+body {
+    font-family: "Comic Sans MS", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5faff; /* ?????? */
+    color: #333;
+    text-align: center;
+}
+
+/* ???? */
+h1 {
+    color: #ff87a3; /* ?????? */
+    background-color: #fff;
+    padding: 20px;
+    border-bottom: 2px solid #ffe3eb;
+    margin: 0 0 20px 0;
+}
+
+/* ????????? */
+form {
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+form input[type="text"], 
+form input[type="date"], 
+form select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #ff87a3; /* ?????? */
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #ff6387; /* ?????????? */
+}
+
+/* ????? */
+#task_list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.task-item {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 90%;
+    max-width: 300px;
+    text-align: left;
+}
+
+.task-item h3 {
+    color: #333;
+    font-size: 20px;
+    margin: 0;
+}
+
+.task-item p {
+    margin: 10px 0;
+    color: #555;
+}
+
+.task-item h4 {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #ff87a3; /* ?????? */
+}
+
+/* ????? */
+.subtask-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding: 5px;
+    background-color: #f5faff; /* ?????? */
+    border: 1px solid #dfefff;
+    border-radius: 5px;
+}
+
+.subtask-item form {
+    margin: 0 10px;
+}
+
+/* ????? */
+.delete-form button {
+    background-color: #ff6666; /* ?? */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-form button:hover {
+    background-color: #ff4d4d;
+}

@@ -1,0 +1,240 @@
+/* ヘッダーに適切なスタイルを追加 */
+header {
+  position: relative; /* 必要に応じて固定を解除 */
+  z-index: 10; /* ヘッダーが上に来るように調整 */
+  background-color: #fff; /* ヘッダーの背景色を明確に */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+/* メインコンテナのスタイル修正 */
+#main-container {
+  display: flex;
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 70px; /* ヘッダー高さ分の余白を確保 */
+  padding: 10px;
+  box-sizing: border-box; /* ボックスサイズを調整 */
+}
+
+/* カレンダーセクションの調整 */
+#calendar {
+  flex: 1;
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; /* 少し角丸を追加 */
+}
+
+/* ToDoリストセクションの調整 */
+#todo-schedule-container {
+  flex: 1;
+  max-width: 350px;
+  overflow-y: auto;
+  height: 600px;
+  padding: 10px;
+  border-left: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; /* 少し角丸を追加 */
+}
+
+/* 各タスクやサブタスクのスタイル修正 */
+.task-item, .subtask-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px; /* カード風にするため角丸追加 */
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.task-item:hover, .subtask-item:hover {
+  transform: translateX(5px);
+  background-color: rgba(243, 244, 246, 0.8);
+}
+
+/* カレンダーの余白とデザインの調整 */
+#calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#calendar-table th, #calendar-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+#calendar-body td {
+  height: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#calendar-body .today {
+  background-color: #e0f7fa;
+  font-weight: bold;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Main container for calendar and todo list */
+#main-container {
+  display: flex;
+  max-width: 1100px;
+  width: 100%;
+}
+/* 時計のデザイン */
+#clock {
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  color: #ff69b4; /* ピンク色 */
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Calendar section */
+#calendar {
+  flex: 1;
+  margin-right: 20px;
+  transition: all 0.3s ease; /* Smooth transition for calendar */
+}
+
+/* Todo list and schedule section */
+#todo-schedule-container {
+  flex: 1;
+  max-width: 350px;
+  overflow-y: auto;
+  height: 600px;
+  padding: 10px;
+  border-left: 1px solid #ddd;
+  transition: all 0.3s ease;
+}
+
+/* Calendar table */
+#calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#calendar-table th, #calendar-table td {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+}
+
+/* Calendar date cells */
+#calendar-body td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  height: 50px;
+  cursor: pointer;  /* Change cursor on hover */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
+/* Highlight today’s date */
+#calendar-body .today {
+  background-color: #e0f7fa;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out; /* Smooth background color change */
+}
+
+/* Highlight holidays */
+.holiday-background {
+  background-color: #ffebee;
+}
+
+.holiday {
+  color: red;
+  font-size: 12px;
+}
+
+/* Hover effect for calendar date cells */
+#calendar-body td:hover {
+  transform: translateX(5px); /* Slight slide effect */
+  background-color: rgba(243, 244, 246, 0.8); /* Semi-transparent background */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Light shadow */
+}
+
+/* Selected date cell */
+#calendar-body td.selected {
+  background-color: rgba(236, 239, 241, 0.9);
+  font-weight: bold;
+  border: 2px solid #006f85;
+  transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+}
+
+/* Navigation arrows */
+.arrow {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.arrow:hover {
+  transform: scale(1.1); /* Slight scale on hover */
+}
+
+/* Controls section (navigation buttons) */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Button styles */
+#generate-button {
+  transition: all 0.3s ease;
+}
+
+#generate-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Todo list container */
+#schedule-list-container {
+  width: 28%;
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f0f8ff;
+}
+
+/* Task item styling */
+.task-item, .subtask-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.task-item:hover, .subtask-item:hover {
+  transform: translateX(5px); /* Slight slide effect */
+  background-color: rgba(243, 244, 246, 0.8);
+}
+
+/* Subtask details */
+.subtask-details {
+  margin-left: 20px;
+  font-size: 14px;
+}
+
+/* General text styling for headings */
+h3, h4 {
+  font-family: Arial, sans-serif;
+  color: #006f85;
+}

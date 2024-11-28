@@ -1,0 +1,152 @@
+/* ベーススタイル */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+.h {
+    text-align: center;
+    margin-top: 20px;
+    color: #444;
+    font-size: 30px;
+}
+
+form {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* フォーム内の項目 */
+div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"], 
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus, 
+input[type="time"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* ボタンスタイル */
+.update-form button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 区切り線 */
+hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+/* 削除フォームのスタイル */
+.delete-form {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* 削除フォーム内の項目 */
+.delete-form div {
+    margin-bottom: 20px;
+}
+
+.delete-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.delete-form input[type="text"], 
+.delete-form input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+.delete-form input[type="text"]:focus, 
+.delete-form input[type="time"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* 削除ボタン */
+.delete-form button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #dc3545; /* 赤色 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.delete-form button:hover {
+    background-color: #c82333;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    form {
+        padding: 15px;
+    }
+
+    label, input[type="text"], input[type="time"], button {
+        font-size: 14px;
+    }
+
+    button {
+        padding: 10px;
+    }
+}

@@ -1,0 +1,295 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    background-color: #f0f8ff;
+}
+
+main {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f0f8ff;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Main Wrapper */
+.container {
+  max-width: 90vw;
+  width: 100%;
+  padding: 2rem;
+  margin-top: 50px;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Headings */
+.container h1, .container h2, .container h3 {
+  color: #1e90ff;
+  font-weight: 600;
+}
+
+.container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.container h2 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.container h3 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+.container .button {
+  background-color: #1e90ff;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.container .button:hover {
+  background-color: #104e8b;
+}
+
+/* Links */
+.container a {
+  color: #1e90ff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.container a:hover {
+  color: #104e8b;
+  text-decoration: underline;
+}
+
+/* Container header */
+.container_header {
+  display: flex;
+  justify-content: space-between; /* エレメントを左右に配置 */
+  align-items: center; /* 要素をヘッダー内で垂直に中央揃えする */
+  gap: 1rem; /* 左右の要素の間にスペースを加える */
+  padding: 1rem; /* 視覚的スペーシングのためのオプションのパディング */
+}
+
+.search_form {
+  display: flex;
+  align-items: center;
+}
+
+/* 検索フォームと追加ボタン */
+/* ボタンと検索バーをリセットして統一 */
+.container_header .search_bar .search_word_input {
+  padding: 0.5rem 1rem; /* 入力欄の内側余白 */
+  border: 2px solid #1e90ff;
+  border-radius: 8px 0 0 8px; /* 左側の角丸 */
+  font-size: 1rem; /* テキストサイズを統一 */
+  outline: none;
+  height: 40px; /* 明示的に高さを統一 */
+  box-sizing: border-box; /* パディングを含むボックスモデル */
+}
+
+.container_header .search_bar .search_word_input:focus {
+  border-color: #104e8b;
+}
+
+.container_header .search_button button {
+  padding: 0.5rem 1rem; /* ボタンの内側余白 */
+  background-color: #1e90ff; /* ボタン背景色 */
+  color: white; /* テキスト色 */
+  border: none; /* デフォルトの枠線を削除 */
+  border-radius: 0 8px 8px 0; /* 右側の角丸 */
+  font-size: 1rem; /* テキストサイズを統一 */
+  cursor: pointer; /* カーソルをポインターに設定 */
+  height: 40px; /* 検索バーと高さを揃える */
+  box-sizing: border-box;
+  transition: background-color 0.3s;
+}
+
+.container_header .search_button button:hover {
+  background-color: #104e8b; /* ホバー時の色変更 */
+}
+
+/* パスワード追加ボタン */
+.open_add_modal_button_wrapper .open_add_modal {
+  padding: 0.5rem 1rem; /* 内側余白 */
+  background-color: #f0f0f0; /* 背景色（オプション） */
+  color: black; /* テキスト色 */
+  border: 1px solid #ccc; /* ボーダー色 */
+  border-radius: 8px; /* 全角丸 */
+  font-size: 1rem; /* テキストサイズ */
+  cursor: pointer;
+  height: 40px; /* 他のボタンと高さを統一 */
+  box-sizing: border-box;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.open_add_modal_button_wrapper .open_add_modal:hover {
+  background-color: #e0e0e0; /* ホバー時の背景色変更 */
+  border-color: #aaa; /* ホバー時のボーダー色変更 */
+}
+
+/* Tables */
+.table_wrapper {
+  width: 100%;
+  font-size: 10.5pt;
+  max-height: 77vh; /* tbodyの高さを制限 */
+  overflow-y: auto; /* 縦スクロールを有効化 */
+  overflow-x: auto; /* 横スクロールを有効化 */
+  position: relative; /* スクロールバーをスタイリングするため */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.table_wrapper::-webkit-scrollbar {
+  display: none; /* スクロールバーを非表示 */
+}
+
+.table_header {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table_header th, .table_header td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #1e90ff;
+}
+
+.table_header th {
+  background-color: #1e90ff;
+  color: #ffffff;
+  position: sticky;
+  top: 0; /* ヘッダーを固定 */
+  z-index: 1; /* ヘッダーを他の要素より上に表示 */
+}
+
+.table_header tr:hover {
+  background-color: #e0f7ff;
+}
+
+/* ボタン群のラッパー */
+.buttons_wrapper {
+  display: flex;
+  gap: 0.5rem; /* ボタン間のスペース */
+}
+
+/* 各ボタンの共通スタイル */
+.button_wrapper button {
+  width: 60px;
+  /* padding: 0.5rem 0.5rem; */
+  font-size: 10pt; /* 少し小さめの文字サイズ */
+  border: none; /* デフォルトの枠線を削除 */
+  border-radius: 8px; /* 柔らかい印象の角丸 */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  height: 36px; /* 高さを揃える */
+  box-sizing: border-box;
+}
+
+/* 表示ボタン */
+.toggle_passtxt_button {
+  background-color: #1e90ff; /* 青系 */
+  color: white; /* テキストを白 */
+}
+
+.toggle_passtxt_button:hover {
+  background-color: #104e8b; /* ホバー時に濃い青 */
+}
+
+/* コピーボタン */
+.copy_button {
+  background-color: #1e90ff; /* 緑系 */
+  color: white;
+}
+
+.copy_button:hover {
+  background-color: #104e8b; /* ホバー時に濃い緑 */
+}
+
+/* 編集ボタン */
+.open_edit_modal {
+  background-color: #1e90ff; /* オレンジ系 */
+  color: white;
+}
+
+.open_edit_modal:hover {
+  background-color: #104e8b; /* ホバー時に濃いオレンジ */
+}
+
+/* 削除ボタン */
+.del_button {
+  background-color: #ff4500; /* 赤系 */
+  color: white;
+}
+
+.del_button:hover {
+  background-color: #cc3700; /* ホバー時に濃い赤 */
+}
+
+/* スモールスクリーン対応 */
+@media (max-width: 768px) {
+  .buttons_wrapper {
+    flex-direction: column; /* ボタンを縦に並べる */
+    gap: 0.3rem; /* スペースを少し狭める */
+  }
+
+  .button_wrapper button {
+    width: 100%; /* ボタンを横幅いっぱいにする */
+  }
+}
+
+/* Footer
+.container footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #1e90ff;
+  color: #ffffff;
+  border-radius: 0 0 8px 8px;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+} */
+
+
+/* 初期スタイル：右下に固定して非表示 */
+#feedback {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px); /* フェードイン前の位置 */
+    transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
+    z-index: 1000; /* 他要素の上に表示 */
+}
+
+/* 表示中のスタイル */
+#feedback.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* フェードイン後の位置 */
+}
