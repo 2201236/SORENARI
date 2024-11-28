@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+.chat-message {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #444;
+}
+.tab-button {
+    flex-grow: 1;
+    padding: 1rem;
+    text-align: center;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+}
+.tab-button.active {
+    background-color: #1a1a1a;
+}
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+.chat-input {
+    outline: none;
+    border: none;
+}

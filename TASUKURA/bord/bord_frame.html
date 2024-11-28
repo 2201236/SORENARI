@@ -1,0 +1,106 @@
+<!DOCTYPE html lang="ja">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>ボードとチャット</title>
+        <link rel="stylesheet" href="css/style.css">
+        <!-- Excalidraw用のスクリプトを追加 -->
+        <script type="module" src="https://unpkg.com/excalidraw/dist/excalidraw.production.min.js"></script>
+        <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    </head>
+    <body>
+        <header class="header">
+            <p class="text-center">ここにヘッダーを表示</p>
+            <!-- チャットを開くボタン -->
+            <button id="openChat" class="button-open hidden">チャットを開く</button>
+        </header>
+        <main class="main">
+            <!-- ボード -->
+            <div class="board">
+                <!-- Excalidrawを表示するコンテナ -->
+                <div id="excalidraw-container" style="width: 100%; height: 600px;"></div>
+            </div>
+            <!-- チャット -->
+            <div id="chatContainer" class="chat">
+                <div class="chat-header">
+                    <p class="font-bold">グループチャット</p>
+                    <button id="closeChat" class="button-close">✖</button>
+                </div>
+                <div class="chat-content">
+                    <!-- チャットメッセージ -->
+                </div>                
+                <div class="chat-footer">
+                    <input type="text" class="chat-input" placeholder="メッセージを入力...">
+                </div>
+            </div>
+        </main>
+        
+        <script type="module">
+            // Excalidrawの初期化
+            const { Excalidraw } = window.excalidraw;
+            
+            // React と ReactDOMがグローバルスコープにあることを確認
+            const renderExcalidraw = () => {
+                ReactDOM.render(
+                    React.createElement(Excalidraw, {
+                        initialData: {
+                            elements: [], // 初期状態の要素
+                            appState: { 
+                                viewBackgroundColor: "#ffffff" 
+                            }
+                        },
+                        // オプションで追加の設定が可能
+                        onChange: (elements, appState, files) => {
+                            // 描画が変更されたときのイベントハンドラ
+                            console.log('ボードが変更されました', elements);
+                        }
+                    }),
+                    document.getElementById('excalidraw-container')
+                );
+            };
+
+            // DOMの読み込みが完了したら描画
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', renderExcalidraw);
+            } else {
+                renderExcalidraw();
+            }
+
+            const container = document.getElementById("excalidraw-container");
+
+            const excalidraw = new Excalidraw.Excalidraw();
+            container.appendChild(excalidraw.getCanvas());
+
+            excalidraw.initializeScene({
+                elements: [],
+                appState: { 
+                viewBackgroundColor: "#ffffff", 
+                currentTool: "draw" // 手書きモードを有効化 
+                },
+            });
+
+            excalidraw.addEventListener("change", (event) => {
+                console.log("Scene updated:", event);
+            });
+
+            // チャット閉じるボタンの動作
+            document.getElementById("closeChat").addEventListener("click", function() {
+                const chatContainer = document.getElementById("chatContainer");
+                const openChatButton = document.getElementById("openChat");
+
+                chatContainer.classList.add("chat-hidden"); // チャットを隠す
+                openChatButton.classList.remove("hidden"); // チャットを開くボタンを表示
+            });
+
+            // チャットを開くボタンの動作
+            document.getElementById("openChat").addEventListener("click", function() {
+                const chatContainer = document.getElementById("chatContainer");
+                const openChatButton = document.getElementById("openChat");
+
+                chatContainer.classList.remove("chat-hidden"); // チャットを表示
+                openChatButton.classList.add("hidden"); // チャットを開くボタンを非表示
+            });
+        </script>
+    </body>
+</html>

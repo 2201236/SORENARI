@@ -15,6 +15,7 @@ async function openAuthModalAndWaitForAuth() {
         document.getElementById('auth_form_group_passName').style.display = "none";
         document.getElementById('auth_passName').value = generateRandomString(20);
         document.getElementById('auth_passtxt').value = '';
+        document.getElementById('auth_passtxt').placeholder = 'ログイン時のパスワードを入力してください';
     }
     
     openModal(authModal); // モーダルを開く
