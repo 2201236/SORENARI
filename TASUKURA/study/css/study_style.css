@@ -5,7 +5,35 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
+
+h2{
+  font-size: 24px;
+}
+
+/* タブのスタイル */
+.tab-container {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  justify-content: center;
+}
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
+.tab.active {
+  background-color: #ccc;
+  font-weight: bold;
+}
+/* 内容表示のスタイル */
+.content {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+.content.active {
+  display: block;
 }
 
 /* 青枠部分のスタイル */
@@ -13,7 +41,7 @@ body {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  margin: 20px 0;
+  margin: 80px 0;
 }
 
 .time-box {
@@ -59,7 +87,8 @@ body {
   display: flex;
   flex-direction: column; /* 縦並びにする */
   align-items: flex-start; /* 左揃えにする */
-  margin-bottom: 20px;
+  margin: 0 auto;
+  width: 70%;
 }
 
 /* horizontal-containerで横並びにする要素をグループ化 */
@@ -81,7 +110,7 @@ body {
   background-color: #dc3545;
   color: white;
   font-size: 16px;
-  margin-top: 20px;
+  margin-top: 5px;
   margin-right: 400px;
 }
 
@@ -103,14 +132,24 @@ body {
   margin-bottom: 10px; /* 他の要素とのスペース */
 }
 
+/* 新しい中央配置用クラス */
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 水平方向の中央 */
+  justify-content: center; /* 垂直方向の中央 */
+  box-sizing: border-box;
+}
+
 /* 科目入力のラベルとテキストボックスを配置 */
 .subject-container {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  width: 100%; /* 全幅にして中央揃えしやすく */
+  width: 70%; /* 全幅にして中央揃えしやすく */
   text-align: center;
-  margin-bottom: 20px;
+  margin: 0 auto;
+  margin-top: 10px;
 }
 
 /* 科目入力のラベルとテキストボックスを横並びにする */
@@ -153,7 +192,7 @@ button {
 }
 
 button:disabled {
-  background-color: #cccccc;
+  color: #cccccc;
 }
 
 /* 時間を保存ボタンのスタイル */
@@ -181,7 +220,7 @@ button#stop-button {
 /* カレンダーのスタイル */
 #calendar {
   text-align: center;
-  margin: 20px 0;
+  margin: 200px 0 100px 0;
   width: 100%;
 }
 
@@ -249,5 +288,149 @@ td[data-has-record] {
   display: none; 
   width: 100%; /* 全幅にして中央揃えしやすく */
   text-align: center;
-  margin-top: -5%;
+}
+
+#manual-error-message{
+  color: red;
+  font-size: 14px;
+  display: none; 
+  width: 100%; /* 全幅にして中央揃えしやすく */
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .time-box h3{
+    font-size: 14px;
+  }
+
+  .time-box {
+    width: 60px; /* スマホサイズでの幅 */
+    height: 60px; /* スマホサイズでの高さ */
+    font-size: 14px; /* フォントサイズ調整 */
+  }
+
+  .form-container {
+    border: 2px solid black; /* 黒の枠線 */
+    padding: 10px;
+    margin: 0 auto;
+    width: 90%; /* スマホ画面にフィット */
+    box-sizing: border-box;
+  }
+
+  .subject-container,
+  .stopwatch,
+  .horizontal-container,
+  #save-time-button {
+    width: 100%; /* 幅を100%にして縦に配置 */
+    margin-bottom: 15px; /* 各要素の間に余白 */
+  }
+
+  /* カレンダーのスタイル調整 */
+  #calendar {
+    width: 100%; /* カレンダーを画面いっぱいに広げる */
+    font-size: 12px; /* テキストサイズを調整 */
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row; /* 横並びに設定 */
+    justify-content: space-between; /* アイテムの間にスペースを追加 */
+    align-items: center;
+  }
+
+  .controls .arrow,
+  .controls select {
+    flex: 1; /* 各要素を均等に配置 */
+    text-align: center; /* テキスト中央揃え */
+    margin: 0 5px; /* 各要素の間に少し余白 */
+  }
+
+  .subject-container {
+    display: flex;
+    flex-direction: row; /* 横並び */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .subject-container label {
+    margin-right: 10px; /* ラベルと入力欄の間に余白 */
+  }
+
+  #subject {
+    flex-grow: 1; /* 入力欄を残りのスペースに合わせる */
+  }
+
+  #reset-button {
+    width: auto; /* ボタンのサイズを自動に */
+    margin-left: 10px; /* ラベルとボタンの間に少し余白 */
+    margin-right: 10px;
+  }
+
+  #time-display{
+    font-size: 45px;
+  }
+
+  /* 開始ボタンと停止ボタンのスタイル */
+  #start-button,
+  #stop-button {
+      width: 50px;   /* 幅を指定 */
+      height: 50px;  /* 高さを指定 */
+      border-radius: 50%; /* 円形にする */
+      font-size: 16px; /* 文字サイズを調整 */
+  }
+
+  .popup-content {
+    width: 90%; /* ポップアップの幅を画面に合わせる */
+  }
+}
+
+.subject-time-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#show-subject-times {
+  background-color: #4CAF50; /* 緑色の背景 */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 15%;
+  margin-left: auto;
+}
+
+#show-subject-times:hover {
+  background-color: #45a049; /* ボタンホバー時の色 */
+}
+
+#toggle-calendar-button{
+  width: auto;
+  height: auto;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  align-self: center; /* 自分自身を中央に配置 */
+  margin-top: 20px;
+}
+
+#scrollToTop{
+  width: auto;
+  height: auto;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  align-self: center; /* 自分自身を中央に配置 */
+  margin-bottom: 20px;
+}
+
+li{
+  margin-top: 20px;
+  font-size: 20px;
 }
