@@ -1,24 +1,45 @@
+// メッセージを設定する関数
+function setFeedbackMessage(message) {
+    sessionStorage.setItem('feedbackMessage', message);
+}
+
+// メッセージを表示して削除する関数
+function displayFeedbackMessage() {
+    const feedbackMessage = sessionStorage.getItem('feedbackMessage');
+    if (feedbackMessage) {
+        const feedback_element = document.getElementById('feedback');
+        feedback_element.textContent = feedbackMessage;
+        clearFeedback(feedback_element); // 既存のクリア関数
+        sessionStorage.removeItem('feedbackMessage');
+    }
+}
+
 // 追加・更新
 function handleSubmit(e) {
+    const feedback_element = document.getElementById('feedback');
     e.preventDefault();
     const formData = new FormData(this);
 
     sendData('update_data.php', formData)
         .then(data => {
             if (data.success) {
+                setFeedbackMessage(data.message);
                 window.location.replace('passlist.php');
             } else {
-                alert("データの更新に失敗しました");
+                feedback_element.textContent = "更新に失敗しました";
+                clearFeedback(feedback_element);
             }
         })
         .catch(error => {
             console.error("エラー:", error);
-            alert("エラーが発生しました");
+            feedback_element.textContent = "エラーが発生しました";
+            clearFeedback(feedback_element);
         });
 }
 
 // 削除
 async function handleDelete(e) {
+    const feedback_element = document.getElementById('feedback');
     const row = this.closest("tr");
     const pass_id = row.querySelector(".pass_id").value;
 
@@ -28,18 +49,23 @@ async function handleDelete(e) {
         sendData('delete_data.php', params)
             .then(data => {
                 if (data.success) {
-
+                    setFeedbackMessage('削除が成功しました');
                     window.location.replace('passlist.php');
                 } else {
-                    alert("削除に失敗しました: " + data.error);
+                    feedback_element.textContent = "削除に失敗しました";
+                    clearFeedback(feedback_element);
                 }
             })
             .catch(error => {
                 console.error("エラー:", error);
-                alert("エラーが発生しました");
+                feedback_element.textContent = "エラーが発生しました";
+                clearFeedback(feedback_element);
             });
     }
 }
+
+// ページ読み込み時にフィードバックメッセージを表示
+document.addEventListener('DOMContentLoaded', displayFeedbackMessage);
 
 // 認証処理
 function handleAuth(e) {

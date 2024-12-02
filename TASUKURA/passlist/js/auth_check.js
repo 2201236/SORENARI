@@ -46,7 +46,7 @@ async function openAuthModalAndWaitForAuth() {
             const isAuthenticated = await handleAuth(e);
             if (isAuthenticated) closeModal(authModal); // 認証が完了したらモーダルを閉じる
             resolve(isAuthenticated); // 認証結果をresolveで返す
-        }); // once: trueで一度だけイベントが発生するように設定
+        }, { once: true }); // once: trueで一度だけイベントが発生するように設定
     });
 }
 
