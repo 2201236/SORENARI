@@ -30,7 +30,7 @@ if ($_SESSION['is_logged_in']) {
         }
         return '';
     }
-
+  
     // パスワードリスト取得の関数
     function fetchPassList(PDO $pdo, string $user_id, string $search_word = ''): array
     {
@@ -212,9 +212,16 @@ if ($_SESSION['is_logged_in']) {
         <!-- スクリプト導入 -->
         <div id="hidden_container" style="display: none">
             <script>
+                const feedback_element = document.getElementById('feedback');
+                const feedback = localStorage.getItem('feedback');
                 const isLoggedIn = <?php echo json_encode($_SESSION['is_logged_in']); ?>;
                 let userId;
                 
+                if (feedback) {
+                    feedback_element.textContent = feedback;
+                    localStorage.removeItem('feedback'); // メッセージを消去
+                }
+
                 <?php if (isset($_SESSION['user_id'])): ?>
                 userId = <?php echo json_encode($_SESSION['user_id']); ?>;
                 <?php endif; ?>

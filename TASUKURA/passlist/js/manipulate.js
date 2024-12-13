@@ -113,3 +113,19 @@ document.querySelectorAll(".copy_button").forEach(button => {
         copy(this);
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggleButton = document.querySelector('.menu_toggle_button');
+    const buttonsWrapper = document.querySelector('.buttons_wrapper');
+
+    menuToggleButton.addEventListener('click', () => {
+        buttonsWrapper.classList.toggle('active');
+    });
+
+    // 画面外クリックで閉じる
+    document.addEventListener('click', (e) => {
+        if (!menuToggleButton.contains(e.target) && !buttonsWrapper.contains(e.target)) {
+            buttonsWrapper.classList.remove('active');
+        }
+    });
+});

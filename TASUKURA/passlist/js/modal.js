@@ -65,6 +65,7 @@ closeAuthModalBtn.onclick = () => closeModal(authModal);
 
 document.addEventListener('DOMContentLoaded', async function() {
     const feedback_element = document.getElementById('feedback');
+    const feedback = localStorage.getItem('feedback');
 
     if (!isLoggedIn) {
         try {
