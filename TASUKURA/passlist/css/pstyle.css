@@ -7,51 +7,34 @@
 }
 
 body {
-    height: 100%;
-    width: 100%;
-    background-color: #f0f8ff;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f0f8ff;
 }
 
 main {
-    font-family: Arial, sans-serif;
-    color: #333;
-    background-color: #f0f8ff;
-    line-height: 1.6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f0f8ff;
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 20px;
 }
 
-/* Main Wrapper */
+/* Main container */
 .container {
-  max-width: 90vw;
-  width: 100%;
-  padding: 2rem;
-  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 100%;
+  padding: 1rem;
   background: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-}
-
-/* Headings */
-.container h1, .container h2, .container h3 {
-  color: #1e90ff;
-  font-weight: 600;
-}
-
-.container h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.container h2 {
-  font-size: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.container h3 {
-  font-size: 1.75rem;
-  margin-bottom: 0.5rem;
 }
 
 /* Buttons */
@@ -70,21 +53,10 @@ main {
   background-color: #104e8b;
 }
 
-/* Links */
-.container a {
-  color: #1e90ff;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.container a:hover {
-  color: #104e8b;
-  text-decoration: underline;
-}
-
 /* Container header */
 .container_header {
   display: flex;
+  flex: 1;
   justify-content: space-between; /* エレメントを左右に配置 */
   align-items: center; /* 要素をヘッダー内で垂直に中央揃えする */
   gap: 1rem; /* 左右の要素の間にスペースを加える */
@@ -121,6 +93,7 @@ main {
   font-size: 1rem; /* テキストサイズを統一 */
   cursor: pointer; /* カーソルをポインターに設定 */
   height: 40px; /* 検索バーと高さを揃える */
+  width: 70px;
   box-sizing: border-box;
   transition: background-color 0.3s;
 }
@@ -131,28 +104,28 @@ main {
 
 /* パスワード追加ボタン */
 .open_add_modal_button_wrapper .open_add_modal {
-  padding: 0.5rem 1rem; /* 内側余白 */
-  background-color: #f0f0f0; /* 背景色（オプション） */
-  color: black; /* テキスト色 */
-  border: 1px solid #ccc; /* ボーダー色 */
-  border-radius: 8px; /* 全角丸 */
-  font-size: 1rem; /* テキストサイズ */
+  padding: 0.5rem 1rem;
+  background-color: #1e90ff; /* 背景色を変更 */
+  color: #ffffff; /* テキスト色を白に */
+  border: none; /* ボーダーを削除 */
+  border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
-  height: 40px; /* 他のボタンと高さを統一 */
-  box-sizing: border-box;
-  transition: background-color 0.3s, border-color 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 影を追加 */
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .open_add_modal_button_wrapper .open_add_modal:hover {
-  background-color: #e0e0e0; /* ホバー時の背景色変更 */
-  border-color: #aaa; /* ホバー時のボーダー色変更 */
+  background-color: #104e8b; /* ホバー時に濃い青 */
+  transform: scale(1.05); /* ホバー時に拡大 */
 }
 
 /* Tables */
 .table_wrapper {
+  flex: 19;
   width: 100%;
   font-size: 10.5pt;
-  max-height: 77vh; /* tbodyの高さを制限 */
+  padding: 0 1rem 1rem 1rem;
   overflow-y: auto; /* 縦スクロールを有効化 */
   overflow-x: auto; /* 横スクロールを有効化 */
   position: relative; /* スクロールバーをスタイリングするため */
@@ -164,18 +137,17 @@ main {
   display: none; /* スクロールバーを非表示 */
 }
 
-.table_header {
+table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.table_header th, .table_header td {
-  padding: 0.75rem;
-  text-align: left;
+table th, table td {
+  height: 50px;
   border-bottom: 1px solid #1e90ff;
 }
 
-.table_header th {
+table th {
   background-color: #1e90ff;
   color: #ffffff;
   position: sticky;
@@ -183,78 +155,319 @@ main {
   z-index: 1; /* ヘッダーを他の要素より上に表示 */
 }
 
-.table_header tr:hover {
+table th:not(.thead_row1) {
+  text-align: left;
+}
+
+table tr:hover {
   background-color: #e0f7ff;
 }
 
+/* table td {
+  padding: 0.5rem;
+} */
+
 /* ボタン群のラッパー */
-.buttons_wrapper {
+.menu_dropdown {
   display: flex;
   gap: 0.5rem; /* ボタン間のスペース */
+  align-items: center;
 }
 
 /* 各ボタンの共通スタイル */
-.button_wrapper button {
-  width: 60px;
+.menu_dropdown button {
+  width: 50px;
+  height: 30px; /* 高さを揃える */
   /* padding: 0.5rem 0.5rem; */
   font-size: 10pt; /* 少し小さめの文字サイズ */
   border: none; /* デフォルトの枠線を削除 */
   border-radius: 8px; /* 柔らかい印象の角丸 */
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-  height: 36px; /* 高さを揃える */
   box-sizing: border-box;
+}
+
+.menu_toggle {
+  display: none;
 }
 
 /* 表示ボタン */
 .toggle_passtxt_button {
-  background-color: #1e90ff; /* 青系 */
-  color: white; /* テキストを白 */
+  background-color: #1e90ff;
+  color: white;
 }
 
 .toggle_passtxt_button:hover {
-  background-color: #104e8b; /* ホバー時に濃い青 */
+  background-color: #104e8b;
 }
 
 /* コピーボタン */
 .copy_button {
-  background-color: #1e90ff; /* 緑系 */
+  background-color: #1e90ff;
   color: white;
 }
 
 .copy_button:hover {
-  background-color: #104e8b; /* ホバー時に濃い緑 */
+  background-color: #104e8b;
 }
 
 /* 編集ボタン */
 .open_edit_modal {
-  background-color: #1e90ff; /* オレンジ系 */
+  background-color: #1e90ff;
   color: white;
 }
 
 .open_edit_modal:hover {
-  background-color: #104e8b; /* ホバー時に濃いオレンジ */
+  background-color: #104e8b;
 }
 
 /* 削除ボタン */
 .del_button {
-  background-color: #ff4500; /* 赤系 */
+  background-color: #ff4500;
   color: white;
 }
 
 .del_button:hover {
-  background-color: #cc3700; /* ホバー時に濃い赤 */
+  background-color: #cc3700;
 }
 
-/* スモールスクリーン対応 */
-@media (max-width: 768px) {
-  .buttons_wrapper {
-    flex-direction: column; /* ボタンを縦に並べる */
-    gap: 0.3rem; /* スペースを少し狭める */
+/* テーブルセルにラベルを追加するためのJavaScript用クラス */
+.mobile-labels td {
+  position: relative;
+}
+
+.mobile-labels td::before {
+  display: none;
+}
+
+/* 検索バーと追加ボタン */
+@media (max-width: 700px) {
+  .container_header {
+    flex-direction: column;
+    text-align: right;
+    gap: 0.5rem;
   }
 
-  .button_wrapper button {
-    width: 100%; /* ボタンを横幅いっぱいにする */
+  .search_form {
+    width: 100%;
+  }
+
+  .open_add_modal_button_wrapper {
+    width: 160px;
+  }
+
+  .open_add_modal_button_wrapper .open_add_modal {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .container_header .search_bar .search_word_input {
+    width: 100%;
+  }
+}
+
+/* 小さい画面で「⋮」アイコンを表示 */
+@media (max-width: 1200px) {
+  /* テーブル ボタン列 */
+  .buttons_view {
+    position: relative;
+  }
+
+  .menu_toggle {
+    display: block;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0 8px;
+    border-radius: 4px;
+  }
+
+  .menu_dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    z-index: 10;
+    min-width: 120px;
+    padding: 8px;
+  }
+
+  .menu_dropdown.active {
+    display: block;
+  }
+
+  .menu_dropdown button {
+    display: block;
+    width: 100%;
+    height: 40px;
+    text-align: left;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+
+  .menu_dropdown button:not(.del_button):hover {
+    background-color: #a0d0ff;
+  }
+
+  .menu_dropdown button.del_button:hover {
+    background-color: #ffad8f;
+  }
+
+  .menu_dropdown.top {
+    top: auto;        /* デフォルト値を無効化 */
+    bottom: 100%;     /* ボタンの上に表示 */
+  }
+  
+  .menu_dropdown.bottom {
+    top: 100%;        /* デフォルトで下に表示 */
+    bottom: auto;     /* デフォルト値を無効化 */
+  }
+}
+
+@media (max-width: 768px) {
+  table td:not(.buttons_view) {
+    padding: 0 10px 0 10px;
+  }
+
+  .tbody_row1 span {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 640px) {
+  .table_wrapper {
+      max-height: none; /* 高さ制限を解除 */
+  }
+
+  table, 
+  table thead, 
+  table tbody, 
+  table tr, 
+  table td {
+      display: block;
+      width: 100%;
+  }
+
+  table thead {
+      display: none; /* モバイル時にヘッダーを非表示 */
+  }
+
+  table tr {
+    margin-bottom: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  .thead_row4 {
+    display: none;
+  }
+
+  table td:not(.buttons_view) {
+    display: flex;
+    position: relative;
+    padding: 10px 15px;
+    text-align: left;
+    align-items: center;
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  table td:last-child {
+      border-bottom: none;
+  }
+
+  .mobile-labels td::before {
+      display: none;
+  }
+
+  /* ボタン配置の最適化 */
+  .buttons_view {
+    display: flex;
+    justify-content: space-around;
+    background-color: #1e90ff;
+    border-top: 1px solid #ddd;
+  }
+
+  .menu_dropdown {
+    position: static;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    background: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    gap: 0;
+  }
+
+  .menu_dropdown button {
+    flex-grow: 1;
+    height: 50px;
+    font-size: 0.7rem;
+    color: #fff;
+    text-align: center;
+    border-radius: 0;
+    background-color: #1e90ff;
+  }
+
+  .menu_dropdown button:hover {
+    background-color: #104e8b;
+  }
+
+  .menu_dropdown button.del_button {
+    background-color: #ff4500;
+  }
+
+  .menu_dropdown button.del_button:hover {
+    background-color: #cc3700;
+  }
+
+  .menu_toggle {
+    display: none; /* モバイル時は常にメニューを表示 */
+  }
+}
+
+/* タッチターゲットサイズの最適化 */
+@media (max-width: 770px) {
+  .container_header .search_bar .search_word_input,
+  .container_header .search_button button,
+  .open_add_modal,
+  .menu_dropdown button {
+    min-height: 44px; /* iOS推奨の最小タッチターゲットサイズ */
+    padding: 10px;
+  }
+}
+
+@media (max-height: 800px) {
+  main {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  @media (max-width: 770px) {
+    .container {
+      padding-top: 60px;
+    }
   }
 }
 

@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("UPDATE PassList SET url = ?, passName = ? WHERE pass_id = ? AND user_id = ?");
                 $stmt->execute([$url, $passName, $pass_id, $user_id]);
             }
-            echo json_encode(['success' => true, 'message' => '更新しました']);
+            echo json_encode(['success' => true, 'message' => '更新が完了しました']);
         } catch (PDOException $e) {
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $stmt = $pdo->prepare("INSERT INTO PassList (user_id, url, passName, passtxt, arcaneKey) VALUES (?,?,?,?,?)");
                 $stmt->execute([$user_id, $url, $passName, $passtxt, $key]);
-                echo json_encode(['success' => true, 'message' => '登録しました']);
+                echo json_encode(['success' => true, 'message' => '登録が完了しました']);
             }
         } catch (PDOException $e) {
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
